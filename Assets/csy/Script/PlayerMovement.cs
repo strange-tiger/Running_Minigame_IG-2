@@ -18,11 +18,13 @@ public class PlayerMovement : MonoBehaviour
     // 기본 필요 component
     private Rigidbody _rigidbody;
     private PlayerInput _input;
+    private Animator _animator;
 
     private void Awake()
     {
         _input = GetComponent<PlayerInput>();
         _rigidbody = GetComponent<Rigidbody>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -92,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Jumping(float endYPosition)
     {
+        _animator.SetTrigger(AnimationUtility.Jump);
         _isJumping = true;
         endYPosition += 1f;
 
