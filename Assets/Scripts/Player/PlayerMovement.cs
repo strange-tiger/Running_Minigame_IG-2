@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Jumping(float endYPosition)
     {
-        _animator.SetTrigger(AnimationUtility.Jump);
+        _animator.SetTrigger(AnimationID.Jump);
         _isJumping = true;
         endYPosition += 1f;
 
