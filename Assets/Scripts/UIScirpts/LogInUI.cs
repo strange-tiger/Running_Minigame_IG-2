@@ -1,9 +1,11 @@
+
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Data;
 using MySql.Data.MySqlClient;
+
 public class LogInUI : MonoBehaviour
 {
     public Button LogInBtn;
@@ -15,9 +17,6 @@ public class LogInUI : MonoBehaviour
     public InputField PWInput;
 
 
-    private void Start()
-    {
-    }
     private void OnEnable()
     {
         LogInBtn.onClick.AddListener(LoadLogIn);
@@ -58,6 +57,7 @@ public class LogInUI : MonoBehaviour
             }
 
         }
+
 
     }
     
