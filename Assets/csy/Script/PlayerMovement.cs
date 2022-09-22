@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float[] _moveXPositions = { -2.5f, 0, 2.5f };
     [SerializeField] private float _moveSpeed = 2.5f;
     private int _currentMovePosition = 1;
-    private bool _isMoveable = true;
+    private bool _isMoving = false;
 
     [Header("Jump")]
     [SerializeField] private float _jumpHeight = 2f;
@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if(_isMoveable)
+        if(!_isMoving)
         {
             Move();
         }
@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator MoveLine(int nextPos, int moveDirection)
     {
-        _isMoveable = false;
+        _isMoving = true;
 
         float endXPosition = _moveXPositions[nextPos];
         Debug.Log(endXPosition);
@@ -73,7 +73,10 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        _isMoveable = true;
+        if (!_isJumping)
+        {
+            _isMoving = false;
+        }
     }
 
     // 점프 관련
@@ -122,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-
+        _isMoving = false;
         _isJumping = false;
     }
 }
