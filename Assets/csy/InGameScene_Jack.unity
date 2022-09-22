@@ -395,20 +395,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1001 &3682332521417257588
+--- !u!1001 &1920704730
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3682332521724390368, guid: 7fcfd68f3bb2ea44794d560db5009ff4, type: 3}
-      propertyPath: _jumpSpeed
-      value: 3.5
-      objectReference: {fileID: 0}
     - target: {fileID: 3682332521724390375, guid: 7fcfd68f3bb2ea44794d560db5009ff4, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: Player (1)
       objectReference: {fileID: 0}
     - target: {fileID: 3682332521724390382, guid: 7fcfd68f3bb2ea44794d560db5009ff4, type: 3}
       propertyPath: m_RootOrder
