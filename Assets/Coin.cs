@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Coin : MonoBehaviour
 {
-    public UnityEvent GetCoin;
+    static public UnityEvent GetCoin;
     
     [SerializeField]
     private float rotationSpeed = 60f;
