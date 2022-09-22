@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] private float _jumpHeight = 2f;
-    [SerializeField] private float _jumpSpeed = 1f;
+    [SerializeField] private float _jumpSpeed = 2f;
     private bool _isJumping = false;
 
     // 기본 필요 component
@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // 라인 이동 관련
     private void Move()
     {
         int nextMovePosition = _currentMovePosition + _input.X;
@@ -51,7 +52,6 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(MoveLine(nextMovePosition, _input.X));
     }
 
-    // 라인 이동 코루틴
     private IEnumerator MoveLine(int nextPos, int moveDirection)
     {
         _isMoveable = false;
@@ -62,9 +62,9 @@ public class PlayerMovement : MonoBehaviour
         while(true)
         {
             float nextXPosition = moveDirection * _moveSpeed * Time.deltaTime;
-            _rigidbody.MovePosition(_rigidbody.position + new Vector3(nextXPosition, 0f, 0f));
+            transform.Translate(nextXPosition, 0f, 0f);
 
-            if(Mathf.Pow((endXPosition - _rigidbody.position.x), 2) <= 0.001)
+            if(Mathf.Pow((endXPosition - transform.position.x), 2) <= 0.001)
             {
                 transform.position = new Vector3(endXPosition, transform.position.y, transform.position.z);
                 break;
@@ -76,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
         _isMoveable = true;
     }
 
+    // 점프 관련
     private void Jump()
     {
         if (!_input.Jump)
@@ -89,14 +90,16 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator Jumping(float endYPosition)
     {
         _isJumping = true;
+        endYPosition += 1f;
 
         while(true)
         {
             float currentYPosition = _jumpSpeed * Time.deltaTime;
-            _rigidbody.MovePosition(_rigidbody.position + new Vector3(0f, currentYPosition, 0f));
+            transform.Translate(0f, currentYPosition, 0f);
+            Debug.Log(transform.position.y);
 
 
-            if (Mathf.Pow((endYPosition - _rigidbody.position.x), 2) <= 0.001)
+            if (Mathf.Pow((endYPosition - transform.position.y), 2) <= 0.001)
             {
                 transform.position = new Vector3(transform.position.x, endYPosition, transform.position.z);
                 break;
@@ -107,13 +110,12 @@ public class PlayerMovement : MonoBehaviour
 
         while(true)
         {
-            float currentYPosition = _jumpSpeed * Time.deltaTime;
-            _rigidbody.MovePosition(_rigidbody.position + new Vector3(0f, currentYPosition, 0f));
+            float currentYPosition = -_jumpSpeed * Time.deltaTime;
+            transform.Translate(0f, currentYPosition, 0f);
 
-
-            if (Mathf.Pow((0f - _rigidbody.position.x), 2) <= 0.001)
+            if (Mathf.Pow((1f - transform.position.y), 2) <= 0.001)
             {
-                transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+                transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
                 break;
             }
 
