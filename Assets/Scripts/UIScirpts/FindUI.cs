@@ -16,14 +16,23 @@ public class FindUI : MonoBehaviour
     public InputField Pw_IDInput;
     public InputField Pw_Output;
 
+    private GameObject _id_EmailErrorText;
+    private GameObject _pw_EmailErrorText;
+    private GameObject _pw_IDErrorText;
     private void OnEnable()
     {
         LogInBtn.onClick.AddListener(LoadLogIn);
         SignInBtn.onClick.AddListener(LoadSignIn);
         Id_EnterBtn.onClick.AddListener(FindID);
         Pw_EnterBtn.onClick.AddListener(FindPW);
-    }
 
+        _id_EmailErrorText = Id_EmailInput.transform.GetChild(2).gameObject;
+        _id_EmailErrorText.SetActive(false);
+        _pw_EmailErrorText = Pw_EmailInput.transform.GetChild(2).gameObject;
+        _pw_EmailErrorText.SetActive(false);
+        _pw_IDErrorText = Pw_IDInput.transform.GetChild(2).gameObject;
+        _pw_IDErrorText.SetActive(false);
+    }
 
     public void LoadLogIn() => UIManager.Instance.LoadUI(EUIIndex.LogIn);
     public void LoadSignIn() => UIManager.Instance.LoadUI(EUIIndex.SignIn);
