@@ -104,7 +104,7 @@ MonoBehaviour:
   - 2.5
   _moveSpeed: 2.5
   _jumpHeight: 2
-  _jumpSpeed: 2
+  _jumpSpeed: 4.3
 --- !u!1001 &3682332521002903519
 PrefabInstance:
   m_ObjectHideFlags: 0

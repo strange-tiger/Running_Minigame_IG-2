@@ -59,7 +59,6 @@ public class PlayerMovement : MonoBehaviour
         _isMoving = true;
 
         float endXPosition = _moveXPositions[nextPos];
-        Debug.Log(endXPosition);
 
         while(true)
         {
@@ -102,8 +101,6 @@ public class PlayerMovement : MonoBehaviour
         {
             float currentYPosition = _jumpSpeed * Time.deltaTime;
             transform.Translate(0f, currentYPosition, 0f);
-            Debug.Log(transform.position.y);
-
 
             if (Mathf.Pow((endYPosition - transform.position.y), 2) <= 0.001)
             {
