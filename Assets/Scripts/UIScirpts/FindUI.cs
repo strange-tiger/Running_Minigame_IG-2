@@ -25,7 +25,7 @@ public class FindUI : MonoBehaviour
         SignInBtn.onClick.AddListener(LoadSignIn);
         Id_EnterBtn.onClick.AddListener(FindID);
         Pw_EnterBtn.onClick.AddListener(FindPW);
-        
+
         _id_EmailErrorText = Id_EmailInput.transform.GetChild(2).gameObject;
         _id_EmailErrorText.SetActive(false);
         _pw_EmailErrorText = Pw_EmailInput.transform.GetChild(2).gameObject;
@@ -39,7 +39,7 @@ public class FindUI : MonoBehaviour
 
     public void FindID()
     {
-        
+
     }
 
     public void FindPW()
