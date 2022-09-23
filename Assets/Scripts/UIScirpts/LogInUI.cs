@@ -21,8 +21,6 @@ public class LogInUI : MonoBehaviour
     private TextAsset _selectText;
     private string _connectionString;
     private string _selectString;
-    private bool _isExistId;
-    private bool _canLogIn;
 
     private void Start()
     {
@@ -45,7 +43,6 @@ public class LogInUI : MonoBehaviour
         _pwErrorText = PWInput.transform.GetChild(_loginChildIndex).gameObject;
         _pwErrorText.SetActive(false);
 
-        _isExistId = false;
 
     }
     
