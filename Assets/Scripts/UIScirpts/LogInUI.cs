@@ -44,9 +44,6 @@ public class LogInUI : MonoBehaviour
         FindBtn.onClick.AddListener(LoadFind);
         QuitBtn.onClick.AddListener(LoadQuit);
 
-
-        _isExistId = false;
-
         _idErrorText?.SetActive(false);
         _pwErrorText?.SetActive(false);
     }
@@ -77,7 +74,7 @@ public class LogInUI : MonoBehaviour
             }
             else
             {
-                _idErrorTExt.SetActive(true);
+                _idErrorText.SetActive(true);
             }
             _sqlConnection.Close();
 
