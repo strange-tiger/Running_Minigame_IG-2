@@ -39,7 +39,6 @@ public class LogInUI : MonoBehaviour
     }
     private void OnEnable()
     {
-
         LogInBtn.onClick.AddListener(LoadLogIn);
         SignInBtn.onClick.AddListener(LoadSignIn);
         FindBtn.onClick.AddListener(LoadFind);
@@ -54,7 +53,6 @@ public class LogInUI : MonoBehaviour
 
     public DataSet GetUserData()
     {
-         
         DataSet _dataSet = new DataSet();
 
         _selectString = _selectText.text + $" where ID= '{IDInput.text}';";
@@ -70,35 +68,27 @@ public class LogInUI : MonoBehaviour
     }
     public void LoadLogIn()
     {
-
-
         DataSet _logInDataSet;
         _logInDataSet = GetUserData();
       
         if(_logInDataSet.Tables[0].Rows.Count == 0)
         {
-
-                Debug.Log("���̵� ������� ���");
+            _idErrorText.SetActive(true);
+            return;
         }
-        else
-        {
-                Debug.Log("���̵� ���");
-
-        }
+        _idErrorText.SetActive(false);
 
         foreach(DataRow _dataRow in _logInDataSet.Tables[0].Rows)
         {
             if(_dataRow["Password"].ToString() == PWInput.text)
             {
-                Debug.Log("�α��� �Ϸ�");
+                _pwErrorText.SetActive(false);
             }
             else
             {
-                Debug.Log("���ȸ��.");
+                _pwErrorText.SetActive(true);
             }
         }
-       
-
     }
     
     public void LoadSignIn() => UIManager.Instance.LoadUI(EUIIndex.SignIn); 

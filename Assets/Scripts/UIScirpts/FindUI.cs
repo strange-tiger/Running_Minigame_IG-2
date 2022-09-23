@@ -81,7 +81,9 @@ public class FindUI : MonoBehaviour
             if(_dataRow["Email"].ToString() == Id_EmailInput.text)
             {
                 Id_Output.text = _dataRow["ID"].ToString();
-                break;
+                _id_EmailErrorText.SetActive(false);
+
+                return;
             }
         }
         _id_EmailErrorText.SetActive(true);

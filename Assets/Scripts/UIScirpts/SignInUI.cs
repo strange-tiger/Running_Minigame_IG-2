@@ -134,13 +134,13 @@ public class SignInUI : MonoBehaviour
          
         if(!_check)
         {
-            Debug.Log("사용 가능");
+            // Debug.Log("사용 가능");
             _hasDoubleCheck = true;
             _idErrorText.SetActive(false);
         }
         else
         {
-            Debug.Log("사용 불가능");
+            // Debug.Log("사용 불가능");
             _hasDoubleCheck = false;
             _idErrorText.SetActive(true);
         }
