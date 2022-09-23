@@ -20,11 +20,11 @@ public class QuitUI : MonoBehaviour
 
         Application.Quit();
     }
-    public void LoadLogIn() => UIManager.Instance.LoadUI(EUIIndex.LogIn);
+    public void LoadLogIn() => gameObject.SetActive(false);
 
     private void OnDisable()
     {
-        YesBtn.onClick.RemoveListener(LoadLogIn);
+        YesBtn.onClick.RemoveListener(Quit);
         NoBtn.onClick.RemoveListener(LoadLogIn);
     }
 }
