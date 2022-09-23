@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Data;
 using MySql.Data.MySqlClient;
 
@@ -66,6 +67,10 @@ public class LogInUI : MonoBehaviour
                 if(_dataReader["Password"].ToString() == PWInput.text)
                 {
                     _pwErrorText.SetActive(false);
+
+                    _sqlConnection.Close();
+                    LoadWaitingRoom();
+                    return;
                 }
                 else
                 {
@@ -77,10 +82,14 @@ public class LogInUI : MonoBehaviour
                 _idErrorText.SetActive(true);
             }
             _sqlConnection.Close();
-
         }
     }
-    
+
+    private void LoadWaitingRoom()
+    {
+        SceneManager.LoadScene(1);
+    }
+
     public void LoadSignIn() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn); 
     public void LoadFind() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find); 
     public void LoadQuit() => LogInUIManager.LoadQuitCheck();

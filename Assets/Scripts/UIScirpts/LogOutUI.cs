@@ -24,7 +24,7 @@ public class LogOutUI : MonoBehaviour
 
     private void OnDisable()
     {
-        YesBtn.onClick.RemoveListener(Close);
+        YesBtn.onClick.RemoveListener(LogOut);
         NoBtn.onClick.RemoveListener(Close);
     }
 }
