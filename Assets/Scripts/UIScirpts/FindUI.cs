@@ -33,22 +33,26 @@ public class FindUI : MonoBehaviour
         _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("Select");
         _selectString = _selectText.text + ";";
+        
+        int _findIdChildIndex = Pw_IDInput.transform.childCount - 1;
+
+        _id_EmailErrorText = Id_EmailInput.transform.GetChild(_findIdChildIndex).gameObject;
+        _pw_EmailErrorText = Pw_EmailInput.transform.GetChild(_findIdChildIndex).gameObject;
+        _pw_IDErrorText = Pw_IDInput.transform.GetChild(_findIdChildIndex).gameObject;
+        _id_EmailErrorText.SetActive(false);
+        _pw_EmailErrorText.SetActive(false);
+        _pw_IDErrorText.SetActive(false);
     }
     private void OnEnable()
     {
-        int _findIdChildIndex = Pw_IDInput.transform.childCount - 1;
-
         LogInBtn.onClick.AddListener(LoadLogIn);
         SignInBtn.onClick.AddListener(LoadSignIn);
         Id_EnterBtn.onClick.AddListener(FindID);
         Pw_EnterBtn.onClick.AddListener(FindPW);
 
-        _id_EmailErrorText = Id_EmailInput.transform.GetChild(_findIdChildIndex).gameObject;
-        _id_EmailErrorText.SetActive(false);
-        _pw_EmailErrorText = Pw_EmailInput.transform.GetChild(_findIdChildIndex).gameObject;
-        _pw_EmailErrorText.SetActive(false);
-        _pw_IDErrorText = Pw_IDInput.transform.GetChild(_findIdChildIndex).gameObject;
-        _pw_IDErrorText.SetActive(false);
+        _id_EmailErrorText?.SetActive(false);
+        _pw_EmailErrorText?.SetActive(false);
+        _pw_IDErrorText?.SetActive(false);
     }
 
     public void LoadLogIn() => UIManager.Instance.LoadUI(EUIIndex.LogIn);
@@ -77,9 +81,12 @@ public class FindUI : MonoBehaviour
             if(_dataRow["Email"].ToString() == Id_EmailInput.text)
             {
                 Id_Output.text = _dataRow["ID"].ToString();
-                break;
+                _id_EmailErrorText.SetActive(false);
+
+                return;
             }
         }
+        _id_EmailErrorText.SetActive(true);
     }
 
     public void FindPW()
@@ -88,14 +95,28 @@ public class FindUI : MonoBehaviour
 
         _findPwDataSet = GetUserData();
 
+        bool emailExist = false;
+        bool idExist = false; ;
         foreach (DataRow _dataRow in _findPwDataSet.Tables[0].Rows)
         {
-            if (_dataRow["Email"].ToString() == Pw_EmailInput.text && _dataRow["ID"].ToString() == Pw_IDInput.text)
+            if (_dataRow["Email"].ToString() == Pw_EmailInput.text)
+            {
+                emailExist = true;
+            }
+            if (_dataRow["ID"].ToString() == Pw_IDInput.text)
+            {
+                idExist = true;
+            }
+
+            if(emailExist && idExist)
             {
                 Pw_Output.text = _dataRow["Password"].ToString();
                 break;
             }
         }
+
+        _pw_EmailErrorText.SetActive(!emailExist);
+        _pw_IDErrorText.SetActive(!idExist);
     }
 
     private void OnDisable()
