@@ -28,22 +28,25 @@ public class LogInUI : MonoBehaviour
         _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("Select");
 
+        int _loginChildIndex = IDInput.transform.childCount - 1;
+
+        _idErrorText = IDInput.transform.GetChild(_loginChildIndex).gameObject;
+        _pwErrorText = PWInput.transform.GetChild(_loginChildIndex).gameObject;
+        _idErrorText.SetActive(false);
+        _pwErrorText.SetActive(false);
     }
     private void OnEnable()
     {
-        int _loginChildIndex = IDInput.transform.childCount - 1;
-
         LogInBtn.onClick.AddListener(LoadLogIn);
         SignInBtn.onClick.AddListener(LoadSignIn);
         FindBtn.onClick.AddListener(LoadFind);
         QuitBtn.onClick.AddListener(LoadQuit);
 
-        _idErrorText = IDInput.transform.GetChild(_loginChildIndex).gameObject;
-        _idErrorText.SetActive(false);
-        _pwErrorText = PWInput.transform.GetChild(_loginChildIndex).gameObject;
-        _pwErrorText.SetActive(false);
 
+        _isExistId = false;
 
+        _idErrorText?.SetActive(false);
+        _pwErrorText?.SetActive(false);
     }
     
 
@@ -59,26 +62,24 @@ public class LogInUI : MonoBehaviour
             MySqlDataReader _dataReader = _readCommand.ExecuteReader();
             if(_dataReader.Read())
             {
-                   Debug.Log("¾ÆÀÌµð Á¸Àç");
+                   Debug.Log("ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½");
                 
                 if(_dataReader["Password"].ToString() == PWInput.text)
                 {
-                    Debug.Log("·Î±×ÀÎ ¿Ï·á");
+                    Debug.Log("ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
                 }
                 else
                 {
-                    Debug.Log("ºñ¹ø¾È¸ÂÀ½.");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½È¸ï¿½ï¿½ï¿½.");
                 }
             }
             else
             {
-                Debug.Log("¾ÆÀÌµð Á¸ÀçÇÏÁö ¾ÊÀ½");
+                Debug.Log("ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
             _sqlConnection.Close();
 
         }
-
-
     }
     
     public void LoadSignIn() => UIManager.Instance.LoadUI(EUIIndex.SignIn); 

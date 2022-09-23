@@ -8,22 +8,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float[] _moveXPositions = { -2.5f, 0, 2.5f };
     [SerializeField] private float _moveSpeed = 2.5f;
     private int _currentMovePosition = 1;
-    private bool _isMoving = false;
+    [SerializeField] private bool _isMoving = false;
 
     [Header("Jump")]
     [SerializeField] private float _jumpHeight = 2f;
     [SerializeField] private float _jumpSpeed = 2f;
-    private bool _isJumping = false;
+    [SerializeField] private bool _isJumping = false;
 
     // 기본 필요 component
-    private Rigidbody _rigidbody;
     private PlayerInput _input;
     private Animator _animator;
 
     private void Awake()
     {
         _input = GetComponent<PlayerInput>();
-        _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponentInChildren<Animator>();
     }
 
@@ -93,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Jumping(float endYPosition)
     {
-        _animator.SetTrigger(AnimationUtility.Jump);
+        _animator.SetTrigger(AnimationID.Jump);
         _isJumping = true;
         endYPosition += 1f;
 

@@ -31,6 +31,7 @@ public class SignInUI : MonoBehaviour
     private string _selectString;
 
     private bool _hasDoubleCheck;
+    private bool _matchPassword;
     private void Start()
     {
 
@@ -41,27 +42,37 @@ public class SignInUI : MonoBehaviour
         _selectText = Resources.Load<TextAsset>("Select");
         _selectString = _selectText.text + ";";
 
+        int _signInChildIndex = IDInput.transform.childCount - 1;
+
+        _idErrorText = IDInput.transform.GetChild(_signInChildIndex).gameObject;
+        _pwErrorText = PWInput.transform.GetChild(_signInChildIndex).gameObject;
+        _emailErrorText = EmailInput.transform.GetChild(_signInChildIndex).gameObject;
+        _idErrorText.SetActive(false);
+        _pwErrorText.SetActive(false);
+        _emailErrorText.SetActive(false);
     }
     private void OnEnable()
     {
-        int _signInChildIndex = IDInput.transform.childCount - 1;
 
         CreateAccountBtn.onClick.AddListener(CreateAccount);
         LogInBtn.onClick.AddListener(LoadLogIn);
         FindBtn.onClick.AddListener(LoadFind);
         DoubleCheckBtn.onClick.AddListener(DoubleCheck);
 
-        _idErrorText = IDInput.transform.GetChild(_signInChildIndex).gameObject;
-        _idErrorText.SetActive(false);
-        _pwErrorText = PWInput.transform.GetChild(_signInChildIndex).gameObject;
-        _pwErrorText.SetActive(false);
-        _emailErrorText = EmailInput.transform.GetChild(_signInChildIndex).gameObject;
-        _emailErrorText.SetActive(false);
+        PWInput.onValueChange.AddListener(CheckPassword);
+        PWCheckInput.onValueChange.AddListener(CheckPassword);
+
+        _idErrorText?.SetActive(false);
+        _pwErrorText?.SetActive(false);
+        _emailErrorText?.SetActive(false);
+
+        _hasDoubleCheck = false;
+        _matchPassword = false;
     }
 
     public void CreateAccount()
     {
-        if(_hasDoubleCheck)
+        if(_hasDoubleCheck && _matchPassword)
         {
             _insertAccountString = _insertAccountText.text + $"('{IDInput.text}', '{PWInput.text}', '{EmailInput.text}');";
             _insertScoreString = _insertScoreText.text + $"('{IDInput.text}');";
@@ -112,31 +123,43 @@ public class SignInUI : MonoBehaviour
          DataSet _dataSet;
          _dataSet = GetUserData();
          Debug.Log(_dataSet);
-        int _checkCount = 0;
+         bool _check = false;
 
          foreach (DataRow _dataRow in _dataSet.Tables[0].Rows)
          {
-             if (_dataRow["ID"].ToString() != IDInput.text)
+             if (_dataRow["ID"].ToString() == IDInput.text)
              {
+                _check = true;
+                break;
              }
-             else
-             {
-                _checkCount++;
-             }
-
          }
          
-        if(_checkCount == 0)
+        if(!_check)
         {
-           Debug.Log("사용 가능");
-          _hasDoubleCheck = true;
+            // Debug.Log("사용 가능");
+            _hasDoubleCheck = true;
+            _idErrorText.SetActive(false);
         }
         else
         {
-            Debug.Log("사용 불가능");
+            // Debug.Log("사용 불가능");
             _hasDoubleCheck = false;
+            _idErrorText.SetActive(true);
         }
         
+    }
+    public void CheckPassword(string pw)
+    {
+        if (PWInput.text == PWCheckInput.text)
+        {
+            _matchPassword = true;
+            _pwErrorText.SetActive(false);
+        }
+        else
+        {
+            _matchPassword = false;
+            _pwErrorText.SetActive(true);
+        }
     }
 
     private void OnDisable()
@@ -150,5 +173,8 @@ public class SignInUI : MonoBehaviour
         LogInBtn.onClick.RemoveListener(LoadLogIn);
         FindBtn.onClick.RemoveListener(LoadFind);
         DoubleCheckBtn.onClick.RemoveListener(DoubleCheck);
+
+        PWInput.onValueChange.RemoveListener(CheckPassword);
+        PWCheckInput.onValueChange.RemoveListener(CheckPassword);
     }
 }
