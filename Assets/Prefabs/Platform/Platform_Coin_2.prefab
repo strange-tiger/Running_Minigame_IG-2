@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5194805420692851843}
+  - component: {fileID: 1865314781}
   m_Layer: 0
   m_Name: Platform_Coin_2
   m_TagString: Untagged
@@ -37,6 +38,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1865314781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2922167040979924864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 742f9bea9c18e4642bbfef73971ba517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &399641460871896472
 PrefabInstance:
   m_ObjectHideFlags: 0

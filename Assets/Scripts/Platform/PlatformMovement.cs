@@ -45,10 +45,7 @@ public class PlatformMovement : MonoBehaviour
         if(transform.position.z < PlatformManager.PlatformDisableZPosition)
         {
             gameObject.SetActive(false);
-            if (_platformManager)
-            {
-                _platformManager.ReturnPlatformToPool(gameObject);
-            }
+            _platformManager.ReturnPlatformToPool(gameObject);
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlatformManager : MonoBehaviour
 {
     [Header("Platform Spec")]
-    [SerializeField] private static float _platformMoveSpeed = 10f;
+    [SerializeField] private static float _platformMoveSpeed = 5f;
     public static float PlatformMoveSpeed 
     { 
         get => _platformMoveSpeed; 
@@ -32,8 +32,10 @@ public class PlatformManager : MonoBehaviour
     {
         SetPlatformList();
 
+        _platforms[_platforms.Count - 1].SetActive(true);
+        _platforms[_platforms.Count - 1].transform.position = new Vector3(0f, 0f, 8f);
         SelectNextPlatform(_platformStartPosition);
-        //SelectNextPlatform(_platformMiddlePosition);
+        SelectNextPlatform(_platformMiddlePosition);
     }
     private void SetPlatformList()
     {
@@ -57,8 +59,8 @@ public class PlatformManager : MonoBehaviour
         int nextPlatformNumber;
         do
         {
-            nextPlatformNumber = Random.Range(0, _platforms.Count);
-        } while (_platforms[nextPlatformNumber]);
+            nextPlatformNumber = Random.Range(0, _platforms.Count - 1);
+        } while (_platforms[nextPlatformNumber].activeSelf);
 
         GameObject nextPlatform = _platforms[nextPlatformNumber];
         nextPlatform.transform.position = startPosition;

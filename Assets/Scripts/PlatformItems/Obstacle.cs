@@ -6,8 +6,8 @@ public class Obstacle : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        
-        Debug.Log("¿Ö ¾ÈµÊ");
         GameManager.Instance.OnCrashObstacle();
+
+        other.gameObject.transform.parent = gameObject.transform.parent;
     }
 }
