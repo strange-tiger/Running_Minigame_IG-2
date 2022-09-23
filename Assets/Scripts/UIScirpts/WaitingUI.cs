@@ -19,7 +19,7 @@ public class WaitingUI : MonoBehaviour
     public Button QuitBtn;
     public Button LogOutBtn;
 
-    private void OnEnable()
+    private void Awake()
     {
         StartBtn.onClick.AddListener(StartGame);
         QuitBtn.onClick.AddListener(LoadQuit);
@@ -40,6 +40,7 @@ public class WaitingUI : MonoBehaviour
         {
             case EWaitingUIIndex.Quit:
                 QuitUI.SetActive(true);
+                Debug.Log("Quit");
                 break;
             case EWaitingUIIndex.LogOut:
                 LogOutUI.SetActive(true);
