@@ -19,14 +19,14 @@ public class LogInUI : MonoBehaviour
     private GameObject _pwErrorText;
     private TextAsset _connectionText;
     private TextAsset _selectText;
-    private string _sqlConnectionString;
-    private string _sqlSelectString;
+    private string _connectionString;
+    private string _selectString;
     private void Start()
     {
         _connectionText = Resources.Load<TextAsset>("Connection");
-        _sqlConnectionString = _connectionText.text;
+        _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("Select");
-        _sqlSelectString = _selectText.text;
+        _selectString = _selectText.text;
 
     }
     private void OnEnable()
@@ -42,31 +42,31 @@ public class LogInUI : MonoBehaviour
         _pwErrorText.SetActive(false);
     }
 
-    public DataSet GetUser()
+    public DataSet GetUserData()
     {
          
-        DataSet _sqlDataSet = new DataSet();
+        DataSet _dataSet = new DataSet();
 
-        using (MySqlConnection _sqlConnection = new MySqlConnection(_sqlConnectionString))
+        using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
         {
             _sqlConnection.Open();
-            MySqlDataAdapter _sqlDataAdapter = new MySqlDataAdapter(_sqlSelectString, _sqlConnection);
+            MySqlDataAdapter _dataAdapter = new MySqlDataAdapter(_selectString, _sqlConnection);
             
-            _sqlDataAdapter.Fill(_sqlDataSet);
+            _dataAdapter.Fill(_dataSet);
         }
-        return _sqlDataSet;
+        return _dataSet;
     }
     public void LoadLogIn()
     {
 
-        DataSet _dataSet;
-        _dataSet = GetUser();
-        Debug.Log(_dataSet);
+        DataSet _logInDataSet;
+        _logInDataSet = GetUserData();
+        Debug.Log(_logInDataSet);
       
 
-        foreach(DataRow _sqlDataRow in _dataSet.Tables[0].Rows)
+        foreach(DataRow _dataRow in _logInDataSet.Tables[0].Rows)
         {
-            if (_sqlDataRow["Password"].ToString() == PWInput.text)
+            if (_dataRow["Password"].ToString() == PWInput.text)
             {
                 Debug.Log("good");
             }
