@@ -2304,7 +2304,7 @@ MonoBehaviour:
   GameOverPanel: {fileID: 853797115}
   gameOverScoreText: {fileID: 1951578237}
   highScoreText: {fileID: 1774250839}
-  newHighScoreInfoText: {fileID: 2070098427}
+  newHighScoreText: {fileID: 2070098427}
 --- !u!4 &1714070984
 Transform:
   m_ObjectHideFlags: 0
@@ -3427,7 +3427,7 @@ GameObject:
   - component: {fileID: 2070098430}
   - component: {fileID: 2070098429}
   m_Layer: 0
-  m_Name: NewRecordInfoText
+  m_Name: NewRecordText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
