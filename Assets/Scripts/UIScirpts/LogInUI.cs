@@ -50,43 +50,35 @@ public class LogInUI : MonoBehaviour
     }
     
 
-    public DataSet GetUserData()
+    public void LoadLogIn()
     {
-        DataSet _dataSet = new DataSet();
 
-        _selectString = _selectText.text + $" where ID= '{IDInput.text}';";
+            _selectString = _selectText.text + $" where ID= '{IDInput.text}';";
 
         using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
         {
             _sqlConnection.Open();
-            MySqlDataAdapter _dataAdapter = new MySqlDataAdapter(_selectString, _sqlConnection);
-           
-            _dataAdapter.Fill(_dataSet);
-        }
-        return _dataSet;
-    }
-    public void LoadLogIn()
-    {
-        DataSet _logInDataSet;
-        _logInDataSet = GetUserData();
-      
-        if(_logInDataSet.Tables[0].Rows.Count == 0)
-        {
-            _idErrorText.SetActive(true);
-            return;
-        }
-        _idErrorText.SetActive(false);
-
-        foreach(DataRow _dataRow in _logInDataSet.Tables[0].Rows)
-        {
-            if(_dataRow["Password"].ToString() == PWInput.text)
+            MySqlCommand _readCommand = new MySqlCommand(_selectString, _sqlConnection);
+            MySqlDataReader _dataReader = _readCommand.ExecuteReader();
+            if(_dataReader.Read())
             {
-                _pwErrorText.SetActive(false);
+                   Debug.Log("���̵� ����");
+                
+                if(_dataReader["Password"].ToString() == PWInput.text)
+                {
+                    Debug.Log("�α��� �Ϸ�");
+                }
+                else
+                {
+                    Debug.Log("����ȸ���.");
+                }
             }
             else
             {
-                _pwErrorText.SetActive(true);
+                Debug.Log("���̵� �������� ����");
             }
+            _sqlConnection.Close();
+
         }
     }
     
