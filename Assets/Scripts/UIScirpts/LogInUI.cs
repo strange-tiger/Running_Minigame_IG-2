@@ -21,8 +21,6 @@ public class LogInUI : MonoBehaviour
     private TextAsset _selectText;
     private string _connectionString;
     private string _selectString;
-    private bool _isExistId;
-    private bool _canLogIn;
 
     private void Start()
     {
@@ -43,6 +41,7 @@ public class LogInUI : MonoBehaviour
         SignInBtn.onClick.AddListener(LoadSignIn);
         FindBtn.onClick.AddListener(LoadFind);
         QuitBtn.onClick.AddListener(LoadQuit);
+
 
         _isExistId = false;
 

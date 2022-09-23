@@ -80,15 +80,17 @@ public class SignInUI : MonoBehaviour
             Debug.Log(_insertScoreString);
             using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
             {
-                _sqlConnection.Open();
                 MySqlCommand _insertAccountCommand = new MySqlCommand(_insertAccountString, _sqlConnection);
+                _sqlConnection.Open();
                 _insertAccountCommand.ExecuteNonQuery();
+                _sqlConnection.Close();
             }
-            using (MySqlConnection _sqlconnection = new MySqlConnection(_connectionString))
+            using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
             {
-                _sqlconnection.Open();
-                MySqlCommand _insertScoreCommand = new MySqlCommand(_insertScoreString, _sqlconnection);
+                MySqlCommand _insertScoreCommand = new MySqlCommand(_insertScoreString, _sqlConnection);
+                _sqlConnection.Open();
                 _insertScoreCommand.ExecuteNonQuery();
+                _sqlConnection.Close();
             }
             _hasDoubleCheck = false;
         }
