@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class InGameUIManager : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class InGameUIManager : MonoBehaviour
         inGamePanel.SetActive(true);
         MenuPanel.SetActive(false);
         GameOverPanel.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     private void OnEnable()
@@ -76,10 +78,7 @@ public class InGameUIManager : MonoBehaviour
 
     public void OnClickExit()
     {
-        Debug.Log("Exit");
-        MenuPanel.SetActive(false);
-        GameOverPanel.SetActive(false);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(1);
     }
-
-
 }

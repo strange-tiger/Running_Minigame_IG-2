@@ -36,6 +36,8 @@ public class PlatformManager : MonoBehaviour
     {
         SetPlatformList();
 
+        PlatformMoveSpeed = 5f;
+
         _platforms[_platforms.Count - 1].SetActive(true);
         _platforms[_platforms.Count - 1].transform.position = _platformStartPositions[_platformStartPositions.Length - 1];
 

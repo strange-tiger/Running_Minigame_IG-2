@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class GameManager : SingletonBehaviour<GameManager>
 {
-    private PlayerHealth _playerHealth;
+    public PlayerHealth PlayerHealth { get; set; }
 
     public UnityEvent OnGetCoin = new UnityEvent();
     public UnityEvent OnGameOver = new UnityEvent();
@@ -34,11 +34,7 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     private void OnEnable()
     {
-        _playerHealth = FindObjectOfType<PlayerHealth>();
-    }
-    void Update()
-    {
-        
+        PlayerHealth = FindObjectOfType<PlayerHealth>();
     }
 
     public void GetCoin()
@@ -48,7 +44,7 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public void OnCrashObstacle()
     {
-        _playerHealth.Die();
+        PlayerHealth.Die();
         PlatformManager.PlatformMoveSpeed = 0f;
     }
 

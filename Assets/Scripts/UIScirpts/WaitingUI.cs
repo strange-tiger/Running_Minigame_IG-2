@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class WaitingUI : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class WaitingUI : MonoBehaviour
 
     public void StartGame()
     {
-
+        SceneManager.LoadScene(2);
     }
 
     public void LoadUI(EWaitingUIIndex ui)

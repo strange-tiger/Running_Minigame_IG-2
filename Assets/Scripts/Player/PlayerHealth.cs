@@ -13,9 +13,9 @@ public class PlayerHealth : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
     }
 
-    void Update()
+    private void Start()
     {
-        
+        GameManager.Instance.PlayerHealth = this;
     }
 
     public void Die()
