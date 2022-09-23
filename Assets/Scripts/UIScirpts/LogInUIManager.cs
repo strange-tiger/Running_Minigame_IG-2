@@ -2,23 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EUIIndex
-{
-    LogIn,
-    SignIn,
-    Find,
-    Quit,
-    Max
-}
 
-public class UIManager : SingletonBehaviour<UIManager>
+public class LogInUIManager : MonoBehaviour
 {
+    public enum ELogInUIIndex
+    {
+        LogIn,
+        SignIn,
+        Find,
+        Quit,
+        Max
+    }
+
     public GameObject LogInUI;
     public GameObject SignInUI;
     public GameObject FindUI;
     public GameObject QuitUI;
 
-    public void LoadUI(EUIIndex ui) 
+    public void LoadUI(ELogInUIIndex ui) 
     {
         LogInUI.SetActive(false);
         SignInUI.SetActive(false);
@@ -27,17 +28,17 @@ public class UIManager : SingletonBehaviour<UIManager>
 
         switch(ui)
         {
-            case EUIIndex.LogIn:
+            case ELogInUIIndex.LogIn:
                 LogInUI.SetActive(true);
                 break;
-            case EUIIndex.SignIn:
+            case ELogInUIIndex.SignIn:
                 SignInUI.SetActive(true);
                 break;
-            case EUIIndex.Find:
+            case ELogInUIIndex.Find:
                 FindUI.SetActive(true);
                 break;
             default:
-                Debug.Assert(ui >= EUIIndex.Quit, "Error: No UI Exists");
+                Debug.Assert(ui >= ELogInUIIndex.Quit, "Error: No UI Exists");
                 break;
         }
     }
