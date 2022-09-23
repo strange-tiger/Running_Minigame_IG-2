@@ -22,8 +22,12 @@ public class PlatformManager : MonoBehaviour
     }
 
     [SerializeField] private Vector3 _platformPoolPosition;
-    [SerializeField] private Vector3 _platformStartPosition;
-    [SerializeField] private Vector3 _platformMiddlePosition;
+    [SerializeField] private Vector3[] _platformStartPositions = {
+        new Vector3(0f, 0f, 80f),
+        new Vector3(0f, 0f, 56f),
+        new Vector3(0f, 0f, 32f),
+        new Vector3(0f, 0f, 8f)
+    };
 
     private List<GameObject> _platforms;
     private int _currentShownPlatformCount = 0;
@@ -33,9 +37,12 @@ public class PlatformManager : MonoBehaviour
         SetPlatformList();
 
         _platforms[_platforms.Count - 1].SetActive(true);
-        _platforms[_platforms.Count - 1].transform.position = new Vector3(0f, 0f, 8f);
-        SelectNextPlatform(_platformStartPosition);
-        SelectNextPlatform(_platformMiddlePosition);
+        _platforms[_platforms.Count - 1].transform.position = _platformStartPositions[_platformStartPositions.Length - 1];
+
+        for(int i = 0; i<_platformStartPositions.Length - 1; ++i)
+        {
+            SelectNextPlatform(_platformStartPositions[i]);
+        }
     }
     private void SetPlatformList()
     {
@@ -81,11 +88,11 @@ public class PlatformManager : MonoBehaviour
 
     private void CheckPlatformCount()
     {
-        if(_currentShownPlatformCount > 3)
+        if(_currentShownPlatformCount > 4)
         {
             return;
         }
 
-        SelectNextPlatform(_platformStartPosition);
+        SelectNextPlatform(_platformStartPositions[0]);
     }
 }
