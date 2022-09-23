@@ -441,9 +441,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 944d060187f1eea4a8eea1c196c541db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GetCoin:
+  OnGetCoin:
     m_PersistentCalls:
       m_Calls: []
+  OnGameOver:
+    m_PersistentCalls:
+      m_Calls: []
+  _highScore: 0
 --- !u!4 &104327894
 Transform:
   m_ObjectHideFlags: 0
@@ -1175,7 +1179,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 681686237}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1714070983}
+        m_TargetAssemblyTypeName: InGameUIManager, Assembly-CSharp
+        m_MethodName: OnClickMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &681686237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1857,7 +1873,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1279683933}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1714070983}
+        m_TargetAssemblyTypeName: InGameUIManager, Assembly-CSharp
+        m_MethodName: OnClickResume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1279683933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2173,7 +2201,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1322941344}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1714070983}
+        m_TargetAssemblyTypeName: InGameUIManager, Assembly-CSharp
+        m_MethodName: OnClickExit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1322941344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2242,9 +2282,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGamePanel: {fileID: 1862260486}
-  scoreText: {fileID: 85409446}
+  inGameScoreText: {fileID: 85409446}
   MenuPanel: {fileID: 285311668}
   GameOverPanel: {fileID: 853797115}
+  gameOverScoreText: {fileID: 1951578237}
+  highScoreText: {fileID: 749817373}
+  newHighScoreInfoText: {fileID: 2070098427}
 --- !u!4 &1714070984
 Transform:
   m_ObjectHideFlags: 0
@@ -2970,7 +3013,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1942967784}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1714070983}
+        m_TargetAssemblyTypeName: InGameUIManager, Assembly-CSharp
+        m_MethodName: OnClickExit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1942967784
 MonoBehaviour:
   m_ObjectHideFlags: 0

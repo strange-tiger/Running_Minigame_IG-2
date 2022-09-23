@@ -6,7 +6,20 @@ using UnityEngine.Events;
 public class GameManager : SingletonBehaviour<GameManager>
 {
     private PlayerHealth _playerHealth;
-    public UnityEvent GetCoin = new UnityEvent();
+
+    public UnityEvent OnGetCoin = new UnityEvent();
+    public UnityEvent OnGameOver = new UnityEvent();
+
+    public int _highScore = 0;
+    public int HighScore
+    {
+        get => _highScore;
+        set
+        {
+            _highScore = value;
+            PlayerPrefs.SetInt("HighScore", value);
+        }
+    }
     
     private int _score = 0;
     public int Score
@@ -15,7 +28,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         set
         {
             _score = value;
-            GetCoin.Invoke();
+            OnGetCoin.Invoke();
         }
     }
 
@@ -28,7 +41,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         
     }
 
-    public void OnGetCoin()
+    public void GetCoin()
     {
         ++Score;
     }
@@ -41,6 +54,12 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public void GameOver()
     {
+        if (!PlayerPrefs.HasKey("HighScore"))
+        {
+            PlayerPrefs.SetInt("HighScore", 0);
+        }
+        HighScore = PlayerPrefs.GetInt("HighScore");
 
+        OnGameOver.Invoke();
     }
 }

@@ -13,7 +13,7 @@ public class Coin : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameManager.Instance.OnGetCoin();
+        GameManager.Instance.GetCoin();
         gameObject.SetActive(false);
     }
 }
