@@ -28,28 +28,30 @@ public class LogInUI : MonoBehaviour
         _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("Select");
 
+        int _loginChildIndex = IDInput.transform.childCount - 1;
+
+        _idErrorText = IDInput.transform.GetChild(_loginChildIndex).gameObject;
+        _pwErrorText = PWInput.transform.GetChild(_loginChildIndex).gameObject;
+        _idErrorText.SetActive(false);
+        _pwErrorText.SetActive(false);
     }
     private void OnEnable()
     {
-        int _loginChildIndex = IDInput.transform.childCount - 1;
-
         LogInBtn.onClick.AddListener(LoadLogIn);
         SignInBtn.onClick.AddListener(LoadSignIn);
         FindBtn.onClick.AddListener(LoadFind);
         QuitBtn.onClick.AddListener(LoadQuit);
 
-        _idErrorText = IDInput.transform.GetChild(_loginChildIndex).gameObject;
-        _idErrorText.SetActive(false);
-        _pwErrorText = PWInput.transform.GetChild(_loginChildIndex).gameObject;
-        _pwErrorText.SetActive(false);
 
+        _isExistId = false;
 
+        _idErrorText?.SetActive(false);
+        _pwErrorText?.SetActive(false);
     }
     
 
     public DataSet GetUserData()
     {
-         
         DataSet _dataSet = new DataSet();
 
         _selectString = _selectText.text + $" where ID= '{IDInput.text}';";
@@ -65,35 +67,27 @@ public class LogInUI : MonoBehaviour
     }
     public void LoadLogIn()
     {
-
-
         DataSet _logInDataSet;
         _logInDataSet = GetUserData();
       
         if(_logInDataSet.Tables[0].Rows.Count == 0)
         {
-
-                Debug.Log("아이디 존재하지 않음");
+            _idErrorText.SetActive(true);
+            return;
         }
-        else
-        {
-                Debug.Log("아이디 존재");
-
-        }
+        _idErrorText.SetActive(false);
 
         foreach(DataRow _dataRow in _logInDataSet.Tables[0].Rows)
         {
             if(_dataRow["Password"].ToString() == PWInput.text)
             {
-                Debug.Log("로그인 완료");
+                _pwErrorText.SetActive(false);
             }
             else
             {
-                Debug.Log("비번안맞음.");
+                _pwErrorText.SetActive(true);
             }
         }
-       
-
     }
     
     public void LoadSignIn() => UIManager.Instance.LoadUI(EUIIndex.SignIn); 
