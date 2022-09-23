@@ -8,12 +8,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float[] _moveXPositions = { -2.5f, 0, 2.5f };
     [SerializeField] private float _moveSpeed = 2.5f;
     private int _currentMovePosition = 1;
-    private bool _isMoving = false;
+    [SerializeField] private bool _isMoving = false;
 
     [Header("Jump")]
     [SerializeField] private float _jumpHeight = 2f;
     [SerializeField] private float _jumpSpeed = 2f;
-    private bool _isJumping = false;
+    [SerializeField] private bool _isJumping = false;
 
     // 기본 필요 component
     private Rigidbody _rigidbody;
