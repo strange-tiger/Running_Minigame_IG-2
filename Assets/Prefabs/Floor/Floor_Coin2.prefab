@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5194805420692851843}
   m_Layer: 0
-  m_Name: Floor_Coin_2
+  m_Name: Floor_Coin2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
