@@ -77,6 +77,7 @@ public class FindUI : MonoBehaviour
             if(_dataRow["Email"].ToString() == Id_EmailInput.text)
             {
                 Id_Output.text = _dataRow["ID"].ToString();
+                break;
             }
         }
     }
@@ -92,6 +93,7 @@ public class FindUI : MonoBehaviour
             if (_dataRow["Email"].ToString() == Pw_EmailInput.text && _dataRow["ID"].ToString() == Pw_IDInput.text)
             {
                 Pw_Output.text = _dataRow["Password"].ToString();
+                break;
             }
         }
     }

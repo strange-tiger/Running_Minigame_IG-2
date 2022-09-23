@@ -110,21 +110,18 @@ public class SignInUI : MonoBehaviour
          DataSet _dataSet;
          _dataSet = GetUserData();
          Debug.Log(_dataSet);
-        int _checkCount = 0;
+         bool _check = false;
 
          foreach (DataRow _dataRow in _dataSet.Tables[0].Rows)
          {
-             if (_dataRow["ID"].ToString() != IDInput.text)
+             if (_dataRow["ID"].ToString() == IDInput.text)
              {
+                _check = true;
+                break;
              }
-             else
-             {
-                _checkCount++;
-             }
-
          }
          
-        if(_checkCount == 0)
+        if(!_check)
         {
            Debug.Log("사용 가능");
           _hasDoubleCheck = true;
