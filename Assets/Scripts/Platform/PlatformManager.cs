@@ -9,7 +9,7 @@ public class PlatformManager : MonoBehaviour
     public static float PlatformMoveSpeed 
     { 
         get => _platformMoveSpeed; 
-        private set { _platformMoveSpeed = value; } 
+        set { _platformMoveSpeed = value; } 
     }
 
 
