@@ -62,20 +62,20 @@ public class LogInUI : MonoBehaviour
             MySqlDataReader _dataReader = _readCommand.ExecuteReader();
             if(_dataReader.Read())
             {
-                   Debug.Log("���̵� ����");
+                  _idErrorText.SetActive(false);
                 
                 if(_dataReader["Password"].ToString() == PWInput.text)
                 {
-                    Debug.Log("�α��� �Ϸ�");
+                    _pwErrorText.SetActive(false);
                 }
                 else
                 {
-                    Debug.Log("����ȸ���.");
+                    _pwErrorText.SetActive(true);
                 }
             }
             else
             {
-                Debug.Log("���̵� �������� ����");
+                _idErrorTExt.SetActive(true);
             }
             _sqlConnection.Close();
 
