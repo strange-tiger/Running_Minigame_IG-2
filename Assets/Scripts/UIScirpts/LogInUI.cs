@@ -21,12 +21,14 @@ public class LogInUI : MonoBehaviour
     private TextAsset _selectText;
     private string _connectionString;
     private string _selectString;
+    private bool _isExistId;
+    private bool _canLogIn;
+
     private void Start()
     {
         _connectionText = Resources.Load<TextAsset>("Connection");
         _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("Select");
-        _selectString = _selectText.text;
 
         int _loginChildIndex = IDInput.transform.childCount - 1;
 
@@ -43,20 +45,25 @@ public class LogInUI : MonoBehaviour
         FindBtn.onClick.AddListener(LoadFind);
         QuitBtn.onClick.AddListener(LoadQuit);
 
+        _isExistId = false;
+
         _idErrorText?.SetActive(false);
         _pwErrorText?.SetActive(false);
     }
+    
 
     public DataSet GetUserData()
     {
          
         DataSet _dataSet = new DataSet();
 
+        _selectString = _selectText.text + $" where ID= '{IDInput.text}';";
+
         using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
         {
             _sqlConnection.Open();
             MySqlDataAdapter _dataAdapter = new MySqlDataAdapter(_selectString, _sqlConnection);
-            
+           
             _dataAdapter.Fill(_dataSet);
         }
         return _dataSet;
@@ -64,19 +71,33 @@ public class LogInUI : MonoBehaviour
     public void LoadLogIn()
     {
 
+
         DataSet _logInDataSet;
         _logInDataSet = GetUserData();
-        Debug.Log(_logInDataSet);
       
+        if(_logInDataSet.Tables[0].Rows.Count == 0)
+        {
+
+                Debug.Log("���̵� ������� ���");
+        }
+        else
+        {
+                Debug.Log("���̵� ���");
+
+        }
 
         foreach(DataRow _dataRow in _logInDataSet.Tables[0].Rows)
         {
-            if (_dataRow["Password"].ToString() == PWInput.text)
+            if(_dataRow["Password"].ToString() == PWInput.text)
             {
-                Debug.Log("good");
+                Debug.Log("�α��� �Ϸ�");
             }
-
+            else
+            {
+                Debug.Log("���ȸ��.");
+            }
         }
+       
 
     }
     
