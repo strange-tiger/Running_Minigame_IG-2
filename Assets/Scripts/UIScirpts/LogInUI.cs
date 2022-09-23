@@ -28,20 +28,23 @@ public class LogInUI : MonoBehaviour
         _selectText = Resources.Load<TextAsset>("Select");
         _selectString = _selectText.text;
 
+        int _loginChildIndex = IDInput.transform.childCount - 1;
+
+        _idErrorText = IDInput.transform.GetChild(_loginChildIndex).gameObject;
+        _pwErrorText = PWInput.transform.GetChild(_loginChildIndex).gameObject;
+        _idErrorText.SetActive(false);
+        _pwErrorText.SetActive(false);
     }
     private void OnEnable()
     {
-        int _loginChildIndex = IDInput.transform.childCount - 1;
 
         LogInBtn.onClick.AddListener(LoadLogIn);
         SignInBtn.onClick.AddListener(LoadSignIn);
         FindBtn.onClick.AddListener(LoadFind);
         QuitBtn.onClick.AddListener(LoadQuit);
 
-        _idErrorText = IDInput.transform.GetChild(_loginChildIndex).gameObject;
-        _idErrorText.SetActive(false);
-        _pwErrorText = PWInput.transform.GetChild(_loginChildIndex).gameObject;
-        _pwErrorText.SetActive(false);
+        _idErrorText?.SetActive(false);
+        _pwErrorText?.SetActive(false);
     }
 
     public DataSet GetUserData()
