@@ -39,7 +39,7 @@ public class SignInUI : MonoBehaviour
         _insertScoreText = Resources.Load<TextAsset>("InsertRanking");
         _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("Select");
-        _selectString = _selectText.text;
+        _selectString = _selectText.text + ";";
 
     }
     private void OnEnable()
