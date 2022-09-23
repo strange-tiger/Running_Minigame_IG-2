@@ -36,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Jump();
         }
+
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
     }
 
     // 라인 이동 관련
