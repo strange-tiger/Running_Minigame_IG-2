@@ -1,1 +1,0 @@
-"Server=127.0.0.1;Database=Running;Uid =root;Pwd=19950417;"

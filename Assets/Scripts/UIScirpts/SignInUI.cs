@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using MySql.Data.MySqlClient; 
+using MySql.Data.MySqlClient;
+using LitJson;
 
 public class SignInUI : MonoBehaviour
 {
@@ -19,6 +20,23 @@ public class SignInUI : MonoBehaviour
     private GameObject _idErrorText;
     private GameObject _pwErrorText;
     private GameObject _emailErrorText;
+
+    private TextAsset _connectionText;
+    private TextAsset _insertAccountText;
+    private TextAsset _insertScoreText;
+
+    private string _sqlConnectionString;
+    private string _sqlInsertAccountString;
+    private string _sqlInsertScoreString;
+    private void Start()
+    {
+
+        _connectionText = Resources.Load<TextAsset>("Connection");
+        _insertAccountText = Resources.Load<TextAsset>("InsertAccount");
+        _insertScoreText = Resources.Load<TextAsset>("InsertRanking");
+        _sqlConnectionString = _connectionText.text;
+
+    }
     private void OnEnable()
     {
         CreateAccountBtn.onClick.AddListener(CreateAccount);
@@ -36,22 +54,21 @@ public class SignInUI : MonoBehaviour
 
     public void CreateAccount()
     {
-        string connectString = string.Format("Server={0};Database={1};Uid ={2};Pwd={3};", "127.0.0.1",
-"Running", "root", "19950417");
-        string _insertAccount = $"Insert Into Account (ID,Password,Emain) values ('{IDInput.text}','{PWInput.text}','{EmailInput.text}');";
-        string _insertData = $"Insert Into Ranking (ID) values ('{IDInput.text}');";
-
-        using (MySqlConnection _mySqlConnect = new MySqlConnection(connectString))
+        _sqlInsertAccountString = _insertAccountText.text + $"('{IDInput.text}', '{PWInput.text}', '{EmailInput.text}');";
+        _sqlInsertScoreString = _insertScoreText.text + $"('{IDInput.text}');";
+        Debug.Log(_sqlInsertAccountString);
+        Debug.Log(_sqlInsertScoreString);
+        using (MySqlConnection _sqlConnection = new MySqlConnection(_sqlConnectionString))
         {
-            _mySqlConnect.Open();
-            MySqlCommand _insertAccountCommand = new MySqlCommand(_insertAccount, _mySqlConnect);
-            _insertAccountCommand.ExecuteNonQuery();
+            _sqlConnection.Open();
+            MySqlCommand _sqlInsertAccountCommand = new MySqlCommand(_sqlInsertAccountString, _sqlConnection);
+            _sqlInsertAccountCommand.ExecuteNonQuery();
         }
-        using (MySqlConnection _mySqlConnect = new MySqlConnection(connectString))
+        using (MySqlConnection _mySqlConnect = new MySqlConnection(_sqlConnectionString))
         {
             _mySqlConnect.Open();
-            MySqlCommand _insertRecordCommand = new MySqlCommand(_insertData, _mySqlConnect);
-            _insertRecordCommand.ExecuteNonQuery();
+            MySqlCommand _sqlInsertScoreCommand = new MySqlCommand(_sqlInsertScoreString, _mySqlConnect);
+            _sqlInsertScoreCommand.ExecuteNonQuery();
         }
     }
     
