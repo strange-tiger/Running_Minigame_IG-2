@@ -31,14 +31,16 @@ public class LogInUI : MonoBehaviour
     }
     private void OnEnable()
     {
+        int _loginChildIndex = IDInput.transform.childCount - 1;
+
         LogInBtn.onClick.AddListener(LoadLogIn);
         SignInBtn.onClick.AddListener(LoadSignIn);
         FindBtn.onClick.AddListener(LoadFind);
         QuitBtn.onClick.AddListener(LoadQuit);
 
-        _idErrorText = IDInput.transform.GetChild(2).gameObject;
+        _idErrorText = IDInput.transform.GetChild(_loginChildIndex).gameObject;
         _idErrorText.SetActive(false);
-        _pwErrorText = PWInput.transform.GetChild(2).gameObject;
+        _pwErrorText = PWInput.transform.GetChild(_loginChildIndex).gameObject;
         _pwErrorText.SetActive(false);
     }
 
@@ -81,6 +83,8 @@ public class LogInUI : MonoBehaviour
 
     private void OnDisable()
     {
+        IDInput.text = "";
+        PWInput.text = "";
         LogInBtn.onClick.RemoveListener(LoadLogIn);
         SignInBtn.onClick.RemoveListener(LoadSignIn);
         FindBtn.onClick.RemoveListener(LoadFind);
