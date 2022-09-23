@@ -17,6 +17,18 @@ public class LogInUI : MonoBehaviour
 
     private GameObject _idErrorText;
     private GameObject _pwErrorText;
+    private TextAsset _connectionText;
+    private TextAsset _selectText;
+    private string _sqlConnectionString;
+    private string _sqlSelectString;
+    private void Start()
+    {
+        _connectionText = Resources.Load<TextAsset>("Connection");
+        _sqlConnectionString = _connectionText.text;
+        _selectText = Resources.Load<TextAsset>("Select");
+        _sqlSelectString = _selectText.text;
+
+    }
     private void OnEnable()
     {
         LogInBtn.onClick.AddListener(LoadLogIn);
@@ -32,19 +44,17 @@ public class LogInUI : MonoBehaviour
 
     public DataSet GetUser()
     {
-        string connectString = string.Format("Server={0};Database={1};Uid ={2};Pwd={3};", "127.0.0.1",
-"Running", "root", "19950417");
-        string sql = "select * from Account";
-        DataSet ds = new DataSet();
+         
+        DataSet _sqlDataSet = new DataSet();
 
-        using (MySqlConnection conn = new MySqlConnection(connectString))
+        using (MySqlConnection _sqlConnection = new MySqlConnection(_sqlConnectionString))
         {
-            conn.Open();
-            MySqlDataAdapter da = new MySqlDataAdapter(sql, conn);
+            _sqlConnection.Open();
+            MySqlDataAdapter _sqlDataAdapter = new MySqlDataAdapter(_sqlSelectString, _sqlConnection);
             
-            da.Fill(ds);
+            _sqlDataAdapter.Fill(_sqlDataSet);
         }
-        return ds;
+        return _sqlDataSet;
     }
     public void LoadLogIn()
     {
@@ -54,9 +64,9 @@ public class LogInUI : MonoBehaviour
         Debug.Log(_dataSet);
       
 
-        foreach(DataRow row in _dataSet.Tables[0].Rows)
+        foreach(DataRow _sqlDataRow in _dataSet.Tables[0].Rows)
         {
-            if (row["Password"].ToString() == PWInput.text)
+            if (_sqlDataRow["Password"].ToString() == PWInput.text)
             {
                 Debug.Log("good");
             }
