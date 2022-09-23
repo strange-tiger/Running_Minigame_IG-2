@@ -7,6 +7,8 @@ using MySql.Data.MySqlClient;
 
 public class LogInUI : MonoBehaviour
 {
+    public LogInUIManager LogInUIManager;
+
     public Button LogInBtn;
     public Button SignInBtn;
     public Button FindBtn;
@@ -82,9 +84,9 @@ public class LogInUI : MonoBehaviour
         }
     }
     
-    public void LoadSignIn() => UIManager.Instance.LoadUI(EUIIndex.SignIn); 
-    public void LoadFind() => UIManager.Instance.LoadUI(EUIIndex.Find); 
-    public void LoadQuit() => UIManager.Instance.LoadQuitCheck();
+    public void LoadSignIn() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn); 
+    public void LoadFind() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find); 
+    public void LoadQuit() => LogInUIManager.LoadQuitCheck();
 
     private void OnDisable()
     {

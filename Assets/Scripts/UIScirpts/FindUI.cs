@@ -7,6 +7,8 @@ using MySql.Data.MySqlClient;
 
 public class FindUI : MonoBehaviour
 {
+    public LogInUIManager LogInUIManager;
+
     public Button LogInBtn;
     public Button SignInBtn;
     public Button Id_EnterBtn;
@@ -55,8 +57,8 @@ public class FindUI : MonoBehaviour
         _pw_IDErrorText?.SetActive(false);
     }
 
-    public void LoadLogIn() => UIManager.Instance.LoadUI(EUIIndex.LogIn);
-    public void LoadSignIn() => UIManager.Instance.LoadUI(EUIIndex.SignIn);
+    public void LoadLogIn() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.LogIn);
+    public void LoadSignIn() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn);
     private DataSet GetUserData()
     {
         DataSet _dataSet = new DataSet();

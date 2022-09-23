@@ -3308,6 +3308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5636fbba892324248a9673b6bfdafefc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogInUIManager: {fileID: 1059823669}
   LogInBtn: {fileID: 167210341}
   SignInBtn: {fileID: 675211904}
   Id_EnterBtn: {fileID: 1713604267}
@@ -6085,7 +6086,7 @@ GameObject:
   - component: {fileID: 1059823670}
   - component: {fileID: 1059823669}
   m_Layer: 0
-  m_Name: UIManager
+  m_Name: LogInUIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6222,6 +6223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 540503847132a1f4d8684e1f3a26d97e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogInUIManager: {fileID: 1059823669}
   CreateAccountBtn: {fileID: 392962335}
   LogInBtn: {fileID: 1735858506}
   FindBtn: {fileID: 47454866}
@@ -10062,6 +10064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d0d1e0b42c84d4ab5cb89739f07826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LogInUIManager: {fileID: 1059823669}
   LogInBtn: {fileID: 427997215}
   SignInBtn: {fileID: 1418747738}
   FindBtn: {fileID: 244700387}
