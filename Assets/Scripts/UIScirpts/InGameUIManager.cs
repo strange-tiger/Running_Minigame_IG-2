@@ -17,14 +17,17 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private GameObject GameOverPanel;
     [SerializeField] private TextMeshProUGUI gameOverScoreText;
     [SerializeField] private TextMeshProUGUI highScoreText;
-    [SerializeField] private GameObject newHighScoreInfoText;
+    [SerializeField] private GameObject newHighScoreText;
 
     private void Awake()
     {
         inGamePanel.SetActive(true);
         MenuPanel.SetActive(false);
         GameOverPanel.SetActive(false);
+        newHighScoreText.SetActive(false);
+
         Time.timeScale = 1f;
+        GameManager.Instance.Score = 0;
     }
 
     private void OnEnable()
@@ -53,7 +56,7 @@ public class InGameUIManager : MonoBehaviour
 
         if(score > highScore)
         {
-            newHighScoreInfoText.SetActive(true);
+            newHighScoreText.SetActive(true);
             GameManager.Instance.HighScore = score;
         }
     }
