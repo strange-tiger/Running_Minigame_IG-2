@@ -44,16 +44,18 @@ public class SignInUI : MonoBehaviour
     }
     private void OnEnable()
     {
+        int _signInChildIndex = IDInput.transform.childCount - 1;
+
         CreateAccountBtn.onClick.AddListener(CreateAccount);
         LogInBtn.onClick.AddListener(LoadLogIn);
         FindBtn.onClick.AddListener(LoadFind);
         DoubleCheckBtn.onClick.AddListener(DoubleCheck);
 
-        _idErrorText = IDInput.transform.GetChild(2).gameObject;
+        _idErrorText = IDInput.transform.GetChild(_signInChildIndex).gameObject;
         _idErrorText.SetActive(false);
-        _pwErrorText = PWInput.transform.GetChild(2).gameObject;
+        _pwErrorText = PWInput.transform.GetChild(_signInChildIndex).gameObject;
         _pwErrorText.SetActive(false);
-        _emailErrorText = EmailInput.transform.GetChild(2).gameObject;
+        _emailErrorText = EmailInput.transform.GetChild(_signInChildIndex).gameObject;
         _emailErrorText.SetActive(false);
     }
 
@@ -137,6 +139,11 @@ public class SignInUI : MonoBehaviour
 
     private void OnDisable()
     {
+        IDInput.text = "";
+        PWInput.text = "";
+        PWCheckInput.text = "";
+        EmailInput.text = "";
+
         CreateAccountBtn.onClick.RemoveListener(CreateAccount);
         LogInBtn.onClick.RemoveListener(LoadLogIn);
         FindBtn.onClick.RemoveListener(LoadFind);

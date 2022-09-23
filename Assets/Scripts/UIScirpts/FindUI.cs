@@ -36,16 +36,18 @@ public class FindUI : MonoBehaviour
     }
     private void OnEnable()
     {
+        int _findIdChildIndex = Pw_IDInput.transform.childCount - 1;
+
         LogInBtn.onClick.AddListener(LoadLogIn);
         SignInBtn.onClick.AddListener(LoadSignIn);
         Id_EnterBtn.onClick.AddListener(FindID);
         Pw_EnterBtn.onClick.AddListener(FindPW);
 
-        _id_EmailErrorText = Id_EmailInput.transform.GetChild(2).gameObject;
+        _id_EmailErrorText = Id_EmailInput.transform.GetChild(_findIdChildIndex).gameObject;
         _id_EmailErrorText.SetActive(false);
-        _pw_EmailErrorText = Pw_EmailInput.transform.GetChild(2).gameObject;
+        _pw_EmailErrorText = Pw_EmailInput.transform.GetChild(_findIdChildIndex).gameObject;
         _pw_EmailErrorText.SetActive(false);
-        _pw_IDErrorText = Pw_IDInput.transform.GetChild(2).gameObject;
+        _pw_IDErrorText = Pw_IDInput.transform.GetChild(_findIdChildIndex).gameObject;
         _pw_IDErrorText.SetActive(false);
     }
 
@@ -96,6 +98,11 @@ public class FindUI : MonoBehaviour
 
     private void OnDisable()
     {
+        Id_EmailInput.text = "";
+        Id_Output.text = "";
+        Pw_EmailInput.text = "";
+        Pw_IDInput.text = "";
+        Pw_Output.text = "";
         LogInBtn.onClick.RemoveListener(LoadLogIn);
         SignInBtn.onClick.RemoveListener(LoadSignIn);
         Id_EnterBtn.onClick.RemoveListener(FindID);
