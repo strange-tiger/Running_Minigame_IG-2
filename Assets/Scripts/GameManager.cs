@@ -40,6 +40,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     public void GetCoin()
     {
         ++Score;
+        PlayerHealth.GetCoin();
     }
 
     public void OnCrashObstacle()
