@@ -18,15 +18,22 @@ public class PlayerMovement : MonoBehaviour
     // 기본 필요 component
     private PlayerInput _input;
     private Animator _animator;
+    private PlayerHealth _health;
 
     private void Awake()
     {
         _input = GetComponent<PlayerInput>();
         _animator = GetComponentInChildren<Animator>();
+        _health = GetComponent<PlayerHealth>();
     }
 
     private void Update()
     {
+        if(_health.IsDead)
+        {
+            return;
+        }
+
         if(!_isMoving)
         {
             Move();

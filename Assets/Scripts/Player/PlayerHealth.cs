@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    private bool isDead = false;
+    public bool IsDead { get; private set; }
 
     private Animator _animator;
 
@@ -20,10 +20,10 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
     {
-        if(!isDead)
+        if(!IsDead)
         {
             _animator.SetTrigger(AnimationID.Die);
-            isDead = true;
+            IsDead = true;
         }
     }
 
