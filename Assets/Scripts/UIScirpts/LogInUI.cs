@@ -68,6 +68,8 @@ public class LogInUI : MonoBehaviour
                 {
                     _pwErrorText.SetActive(false);
 
+                    PlayerPrefs.SetString("ID", _dataReader["ID"].ToString());
+
                     _sqlConnection.Close();
                     LoadWaitingRoom();
                     return;
