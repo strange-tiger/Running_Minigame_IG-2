@@ -1,1 +1,1 @@
-Select ID, High_Record from Ranking
+Select * from Account

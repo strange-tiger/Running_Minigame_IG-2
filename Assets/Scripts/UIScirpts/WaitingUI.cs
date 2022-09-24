@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Data;
-using MySql.Data.MySqlClient;
 
 public class WaitingUI : MonoBehaviour
 {
@@ -22,23 +20,11 @@ public class WaitingUI : MonoBehaviour
     public Button QuitBtn;
     public Button LogOutBtn;
 
-    private TextAsset _connectionText;
-    private TextAsset _selectText;
-
-    private Text[] _nicknameText = new Text[5];
-    private Text[] _scoreText = new Text[5];
-
-    private string _connectionString;
-    private string _selectString;
     private void Awake()
     {
         StartBtn.onClick.AddListener(StartGame);
         QuitBtn.onClick.AddListener(LoadQuit);
         LogOutBtn.onClick.AddListener(LoadLogOut);
-
-        _connectionText = Resources.Load<TextAsset>("Connection");
-        _connectionString = _connectionText.text;
-        _selectText = Resources.Load<TextAsset>("SelectRank");
     }
 
     public void StartGame()
@@ -68,23 +54,6 @@ public class WaitingUI : MonoBehaviour
 
     public void LoadQuit() => LoadUI(EWaitingUIIndex.Quit);
     public void LoadLogOut() => LoadUI(EWaitingUIIndex.LogOut);
-
-    private void UpdateRanking()
-    {
-        _selectString = _selectText.text + $" Order By High_Record ASC Limit 5;";
-
-        using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
-        {
-            _sqlConnection.Open();
-            MySqlCommand _readCommand = new MySqlCommand(_selectString, _sqlConnection);
-            MySqlDataReader _dataReader = _readCommand.ExecuteReader();
-            if (_dataReader.Read())
-            {
-
-            }
-            _sqlConnection.Close();
-        }
-    }
 
     private void OnDisable()
     {
