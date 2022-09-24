@@ -27,44 +27,41 @@ public class InGameUIManager : MonoBehaviour
         newHighScoreText.SetActive(false);
 
         Time.timeScale = 1f;
-        GameManager.Instance.Score = 0;
     }
 
     private void OnEnable()
     {
-        GameManager.Instance.OnGetCoin.RemoveListener(ResetScore);
-        GameManager.Instance.OnGetCoin.AddListener(ResetScore);
+        GameManager.Instance.PlayerHealth.OnGetCoin.RemoveListener(ResetScore);
+        GameManager.Instance.PlayerHealth.OnGetCoin.AddListener(ResetScore);
 
-        GameManager.Instance.OnGameOver.RemoveListener(ShowGameOverPanel);
-        GameManager.Instance.OnGameOver.AddListener(ShowGameOverPanel);
+        GameManager.Instance.PlayerHealth.OnGameOver.RemoveListener(ShowGameOverPanel);
+        GameManager.Instance.PlayerHealth.OnGameOver.AddListener(ShowGameOverPanel);
     }
 
-    private void ResetScore()
+    private void ResetScore(int newScore)
     {
-        inGameScoreText.text = GameManager.Instance.Score.ToString();
+        inGameScoreText.text = newScore.ToString();
     }
 
-    private void ShowGameOverPanel()
+    private void ShowGameOverPanel(int score, int highScore)
     {
         GameOverPanel.SetActive(true);
         Time.timeScale = 0f;
 
-        int score = GameManager.Instance.Score;
-        int highScore = GameManager.Instance.HighScore;
         gameOverScoreText.text = score.ToString();
         highScoreText.text = highScore.ToString();
 
         if(score > highScore)
         {
             newHighScoreText.SetActive(true);
-            GameManager.Instance.HighScore = score;
+            PlayerPrefs.SetInt("HighScore", score);
         }
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnGetCoin.RemoveListener(ResetScore);
-        GameManager.Instance.OnGameOver.RemoveListener(ShowGameOverPanel);
+        GameManager.Instance.PlayerHealth.OnGetCoin.RemoveListener(ResetScore);
+        GameManager.Instance.PlayerHealth.OnGameOver.RemoveListener(ShowGameOverPanel);
     }
 
     public void OnClickMenu()

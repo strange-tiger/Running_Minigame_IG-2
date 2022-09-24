@@ -8,23 +8,26 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float[] _moveXPositions = { -2.5f, 0, 2.5f };
     [SerializeField] private float _moveSpeed = 2.5f;
     private int _currentMovePosition = 1;
-    [SerializeField] private bool _isMoving = false;
+    private bool _isMoving = false;
 
     [Header("Jump")]
     [SerializeField] private float _jumpHeight = 2f;
     [SerializeField] private float _jumpSpeed = 2f;
-    [SerializeField] private bool _isJumping = false;
+    private bool _isJumping = false;
+    [SerializeField] private AudioClip _jumpSoundClip;
 
     // 기본 필요 component
     private PlayerInput _input;
     private Animator _animator;
+    private AudioSource _audioSource;
     private PlayerHealth _health;
 
     private void Awake()
     {
         _input = GetComponent<PlayerInput>();
         _animator = GetComponentInChildren<Animator>();
-        _health = GetComponent<PlayerHealth>();
+        _audioSource = GetComponent<AudioSource>();
+        _health = GetComponentInChildren<PlayerHealth>();
     }
 
     private void Update()
@@ -95,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        _audioSource.PlayOneShot(_jumpSoundClip);
         StartCoroutine(Jumping(_jumpHeight));
     }
 
