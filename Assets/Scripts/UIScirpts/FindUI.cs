@@ -98,23 +98,29 @@ public class FindUI : MonoBehaviour
         _findPwDataSet = GetUserData();
 
         bool emailExist = false;
-        bool idExist = false; ;
+        bool idExist = false;
+        bool curEmailExist = false;
+        bool curIdExist = false;
         foreach (DataRow _dataRow in _findPwDataSet.Tables[0].Rows)
         {
             if (_dataRow["Email"].ToString() == Pw_EmailInput.text)
             {
                 emailExist = true;
+                curEmailExist = true;
             }
             if (_dataRow["ID"].ToString() == Pw_IDInput.text)
             {
                 idExist = true;
+                curIdExist = true;
             }
 
-            if(emailExist && idExist)
+            if(curEmailExist && curIdExist)
             {
                 Pw_Output.text = _dataRow["Password"].ToString();
                 break;
             }
+            curEmailExist = false;
+            curIdExist = false;
         }
 
         _pw_EmailErrorText.SetActive(!emailExist);
