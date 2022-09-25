@@ -7,8 +7,6 @@ using MySql.Data.MySqlClient;
 
 public class RankUI : MonoBehaviour
 {
-    [SerializeField] private int _rankNumber = 5;
-
     private TextAsset _connectionText;
     private TextAsset _selectText;
 
@@ -17,28 +15,38 @@ public class RankUI : MonoBehaviour
 
     private string _connectionString;
     private string _selectString;
+    private int _rankNumber;
     private void Awake()
     {
         _connectionText = Resources.Load<TextAsset>("Connection");
         _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("SelectRank");
 
+        // 랭킹 보드는 위의 타이틀을 제외하고는 등수를 표시하는 오브젝트만 자식으로 가져야 한다.
+        _rankNumber = transform.childCount - 1;
+        
         _nicknameText = new Text[_rankNumber];
         _scoreText = new Text[_rankNumber];
 
-        for (int i = 0; i < _rankNumber; ++i)
+        for (int i = _rankNumber; i > 0; --i)
         {
-            _nicknameText[i] = transform.GetChild(i + 1).GetChild(1).GetComponent<Text>();
-            _scoreText[i] = transform.GetChild(i + 1).GetChild(2).GetComponent<Text>();
+            _nicknameText[i - 1] = transform.GetChild(i).GetChild(1).GetComponent<Text>();
+            _scoreText[i - 1] = transform.GetChild(i).GetChild(2).GetComponent<Text>();
+        }
+
+        StartCoroutine(UpdateRank());
+    }
+
+    public IEnumerator UpdateRank()
+    {
+        while(true)
+        {
+            updateRanking();
+            yield return new WaitForSeconds(5000);
         }
     }
 
-    private void Update()
-    {
-        UpdateRanking();
-    }
-
-    private void UpdateRanking()
+    private void updateRanking()
     {
         _selectString = _selectText.text + $" Order By High_Record DESC Limit 5;";
 
