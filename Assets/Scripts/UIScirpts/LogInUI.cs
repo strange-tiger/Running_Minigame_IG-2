@@ -37,6 +37,11 @@ public class LogInUI : MonoBehaviour
         _pwErrorText = PWInput.transform.GetChild(_loginChildIndex).gameObject;
         _idErrorText.SetActive(false);
         _pwErrorText.SetActive(false);
+
+        // PlayerPrefs.DeleteAll();
+
+        if (PlayerPrefs.GetString("ID") != null)
+            IDInput.text = PlayerPrefs.GetString("ID");
     }
     private void OnEnable()
     {
@@ -67,6 +72,8 @@ public class LogInUI : MonoBehaviour
                 if(_dataReader["Password"].ToString() == PWInput.text)
                 {
                     _pwErrorText.SetActive(false);
+
+                    PlayerPrefs.SetString("ID", _dataReader["ID"].ToString());
 
                     _sqlConnection.Close();
                     LoadWaitingRoom();
