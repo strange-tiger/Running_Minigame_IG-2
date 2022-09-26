@@ -36,6 +36,8 @@ public class InGameUIManager : MonoBehaviour
 
         GameManager.Instance.PlayerHealth.OnGameOver.RemoveListener(ShowGameOverPanel);
         GameManager.Instance.PlayerHealth.OnGameOver.AddListener(ShowGameOverPanel);
+
+        GameManager.Instance.LogInInit();
     }
 
     private void ResetScore(int newScore)

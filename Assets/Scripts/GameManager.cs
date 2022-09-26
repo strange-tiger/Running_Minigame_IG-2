@@ -17,8 +17,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         PlayerPrefs.SetString("ID", "user123");
 # endif
 
-        GetRanking = new GetRanking();
-        GetRanking.Init();
+       
     }
 
     public void GetCoin()
@@ -30,5 +29,10 @@ public class GameManager : SingletonBehaviour<GameManager>
     {
         PlatformManager.PlatformMoveSpeed = 0f;
         PlayerHealth.Die();
+    }
+    public void LogInInit()
+    {
+        GetRanking = new GetRanking();
+        GetRanking.Init();
     }
 }
