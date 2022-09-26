@@ -57,8 +57,7 @@ public class LogInUI : MonoBehaviour
 
     public void LoadLogIn()
     {
-
-            _selectString = _selectText.text + $" where binary ID= '{IDInput.text}';";
+        _selectString = _selectText.text + $" where binary ID= '{IDInput.text}';";
 
         using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
         {
@@ -94,6 +93,7 @@ public class LogInUI : MonoBehaviour
 
     private void LoadWaitingRoom()
     {
+        GameManager.Instance.LogInInit();
         SceneManager.LoadScene(1);
     }
 

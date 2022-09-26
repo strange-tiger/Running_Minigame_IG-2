@@ -29,6 +29,7 @@ public class PlatformManager : MonoBehaviour
         new Vector3(0f, 0f, 8f)
     };
 
+    // Platforms
     private List<GameObject> _platforms;
     private int _currentShownPlatformCount = 0;
 
@@ -52,9 +53,9 @@ public class PlatformManager : MonoBehaviour
 
         PlatformMovement[] platformScripts = GetComponentsInChildren<PlatformMovement>();
 
-        for(int i = 0; i < platformScripts.Length; ++i)
+        foreach(PlatformMovement script in platformScripts)
         {
-            GameObject platform = platformScripts[i].gameObject;
+            GameObject platform = script.gameObject;
 
             platform.SetActive(false);
             platform.transform.position = _platformPoolPosition;
@@ -66,8 +67,8 @@ public class PlatformManager : MonoBehaviour
     private GameObject SelectNextPlatform(Vector3 startPosition)
     {
         int nextPlatformNumber;
-        do
-        {
+
+        do {
             nextPlatformNumber = Random.Range(0, _platforms.Count - 1);
         } while (_platforms[nextPlatformNumber].activeSelf);
 

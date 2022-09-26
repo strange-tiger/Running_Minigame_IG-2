@@ -6,8 +6,9 @@ using MySql.Data.MySqlClient;
 public class GetRanking
 {
     private string _userId;
-    private bool gotUserId = false;
+    private bool hasUserId = false;
 
+    // 최고 기록
     private int _highScore;
     public int HighScore 
     { 
@@ -25,7 +26,7 @@ public class GetRanking
 
     private string GetPlayerId()
     {
-        if(gotUserId)
+        if(hasUserId)
         {
             return _userId;
         }
@@ -35,9 +36,9 @@ public class GetRanking
         if (PlayerPrefs.HasKey("ID"))
         {
             _userId = PlayerPrefs.GetString("ID");
-            gotUserId = true;
+            hasUserId = true;
         }
-        Debug.Log(_userId);
+
         return _userId;
     }
 

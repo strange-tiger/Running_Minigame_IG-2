@@ -10,6 +10,7 @@ public class PlatformMovement : MonoBehaviour
     private void Awake()
     {
         GetMyCoins();
+
         _platformManager = GetComponentInParent<PlatformManager>();
     }
 
