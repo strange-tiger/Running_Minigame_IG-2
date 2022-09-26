@@ -23,7 +23,7 @@ public class PlayerHealth : MonoBehaviour
         _audioSource = GetComponentInParent<AudioSource>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         GameManager.Instance.PlayerHealth = this;
     }
