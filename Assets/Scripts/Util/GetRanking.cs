@@ -80,6 +80,8 @@ public class GetRanking
     {
         using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
         {
+            _sqlConnection.Open();
+
             MySqlCommand _selectMyHighScore = new MySqlCommand(_selectScoreString, _sqlConnection);
             MySqlDataReader _readHighScore = _selectMyHighScore.ExecuteReader();
 
@@ -89,6 +91,8 @@ public class GetRanking
             {
                 HighScore = int.Parse(_readHighScore["High_Record"].ToString());
             }
+
+            _sqlConnection.Close();
         }
 
         return _highScore;
