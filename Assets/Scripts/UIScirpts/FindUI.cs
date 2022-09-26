@@ -36,11 +36,11 @@ public class FindUI : MonoBehaviour
         _selectText = Resources.Load<TextAsset>("Select");
         _selectString = _selectText.text + ";";
         
-        int _findIdChildIndex = Pw_IDInput.transform.childCount - 1;
+        int findIdChildIndex = Pw_IDInput.transform.childCount - 1;
 
-        _id_EmailErrorText = Id_EmailInput.transform.GetChild(_findIdChildIndex).gameObject;
-        _pw_EmailErrorText = Pw_EmailInput.transform.GetChild(_findIdChildIndex).gameObject;
-        _pw_IDErrorText = Pw_IDInput.transform.GetChild(_findIdChildIndex).gameObject;
+        _id_EmailErrorText = Id_EmailInput.transform.GetChild(findIdChildIndex).gameObject;
+        _pw_EmailErrorText = Pw_EmailInput.transform.GetChild(findIdChildIndex).gameObject;
+        _pw_IDErrorText = Pw_IDInput.transform.GetChild(findIdChildIndex).gameObject;
         _id_EmailErrorText.SetActive(false);
         _pw_EmailErrorText.SetActive(false);
         _pw_IDErrorText.SetActive(false);
@@ -61,28 +61,28 @@ public class FindUI : MonoBehaviour
     public void LoadSignIn() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn);
     private DataSet GetUserData()
     {
-        DataSet _dataSet = new DataSet();
-        using(MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
+        DataSet dataSet = new DataSet();
+        using(MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
         {
-            _sqlConnection.Open();
+            sqlConnection.Open();
 
-            MySqlDataAdapter _sqlDataAdapter = new MySqlDataAdapter(_selectString, _sqlConnection);
-            _sqlDataAdapter.Fill(_dataSet);
+            MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(_selectString, sqlConnection);
+            sqlDataAdapter.Fill(dataSet);
         }
-        return _dataSet;
+        return dataSet;
 
     }
     public void FindID()
     {
-        DataSet _findIdDataSet;
+        DataSet findIdDataSet;
 
-        _findIdDataSet = GetUserData();
+        findIdDataSet = GetUserData();
 
-        foreach(DataRow _dataRow in _findIdDataSet.Tables[0].Rows)
+        foreach(DataRow dataRow in findIdDataSet.Tables[0].Rows)
         {
-            if(_dataRow["Email"].ToString() == Id_EmailInput.text)
+            if(dataRow["Email"].ToString() == Id_EmailInput.text)
             {
-                Id_Output.text = _dataRow["ID"].ToString();
+                Id_Output.text = dataRow["ID"].ToString();
                 _id_EmailErrorText.SetActive(false);
 
                 return;
@@ -93,22 +93,20 @@ public class FindUI : MonoBehaviour
 
     public void FindPW()
     {
-        DataSet _findPwDataSet;
-
-        _findPwDataSet = GetUserData();
+        DataSet findPwDataSet = GetUserData();
 
         bool emailExist = false;
         bool idExist = false;
         bool curEmailExist = false;
         bool curIdExist = false;
-        foreach (DataRow _dataRow in _findPwDataSet.Tables[0].Rows)
+        foreach (DataRow dataRow in findPwDataSet.Tables[0].Rows)
         {
-            if (_dataRow["Email"].ToString() == Pw_EmailInput.text)
+            if (dataRow["Email"].ToString() == Pw_EmailInput.text)
             {
                 emailExist = true;
                 curEmailExist = true;
             }
-            if (_dataRow["ID"].ToString() == Pw_IDInput.text)
+            if (dataRow["ID"].ToString() == Pw_IDInput.text)
             {
                 idExist = true;
                 curIdExist = true;
@@ -116,7 +114,7 @@ public class FindUI : MonoBehaviour
 
             if(curEmailExist && curIdExist)
             {
-                Pw_Output.text = _dataRow["Password"].ToString();
+                Pw_Output.text = dataRow["Password"].ToString();
                 break;
             }
             curEmailExist = false;
