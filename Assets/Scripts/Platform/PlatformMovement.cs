@@ -5,18 +5,18 @@ using UnityEngine;
 public class PlatformMovement : MonoBehaviour
 {
     [Header("Platform Spec")]
-    [SerializeField] private static float _platformMoveSpeed = 5f;
-    public static float PlatformMoveSpeed
+    [SerializeField] private static float _moveSpeed = 5f;
+    public static float MoveSpeed
     {
-        get => _platformMoveSpeed;
-        set { _platformMoveSpeed = value; }
+        get => _moveSpeed;
+        set { _moveSpeed = value; }
     }
 
-    [SerializeField] private static float _platformDisableZPosition = -16f;
-    public static float PlatformDisableZPosition
+    [SerializeField] private static float _deactiveZPosition = -16f;
+    public static float DeactiveZPosition
     {
-        get => _platformDisableZPosition;
-        private set { _platformDisableZPosition = value; }
+        get => _deactiveZPosition;
+        private set { _deactiveZPosition = value; }
     }
 
 
@@ -26,7 +26,6 @@ public class PlatformMovement : MonoBehaviour
     private void Awake()
     {
         GetMyCoins();
-
         _platformManager = GetComponentInParent<PlatformManager>();
     }
 
@@ -56,10 +55,10 @@ public class PlatformMovement : MonoBehaviour
 
     private void Update()
     {
-        float deltaZPosition = -PlatformMoveSpeed * Time.deltaTime;
+        float deltaZPosition = -MoveSpeed * Time.deltaTime;
         transform.Translate(0f, 0f, deltaZPosition);
 
-        if(transform.position.z < PlatformDisableZPosition)
+        if(transform.position.z < DeactiveZPosition)
         {
             gameObject.SetActive(false);
             _platformManager.ReturnPlatformToPool(gameObject);
