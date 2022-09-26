@@ -4,23 +4,7 @@ using UnityEngine;
 
 public class PlatformManager : MonoBehaviour
 {
-    [Header("Platform Spec")]
-    [SerializeField] private static float _platformMoveSpeed = 5f;
-    public static float PlatformMoveSpeed 
-    { 
-        get => _platformMoveSpeed; 
-        set { _platformMoveSpeed = value; } 
-    }
-
-
     [Header("Platform Position")]
-    [SerializeField] private static float _platformDisableZPosition = -16f;
-    public static float PlatformDisableZPosition 
-    { 
-        get => _platformDisableZPosition; 
-        private set { _platformDisableZPosition = value; } 
-    }
-
     [SerializeField] private Vector3 _platformPoolPosition;
     [SerializeField] private Vector3[] _platformStartPositions = {
         new Vector3(0f, 0f, 80f),
@@ -36,8 +20,6 @@ public class PlatformManager : MonoBehaviour
     private void Awake()
     {
         SetPlatformList();
-
-        PlatformMoveSpeed = 5f;
 
         _platforms[_platforms.Count - 1].SetActive(true);
         _platforms[_platforms.Count - 1].transform.position = _platformStartPositions[_platformStartPositions.Length - 1];
