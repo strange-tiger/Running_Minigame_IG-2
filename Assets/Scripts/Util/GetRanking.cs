@@ -37,7 +37,7 @@ public class GetRanking
             _userId = PlayerPrefs.GetString("ID");
             gotUserId = true;
         }
-
+        Debug.Log(_userId);
         return _userId;
     }
 
