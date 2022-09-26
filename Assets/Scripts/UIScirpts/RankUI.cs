@@ -43,7 +43,7 @@ public class RankUI : MonoBehaviour
         while(true)
         {
             UpdateRanking();
-            yield return new WaitForSeconds(5000);
+            yield return new WaitForSeconds(5);
         }
     }
 
