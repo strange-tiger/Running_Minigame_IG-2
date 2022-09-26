@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System.Data;
 using MySql.Data.MySqlClient;
 
@@ -10,8 +11,8 @@ public class RankUI : MonoBehaviour
     private TextAsset _connectionText;
     private TextAsset _selectText;
 
-    private Text[] _nicknameText;
-    private Text[] _scoreText;
+    private TextMeshProUGUI[] _nicknameText;
+    private TextMeshProUGUI[] _scoreText;
 
     private string _connectionString;
     private string _selectString;
@@ -25,13 +26,13 @@ public class RankUI : MonoBehaviour
         // 랭킹 보드는 위의 타이틀을 제외하고는 등수를 표시하는 오브젝트만 자식으로 가져야 한다.
         _rankNumber = transform.childCount - 1;
         
-        _nicknameText = new Text[_rankNumber];
-        _scoreText = new Text[_rankNumber];
+        _nicknameText = new TextMeshProUGUI[_rankNumber];
+        _scoreText = new TextMeshProUGUI[_rankNumber];
 
         for (int i = _rankNumber; i > 0; --i)
         {
-            _nicknameText[i - 1] = transform.GetChild(i).GetChild(1).GetComponent<Text>();
-            _scoreText[i - 1] = transform.GetChild(i).GetChild(2).GetComponent<Text>();
+            _nicknameText[i - 1] = transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>();
+            _scoreText[i - 1] = transform.GetChild(i).GetChild(2).GetComponent<TextMeshProUGUI>();
         }
 
         StartCoroutine(UpdateRank());
