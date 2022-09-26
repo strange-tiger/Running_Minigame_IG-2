@@ -12,7 +12,8 @@ public class SignInUI : MonoBehaviour
     public Button CreateAccountBtn;
     public Button LogInBtn;
     public Button FindButton;
-    public Button DoubleCheckBtn;
+    public Button IdDoubleCheckBtn;
+    public Button EmailDoubleCheckBtn;
 
     public InputField IDInput;
     public InputField PasswordInput;
@@ -32,7 +33,8 @@ public class SignInUI : MonoBehaviour
     private string _insertScoreString;
     private string _selectString;
 
-    private bool _hasDoubleCheck;
+    private bool _hasIdDoubleCheck;
+    private bool _hasEmailDoubleCheck;
     private bool _isMatchPassword;
     private void Start()
     {
@@ -59,7 +61,8 @@ public class SignInUI : MonoBehaviour
         CreateAccountBtn.onClick.AddListener(CreateAccount);
         LogInBtn.onClick.AddListener(LoadLogIn);
         FindButton.onClick.AddListener(LoadFind);
-        DoubleCheckBtn.onClick.AddListener(DoubleCheck);
+        IdDoubleCheckBtn.onClick.AddListener(IdDoubleCheck);
+        EmailDoubleCheckBtn.onClick.AddListener(EmailDoubleCheck);
 
         PasswordInput.onValueChange.AddListener(CheckPassword);
         PWCheckInput.onValueChange.AddListener(CheckPassword);
@@ -68,13 +71,14 @@ public class SignInUI : MonoBehaviour
         _pwErrorText?.SetActive(false);
         _emailErrorText?.SetActive(false);
 
-        _hasDoubleCheck = false;
+        _hasIdDoubleCheck = false;
+        _hasEmailDoubleCheck = false;
         _isMatchPassword = false;
     }
 
     public void CreateAccount()
     {
-        if(_hasDoubleCheck && _isMatchPassword)
+        if(_hasIdDoubleCheck && _hasEmailDoubleCheck && _isMatchPassword)
         {
             _insertAccountString = _insertAccountText.text + $"('{IDInput.text}', '{PasswordInput.text}', '{EmailInput.text}');";
             _insertScoreString = _insertScoreText.text + $"('{IDInput.text}');";
@@ -94,7 +98,8 @@ public class SignInUI : MonoBehaviour
                 insertScoreCommand.ExecuteNonQuery();
                 sqlConnection.Close();
             }
-            _hasDoubleCheck = false;
+            _hasIdDoubleCheck = false;
+            _hasEmailDoubleCheck = false;
 
             IDInput.text = "";
             PasswordInput.text = "";
@@ -124,7 +129,7 @@ public class SignInUI : MonoBehaviour
         }
         return dataSet;
     }
-    public void DoubleCheck()
+    public void IdDoubleCheck()
     {
         
          DataSet dataSet;
@@ -144,13 +149,13 @@ public class SignInUI : MonoBehaviour
         if(!check)
         {
             // Debug.Log("사용 가능");
-            _hasDoubleCheck = true;
+            _hasIdDoubleCheck = true;
             _idErrorText.SetActive(false);
         }
         else
         {
             // Debug.Log("사용 불가능");
-            _hasDoubleCheck = false;
+            _hasIdDoubleCheck = false;
             _idErrorText.SetActive(true);
         }
         
@@ -168,6 +173,37 @@ public class SignInUI : MonoBehaviour
             _pwErrorText.SetActive(true);
         }
     }
+    public void EmailDoubleCheck()
+    {
+
+        DataSet dataSet;
+        dataSet = GetUserData();
+        Debug.Log(dataSet);
+        bool check = false;
+
+        foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+        {
+            if (dataRow["Email"].ToString() == IDInput.text)
+            {
+                check = true;
+                break;
+            }
+        }
+
+        if (!check)
+        {
+            // Debug.Log("사용 가능");
+            _hasEmailDoubleCheck = true;
+            _idErrorText.SetActive(false);
+        }
+        else
+        {
+            // Debug.Log("사용 불가능");
+            _hasEmailDoubleCheck = false;
+            _idErrorText.SetActive(true);
+        }
+
+    }
 
     private void OnDisable()
     {
@@ -179,7 +215,8 @@ public class SignInUI : MonoBehaviour
         CreateAccountBtn.onClick.RemoveListener(CreateAccount);
         LogInBtn.onClick.RemoveListener(LoadLogIn);
         FindButton.onClick.RemoveListener(LoadFind);
-        DoubleCheckBtn.onClick.RemoveListener(DoubleCheck);
+        IdDoubleCheckBtn.onClick.RemoveListener(IdDoubleCheck);
+        EmailDoubleCheckBtn.onClick.RemoveListener(EmailDoubleCheck);
 
         PasswordInput.onValueChange.RemoveListener(CheckPassword);
         PWCheckInput.onValueChange.RemoveListener(CheckPassword);
