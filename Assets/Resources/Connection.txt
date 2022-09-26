@@ -1,4 +1,4 @@
-Server = 127.0.0.1;
-Database = Account;
-Uid = root;
+Server = 3.34.190.234;
+Database = Running;
+Uid = admin;
 Pwd = kyungilacademy;
