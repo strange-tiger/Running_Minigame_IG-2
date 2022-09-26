@@ -20,7 +20,7 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public void OnCrashObstacle()
     {
-        PlatformManager.PlatformMoveSpeed = 0f;
+        PlatformMovement.PlatformMoveSpeed = 0f;
         PlayerHealth.Die();
     }
 
