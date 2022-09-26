@@ -58,7 +58,7 @@ public class LogInUI : MonoBehaviour
     public void LoadLogIn()
     {
 
-            _selectString = _selectText.text + $" where ID= '{IDInput.text}';";
+            _selectString = _selectText.text + $" where binary ID= '{IDInput.text}';";
 
         using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
         {
