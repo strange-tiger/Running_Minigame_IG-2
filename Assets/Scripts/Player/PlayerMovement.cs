@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Move Line")]
     [SerializeField] private float[] _moveXPositions = { -2.5f, 0, 2.5f };
-    [SerializeField] private float _moveSpeed = 2.5f;
+    [SerializeField] private float _moveSpeed = 2f;
     private int _currentMovePosition = 1;
     private bool _isMoving = false;
 
@@ -53,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
     // 라인 이동 관련
     private void Move()
     {
+        _isMoving = true;
+
         int nextMovePosition = _currentMovePosition + _input.X;
 
         if(_input.X == 0 || nextMovePosition < 0 || nextMovePosition > 2)
@@ -66,8 +68,6 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator MoveLine(int nextPos, int moveDirection)
     {
-        _isMoving = true;
-
         float endXPosition = _moveXPositions[nextPos];
 
         while(true)
