@@ -16,11 +16,11 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetAxis("Horizontal") > 0.001)
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             X = 1;
         }
-        else if (Input.GetAxis("Horizontal") < -0.001)
+        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             X = -1;
         }
@@ -29,6 +29,6 @@ public class PlayerInput : MonoBehaviour
             X = 0;
         }
         
-        Jump = (Input.GetAxis("Vertical") > 0);
+        Jump = (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow));
     }
 }

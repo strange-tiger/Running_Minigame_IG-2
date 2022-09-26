@@ -29,7 +29,7 @@ public class InGameUIManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    private void OnEnable()
+    private void Start()
     {
         GameManager.Instance.PlayerHealth.OnGetCoin.RemoveListener(ResetScore);
         GameManager.Instance.PlayerHealth.OnGetCoin.AddListener(ResetScore);

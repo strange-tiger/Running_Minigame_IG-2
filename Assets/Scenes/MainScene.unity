@@ -442,7 +442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 944d060187f1eea4a8eea1c196c541db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _highScore: 0
 --- !u!4 &104327894
 Transform:
   m_ObjectHideFlags: 0
@@ -945,10 +944,10 @@ MonoBehaviour:
   OnGetCoin:
     m_PersistentCalls:
       m_Calls: []
+  _dieSoundClip: {fileID: 8300000, guid: d6f71d14f26c9234d8acb36f21d04b0e, type: 3}
   OnGameOver:
     m_PersistentCalls:
       m_Calls: []
-  _dieSoundClip: {fileID: 8300000, guid: d6f71d14f26c9234d8acb36f21d04b0e, type: 3}
 --- !u!1 &361793162
 GameObject:
   m_ObjectHideFlags: 0
@@ -3198,6 +3197,10 @@ PrefabInstance:
     - target: {fileID: 3682332521724390370, guid: 7fcfd68f3bb2ea44794d560db5009ff4, type: 3}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3682332521724390370, guid: 7fcfd68f3bb2ea44794d560db5009ff4, type: 3}
+      propertyPath: m_Constraints
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 3682332521724390375, guid: 7fcfd68f3bb2ea44794d560db5009ff4, type: 3}
       propertyPath: m_Name

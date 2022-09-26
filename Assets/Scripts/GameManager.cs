@@ -1,5 +1,3 @@
-//#define _DEBUG_MODE_
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,11 +11,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     private void OnEnable()
     {
         PlayerHealth = FindObjectOfType<PlayerHealth>();
-# if _DEBUG_MODE_
-        PlayerPrefs.SetString("ID", "user123");
-# endif
-
-       
     }
 
     public void GetCoin()
