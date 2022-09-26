@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
             float deltaxPosition = moveDirection * _moveSpeed * Time.deltaTime;
             _rigidbody.MovePosition(_rigidbody.position + new Vector3(deltaxPosition, 0f, 0f));
 
-            if (Mathf.Pow((endXPosition - _rigidbody.position.x), 2) <= 0.01)
+            if (Mathf.Abs(endXPosition - _rigidbody.position.x) <= 0.01f)
             {
                 transform.position = new Vector3(endXPosition, transform.position.y, transform.position.z);
 
@@ -108,7 +108,6 @@ public class PlayerMovement : MonoBehaviour
 
         _isJumping = true;
 
-
         StartCoroutine(Jumping(_jumpHeight));
     }
 
@@ -126,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
             float deltaYPosition = _jumpSpeed * Time.deltaTime;
             _rigidbody.MovePosition(_rigidbody.position + new Vector3(0f, deltaYPosition, 0f));
 
-            if (Mathf.Pow((endYPosition - transform.position.y), 2) <= 0.01)
+            if (Mathf.Abs(endYPosition - transform.position.y) <= 0.01f)
             {
                 transform.position = new Vector3(transform.position.x, endYPosition, transform.position.z);
                 
@@ -141,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
             float deltaYPosition = -_jumpSpeed * Time.deltaTime;
             _rigidbody.MovePosition(_rigidbody.position + new Vector3(0f, deltaYPosition, 0f));
 
-            if (Mathf.Pow((1f - transform.position.y), 2) <= 0.01)
+            if (Mathf.Abs(1f - transform.position.y) <= 0.01f)
             {
                 transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
 
