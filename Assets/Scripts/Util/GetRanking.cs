@@ -58,7 +58,8 @@ public class GetRanking
         _updateScoreText = Resources.Load<TextAsset>("UpdateRanking");
 
         _selectScoreText = Resources.Load<TextAsset>("SelectMyRanking");
-        _selectScoreString = _selectScoreText.text + $"{GetPlayerId()}";
+        _selectScoreString = _selectScoreText.text + $"'{GetPlayerId()}'";
+        Debug.Log(_selectScoreString);
     }
 
     public void SetNewHighScore(int newHighScore)
