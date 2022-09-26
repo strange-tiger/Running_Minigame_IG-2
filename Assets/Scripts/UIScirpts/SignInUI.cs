@@ -11,11 +11,11 @@ public class SignInUI : MonoBehaviour
 
     public Button CreateAccountBtn;
     public Button LogInBtn;
-    public Button FindBtn;
+    public Button FindButton;
     public Button DoubleCheckBtn;
 
     public InputField IDInput;
-    public InputField PWInput;
+    public InputField PasswordInput;
     public InputField PWCheckInput;
     public InputField EmailInput;
 
@@ -33,7 +33,7 @@ public class SignInUI : MonoBehaviour
     private string _selectString;
 
     private bool _hasDoubleCheck;
-    private bool _matchPassword;
+    private bool _isMatchPassword;
     private void Start()
     {
 
@@ -44,11 +44,11 @@ public class SignInUI : MonoBehaviour
         _selectText = Resources.Load<TextAsset>("Select");
         _selectString = _selectText.text + ";";
 
-        int _signInChildIndex = IDInput.transform.childCount - 1;
+        int signInChildIndex = IDInput.transform.childCount - 1;
 
-        _idErrorText = IDInput.transform.GetChild(_signInChildIndex).gameObject;
-        _pwErrorText = PWInput.transform.GetChild(_signInChildIndex).gameObject;
-        _emailErrorText = EmailInput.transform.GetChild(_signInChildIndex).gameObject;
+        _idErrorText = IDInput.transform.GetChild(signInChildIndex).gameObject;
+        _pwErrorText = PasswordInput.transform.GetChild(signInChildIndex).gameObject;
+        _emailErrorText = EmailInput.transform.GetChild(signInChildIndex).gameObject;
         _idErrorText.SetActive(false);
         _pwErrorText.SetActive(false);
         _emailErrorText.SetActive(false);
@@ -58,10 +58,10 @@ public class SignInUI : MonoBehaviour
 
         CreateAccountBtn.onClick.AddListener(CreateAccount);
         LogInBtn.onClick.AddListener(LoadLogIn);
-        FindBtn.onClick.AddListener(LoadFind);
+        FindButton.onClick.AddListener(LoadFind);
         DoubleCheckBtn.onClick.AddListener(DoubleCheck);
 
-        PWInput.onValueChange.AddListener(CheckPassword);
+        PasswordInput.onValueChange.AddListener(CheckPassword);
         PWCheckInput.onValueChange.AddListener(CheckPassword);
 
         _idErrorText?.SetActive(false);
@@ -69,32 +69,35 @@ public class SignInUI : MonoBehaviour
         _emailErrorText?.SetActive(false);
 
         _hasDoubleCheck = false;
-        _matchPassword = false;
+        _isMatchPassword = false;
     }
 
     public void CreateAccount()
     {
-        if(_hasDoubleCheck && _matchPassword)
+        if(_hasDoubleCheck && _isMatchPassword)
         {
-            _insertAccountString = _insertAccountText.text + $"('{IDInput.text}', '{PWInput.text}', '{EmailInput.text}');";
+            _insertAccountString = _insertAccountText.text + $"('{IDInput.text}', '{PasswordInput.text}', '{EmailInput.text}');";
             _insertScoreString = _insertScoreText.text + $"('{IDInput.text}');";
             Debug.Log(_insertAccountString);
             Debug.Log(_insertScoreString);
-            using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
+            using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
             {
-                MySqlCommand _insertAccountCommand = new MySqlCommand(_insertAccountString, _sqlConnection);
-                _sqlConnection.Open();
-                _insertAccountCommand.ExecuteNonQuery();
-                _sqlConnection.Close();
+                MySqlCommand insertAccountCommand = new MySqlCommand(_insertAccountString, sqlConnection);
+                sqlConnection.Open();
+                insertAccountCommand.ExecuteNonQuery();
+                sqlConnection.Close();
             }
-            using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
+            using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
             {
-                MySqlCommand _insertScoreCommand = new MySqlCommand(_insertScoreString, _sqlConnection);
-                _sqlConnection.Open();
-                _insertScoreCommand.ExecuteNonQuery();
-                _sqlConnection.Close();
+                MySqlCommand insertScoreCommand = new MySqlCommand(_insertScoreString, sqlConnection);
+                sqlConnection.Open();
+                insertScoreCommand.ExecuteNonQuery();
+                sqlConnection.Close();
             }
             _hasDoubleCheck = false;
+
+            IDInput.text = "";
+            PasswordInput.text = "";
         }
         else
         {
@@ -108,35 +111,35 @@ public class SignInUI : MonoBehaviour
     public DataSet GetUserData()
     {
 
-        DataSet _dataSet = new DataSet();
+        DataSet dataSet = new DataSet();
 
-        using (MySqlConnection _connection = new MySqlConnection(_connectionString))
+        using (MySqlConnection connection = new MySqlConnection(_connectionString))
         {
-            _connection.Open();
-            MySqlDataAdapter _dataAdapter = new MySqlDataAdapter(_selectString, _connection);
+            connection.Open();
+            MySqlDataAdapter dataAdapter = new MySqlDataAdapter(_selectString, connection);
 
-            _dataAdapter.Fill(_dataSet);
+            dataAdapter.Fill(dataSet);
         }
-        return _dataSet;
+        return dataSet;
     }
     public void DoubleCheck()
     {
         
-         DataSet _dataSet;
-         _dataSet = GetUserData();
-         Debug.Log(_dataSet);
-         bool _check = false;
+         DataSet dataSet;
+         dataSet = GetUserData();
+         Debug.Log(dataSet);
+         bool check = false;
 
-         foreach (DataRow _dataRow in _dataSet.Tables[0].Rows)
+         foreach (DataRow dataRow in dataSet.Tables[0].Rows)
          {
-             if (_dataRow["ID"].ToString() == IDInput.text)
+             if (dataRow["ID"].ToString() == IDInput.text)
              {
-                _check = true;
+                check = true;
                 break;
              }
          }
          
-        if(!_check)
+        if(!check)
         {
             // Debug.Log("사용 가능");
             _hasDoubleCheck = true;
@@ -152,14 +155,14 @@ public class SignInUI : MonoBehaviour
     }
     public void CheckPassword(string pw)
     {
-        if (PWInput.text == PWCheckInput.text)
+        if (PasswordInput.text == PWCheckInput.text)
         {
-            _matchPassword = true;
+            _isMatchPassword = true;
             _pwErrorText.SetActive(false);
         }
         else
         {
-            _matchPassword = false;
+            _isMatchPassword = false;
             _pwErrorText.SetActive(true);
         }
     }
@@ -167,16 +170,16 @@ public class SignInUI : MonoBehaviour
     private void OnDisable()
     {
         IDInput.text = "";
-        PWInput.text = "";
+        PasswordInput.text = "";
         PWCheckInput.text = "";
         EmailInput.text = "";
 
         CreateAccountBtn.onClick.RemoveListener(CreateAccount);
         LogInBtn.onClick.RemoveListener(LoadLogIn);
-        FindBtn.onClick.RemoveListener(LoadFind);
+        FindButton.onClick.RemoveListener(LoadFind);
         DoubleCheckBtn.onClick.RemoveListener(DoubleCheck);
 
-        PWInput.onValueChange.RemoveListener(CheckPassword);
+        PasswordInput.onValueChange.RemoveListener(CheckPassword);
         PWCheckInput.onValueChange.RemoveListener(CheckPassword);
     }
 }

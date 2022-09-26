@@ -12,11 +12,11 @@ public class LogInUI : MonoBehaviour
 
     public Button LogInBtn;
     public Button SignInBtn;
-    public Button FindBtn;
+    public Button FindButton;
     public Button QuitBtn;
     
     public InputField IDInput;
-    public InputField PWInput;
+    public InputField PasswordInput;
 
     private GameObject _idErrorText;
     private GameObject _pwErrorText;
@@ -31,10 +31,10 @@ public class LogInUI : MonoBehaviour
         _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("Select");
 
-        int _loginChildIndex = IDInput.transform.childCount - 1;
+        int loginChildIndex = IDInput.transform.childCount - 1;
 
-        _idErrorText = IDInput.transform.GetChild(_loginChildIndex).gameObject;
-        _pwErrorText = PWInput.transform.GetChild(_loginChildIndex).gameObject;
+        _idErrorText = IDInput.transform.GetChild(loginChildIndex).gameObject;
+        _pwErrorText = PasswordInput.transform.GetChild(loginChildIndex).gameObject;
         _idErrorText.SetActive(false);
         _pwErrorText.SetActive(false);
 
@@ -47,7 +47,7 @@ public class LogInUI : MonoBehaviour
     {
         LogInBtn.onClick.AddListener(LoadLogIn);
         SignInBtn.onClick.AddListener(LoadSignIn);
-        FindBtn.onClick.AddListener(LoadFind);
+        FindButton.onClick.AddListener(LoadFind);
         QuitBtn.onClick.AddListener(LoadQuit);
 
         _idErrorText?.SetActive(false);
@@ -60,22 +60,22 @@ public class LogInUI : MonoBehaviour
 
             _selectString = _selectText.text + $" where ID= '{IDInput.text}';";
 
-        using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
+        using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
         {
-            _sqlConnection.Open();
-            MySqlCommand _readCommand = new MySqlCommand(_selectString, _sqlConnection);
-            MySqlDataReader _dataReader = _readCommand.ExecuteReader();
-            if(_dataReader.Read())
+            sqlConnection.Open();
+            MySqlCommand readCommand = new MySqlCommand(_selectString, sqlConnection);
+            MySqlDataReader dataReader = readCommand.ExecuteReader();
+            if(dataReader.Read())
             {
                   _idErrorText.SetActive(false);
                 
-                if(_dataReader["Password"].ToString() == PWInput.text)
+                if(dataReader["Password"].ToString() == PasswordInput.text)
                 {
                     _pwErrorText.SetActive(false);
 
-                    PlayerPrefs.SetString("ID", _dataReader["ID"].ToString());
+                    PlayerPrefs.SetString("ID", dataReader["ID"].ToString());
 
-                    _sqlConnection.Close();
+                    sqlConnection.Close();
                     LoadWaitingRoom();
                     return;
                 }
@@ -88,7 +88,7 @@ public class LogInUI : MonoBehaviour
             {
                 _idErrorText.SetActive(true);
             }
-            _sqlConnection.Close();
+            sqlConnection.Close();
         }
     }
 
@@ -104,10 +104,10 @@ public class LogInUI : MonoBehaviour
     private void OnDisable()
     {
         IDInput.text = "";
-        PWInput.text = "";
+        PasswordInput.text = "";
         LogInBtn.onClick.RemoveListener(LoadLogIn);
         SignInBtn.onClick.RemoveListener(LoadSignIn);
-        FindBtn.onClick.RemoveListener(LoadFind);
+        FindButton.onClick.RemoveListener(LoadFind);
         QuitBtn.onClick.RemoveListener(LoadQuit);
     }
 }

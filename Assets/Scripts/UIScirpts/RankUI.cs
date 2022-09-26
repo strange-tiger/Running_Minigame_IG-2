@@ -41,12 +41,12 @@ public class RankUI : MonoBehaviour
     {
         while(true)
         {
-            updateRanking();
+            UpdateRanking();
             yield return new WaitForSeconds(5000);
         }
     }
 
-    private void updateRanking()
+    private void UpdateRanking()
     {
         _selectString = _selectText.text + $" Order By High_Record DESC Limit 5;";
 
