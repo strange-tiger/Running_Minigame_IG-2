@@ -43,18 +43,19 @@ public class InGameUIManager : MonoBehaviour
         inGameScoreText.text = newScore.ToString();
     }
 
-    private void ShowGameOverPanel(int score, int highScore)
+    private void ShowGameOverPanel(int score)
     {
         GameOverPanel.SetActive(true);
         Time.timeScale = 0f;
 
         gameOverScoreText.text = score.ToString();
+        int highScore = GameManager.Instance.GetRanking.HighScore;
         highScoreText.text = highScore.ToString();
 
         if(score > highScore)
         {
             newHighScoreText.SetActive(true);
-            PlayerPrefs.SetInt("HighScore", score);
+            GameManager.Instance.GetRanking.SetNewHighScore(score);
         }
     }
 
