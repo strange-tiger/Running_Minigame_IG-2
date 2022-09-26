@@ -22,6 +22,7 @@ public class InGameUIManager : MonoBehaviour
     private void Awake()
     {
         inGamePanel.SetActive(true);
+
         MenuPanel.SetActive(false);
         GameOverPanel.SetActive(false);
         newHighScoreText.SetActive(false);
@@ -50,7 +51,9 @@ public class InGameUIManager : MonoBehaviour
         GameOverPanel.SetActive(true);
         Time.timeScale = 0f;
 
+        // 스코어 저장
         gameOverScoreText.text = score.ToString();
+
         int highScore = GameManager.Instance.GetRanking.HighScore;
         highScoreText.text = highScore.ToString();
 

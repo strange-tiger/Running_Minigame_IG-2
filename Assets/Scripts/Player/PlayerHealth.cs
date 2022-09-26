@@ -5,15 +5,18 @@ using UnityEngine.Events;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public bool IsDead { get; private set; }
-
+    
+    [Header("Coin & Score")]
     [SerializeField] private AudioClip _getCoinSoundClip;
-    public int Score { get; private set; }
     public UnityEvent<int> OnGetCoin = new UnityEvent<int>();
+    public int Score { get; private set; }
 
+    [Header("Death")]
     [SerializeField] private AudioClip _dieSoundClip;
     public UnityEvent<int> OnGameOver = new UnityEvent<int>();
+    public bool IsDead { get; private set; }
 
+    // Effects
     private Animator _animator;
     private AudioSource _audioSource;
 
@@ -25,6 +28,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnEnable()
     {
+        // GM에게 자신의 존재를 알림
         GameManager.Instance.PlayerHealth = this;
     }
 

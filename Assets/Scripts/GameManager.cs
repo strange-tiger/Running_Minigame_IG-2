@@ -23,6 +23,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         PlatformManager.PlatformMoveSpeed = 0f;
         PlayerHealth.Die();
     }
+
     public void LogInInit()
     {
         GetRanking = new GetRanking();

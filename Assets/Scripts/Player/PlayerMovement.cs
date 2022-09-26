@@ -5,22 +5,23 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Move Line")]
-    [SerializeField] private float[] _moveXPositions = { -2.5f, 0, 2.5f };
-    [SerializeField] private float _moveSpeed = 2f;
-    [SerializeField] private float _moveDelay = 1f;
-    private int _currentMovePosition = 1;
+    [SerializeField] private float[] _xPositions = { -2.5f, 0, 2.5f };
+    private int _currentXPosition = 1;
+    [SerializeField] private float _moveSpeed = 4f;
     private bool _isMoving = false;
 
     [Header("Jump")]
     [SerializeField] private float _jumpHeight = 2f;
-    [SerializeField] private float _jumpSpeed = 2f;
+    [SerializeField] private float _jumpSpeed = 3f;
     private bool _isJumping = false;
     [SerializeField] private AudioClip _jumpSoundClip;
 
     // 기본 필요 component
     private PlayerInput _input;
     private PlayerHealth _health;
+
     private Rigidbody _rigidbody;
+    
     private Animator _animator;
     private AudioSource _audioSource;
 
@@ -28,17 +29,12 @@ public class PlayerMovement : MonoBehaviour
     {
         _input = GetComponent<PlayerInput>();
         _health = GetComponentInChildren<PlayerHealth>();
+        
         _rigidbody = GetComponent<Rigidbody>();
+        
         _animator = GetComponentInChildren<Animator>();
         _audioSource = GetComponent<AudioSource>();
     }
-
-    //private void FixedUpdate()
-    //{
-    //    if(_isMoving)
-    //    {
-    //    }
-    //}
 
     private void Update()
     {
@@ -64,22 +60,22 @@ public class PlayerMovement : MonoBehaviour
     // 라인 이동 관련
     private void Move()
     {
+        int nextMovePosition = _currentXPosition + _input.MoveX;
 
-        int nextMovePosition = _currentMovePosition + _input.X;
-
-        if(_input.X == 0 || nextMovePosition < 0 || nextMovePosition > 2)
+        if(_input.MoveX == 0 || nextMovePosition < 0 || nextMovePosition > 2)
         {
             return;
         }
 
         _isMoving = true;
-        _currentMovePosition = nextMovePosition;
-        StartCoroutine(MoveLine(nextMovePosition, _input.X));
+        _currentXPosition = nextMovePosition;
+
+        StartCoroutine(MoveLine(nextMovePosition, _input.MoveX));
     }
 
     private IEnumerator MoveLine(int nextPos, int moveDirection)
     {
-        float endXPosition = _moveXPositions[nextPos];
+        float endXPosition = _xPositions[nextPos];
 
         while(true)
         {
@@ -94,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     _isMoving = false;
                 }
+
                 break;
             }
 
@@ -110,13 +107,17 @@ public class PlayerMovement : MonoBehaviour
         }
 
         _isJumping = true;
-        _audioSource.PlayOneShot(_jumpSoundClip);
+
+
         StartCoroutine(Jumping(_jumpHeight));
     }
 
     private IEnumerator Jumping(float endYPosition)
     {
+        // 이펙트
+        _audioSource.PlayOneShot(_jumpSoundClip);
         _animator.SetTrigger(AnimationID.Jump);
+
         // 기존의 y값인 1 더해주기
         endYPosition += 1f;
 
@@ -128,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
             if (Mathf.Pow((endYPosition - transform.position.y), 2) <= 0.01)
             {
                 transform.position = new Vector3(transform.position.x, endYPosition, transform.position.z);
+                
                 break;
             }
 
@@ -142,13 +144,15 @@ public class PlayerMovement : MonoBehaviour
             if (Mathf.Pow((1f - transform.position.y), 2) <= 0.01)
             {
                 transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
+
+                _isMoving = false;
+                _isJumping = false;
+                
                 break;
             }
 
             yield return null;
         }
 
-        _isMoving = false;
-        _isJumping = false;
     }
 }
