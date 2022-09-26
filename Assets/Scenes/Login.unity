@@ -1800,8 +1800,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718bcf9ef64216c4888c7b3e3b7d42d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  YesBtn: {fileID: 1611742449}
-  NoBtn: {fileID: 179693841}
+  YesButton: {fileID: 0}
+  NoButton: {fileID: 0}
 --- !u!1 &386938388
 GameObject:
   m_ObjectHideFlags: 0
@@ -6226,10 +6226,10 @@ MonoBehaviour:
   LogInUIManager: {fileID: 1059823669}
   CreateAccountBtn: {fileID: 392962335}
   LogInBtn: {fileID: 1735858506}
-  FindBtn: {fileID: 47454866}
+  FindButton: {fileID: 47454866}
   DoubleCheckBtn: {fileID: 551407944}
   IDInput: {fileID: 65867663}
-  PWInput: {fileID: 959133035}
+  PasswordInput: {fileID: 959133035}
   PWCheckInput: {fileID: 189153944}
   EmailInput: {fileID: 551405513}
 --- !u!1 &1148274258
@@ -10067,10 +10067,10 @@ MonoBehaviour:
   LogInUIManager: {fileID: 1059823669}
   LogInBtn: {fileID: 427997215}
   SignInBtn: {fileID: 1418747738}
-  FindBtn: {fileID: 244700387}
+  FindButton: {fileID: 244700387}
   QuitBtn: {fileID: 994829786}
   IDInput: {fileID: 1303911603}
-  PWInput: {fileID: 1362795615}
+  PasswordInput: {fileID: 1362795615}
 --- !u!1 &1986761037
 GameObject:
   m_ObjectHideFlags: 0

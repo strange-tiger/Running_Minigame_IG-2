@@ -98,6 +98,8 @@ public class SignInUI : MonoBehaviour
 
             IDInput.text = "";
             PasswordInput.text = "";
+            PWCheckInput.text = "";
+            EmailInput.text = "";
         }
         else
         {
