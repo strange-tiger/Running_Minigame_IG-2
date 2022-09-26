@@ -12,7 +12,7 @@ public class PlayerHealth : MonoBehaviour
     public UnityEvent<int> OnGetCoin = new UnityEvent<int>();
 
     [SerializeField] private AudioClip _dieSoundClip;
-    public UnityEvent<int, int> OnGameOver = new UnityEvent<int, int>();
+    public UnityEvent<int> OnGameOver = new UnityEvent<int>();
 
     private Animator _animator;
     private AudioSource _audioSource;
@@ -46,12 +46,6 @@ public class PlayerHealth : MonoBehaviour
     
     public void GameOver()
     {
-        if (!PlayerPrefs.HasKey("HighScore"))
-        {
-            PlayerPrefs.SetInt("HighScore", 0);
-        }
-        int highScore = PlayerPrefs.GetInt("HighScore");
-
-        OnGameOver.Invoke(Score, highScore);
+        OnGameOver.Invoke(Score);
     }
 }
