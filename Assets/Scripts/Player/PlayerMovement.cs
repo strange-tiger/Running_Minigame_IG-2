@@ -53,7 +53,6 @@ public class PlayerMovement : MonoBehaviour
     // 라인 이동 관련
     private void Move()
     {
-        _isMoving = true;
 
         int nextMovePosition = _currentMovePosition + _input.X;
 
@@ -62,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        _isMoving = true;
         _currentMovePosition = nextMovePosition;
         StartCoroutine(MoveLine(nextMovePosition, _input.X));
     }
@@ -98,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        _isJumping = true;
         _audioSource.PlayOneShot(_jumpSoundClip);
         StartCoroutine(Jumping(_jumpHeight));
     }
@@ -105,7 +106,6 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator Jumping(float endYPosition)
     {
         _animator.SetTrigger(AnimationID.Jump);
-        _isJumping = true;
         endYPosition += 1f;
 
         while(true)
