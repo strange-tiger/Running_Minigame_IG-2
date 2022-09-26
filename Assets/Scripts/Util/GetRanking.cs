@@ -67,7 +67,7 @@ public class GetRanking
         Debug.Assert(newHighScore > HighScore,
             $"새로운 점수 {newHighScore} 보다 기존 점수 {HighScore}가 더 높음");
 
-        string updateScoreString = _updateScoreText.text + $"{newHighScore} WHERE ID = {GetPlayerId()}";
+        string updateScoreString = _updateScoreText.text + $"{newHighScore} WHERE ID = '{GetPlayerId()}'";
         using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
         {
             MySqlCommand _updateScoreCommand = new MySqlCommand(updateScoreString, _sqlConnection);
