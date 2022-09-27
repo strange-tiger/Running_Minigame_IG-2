@@ -8,11 +8,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     public PlayerHealth PlayerHealth { get; set; }
     public GetRanking GetRanking { get; private set; }
 
-    private void OnEnable()
-    {
-        PlayerHealth = FindObjectOfType<PlayerHealth>();
-    }
-
     public void GetCoin()
     {
         PlayerHealth.GetCoin();
@@ -20,7 +15,7 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public void OnCrashObstacle()
     {
-        PlatformManager.PlatformMoveSpeed = 0f;
+        PlatformMovement.MoveSpeed = 0f;
         PlayerHealth.Die();
     }
 
