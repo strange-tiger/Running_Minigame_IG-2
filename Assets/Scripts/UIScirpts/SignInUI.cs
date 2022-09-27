@@ -1,9 +1,15 @@
+#define _DEBUG_MODE_
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using MySql.Data.MySqlClient;
+
+#if _DEBUG_MODE_
+using MySql;
+#endif
 
 public class SignInUI : MonoBehaviour
 {
@@ -84,8 +90,21 @@ public class SignInUI : MonoBehaviour
     {
         if (_hasIdDoubleCheck && _hasEmailDoubleCheck && _isMatchingPassword)
         {
-            _insertAccountString = _insertAccountText.text + $"('{_idInput.text}', '{_passwordInput.text}', '{_emailInput.text}');";
-            _insertScoreString = _insertScoreText.text + $"('{_idInput.text}');";
+#if _DEBUG_MODE_
+            if(MySqlSetting.AddNewAccount(_idInput.text, _passwordInput.text, _emailInput.text))
+            {
+                _idInput.text = "";
+                _passwordInput.text = "";
+                _passwordCheckInput.text = "";
+                _emailInput.text = "";
+            } 
+            else
+            {
+                Debug.LogError("계정 추가 오류");
+            }
+#else
+            _insertAccountString = _insertAccountText.text + $"('{IDInput.text}', '{PasswordInput.text}', '{EmailInput.text}');";
+            _insertScoreString = _insertScoreText.text + $"('{IDInput.text}');";
             Debug.Log(_insertAccountString);
             Debug.Log(_insertScoreString);
             using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
@@ -105,10 +124,11 @@ public class SignInUI : MonoBehaviour
             _hasIdDoubleCheck = false;
             _hasEmailDoubleCheck = false;
 
-            _idInput.text = "";
-            _passwordInput.text = "";
-            _passwordCheckInput.text = "";
-            _emailInput.text = "";
+            IDInput.text = "";
+            PasswordInput.text = "";
+            PWCheckInput.text = "";
+            EmailInput.text = "";
+#endif
         }
         else
         {
@@ -134,10 +154,14 @@ public class SignInUI : MonoBehaviour
     }
     public void IdDoubleCheck()
     {
+#if _DEBUG_MODE_
+        _hasIdDoubleCheck = !MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.ID, _idInput.text);
+        _idErrorText.SetActive(!_hasIdDoubleCheck);
+#else
         DataSet dataSet;
-        dataSet = GetUserData();
-        Debug.Log(dataSet);
-        bool check = false;
+         dataSet = GetUserData();
+         Debug.Log(dataSet);
+         bool check = false;
 
         foreach (DataRow dataRow in dataSet.Tables[0].Rows)
         {
@@ -160,10 +184,17 @@ public class SignInUI : MonoBehaviour
             _hasIdDoubleCheck = false;
             _idErrorText.SetActive(true);
         }
+#endif
+        
     }
 
     public void EmailDoubleCheck()
     {
+#if _DEBUG_MODE_
+        _hasEmailDoubleCheck = !MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.Email, _emailInput.text);
+        _emailErrorText.SetActive(!_hasEmailDoubleCheck);
+#else
+
         DataSet dataSet;
         dataSet = GetUserData();
         Debug.Log(dataSet);
@@ -190,6 +221,7 @@ public class SignInUI : MonoBehaviour
             _hasEmailDoubleCheck = false;
             _idErrorText.SetActive(true);
         }
+#endif
     }
 
     public void CheckPassword(string pw)

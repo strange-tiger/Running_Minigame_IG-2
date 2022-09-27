@@ -1,9 +1,14 @@
+#define _DEBUG_MODE_
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Data;
 using MySql.Data.MySqlClient;
+#if _DEBUG_MODE_
+using MySql;
+#endif
 
 public class FindUI : MonoBehaviour
 {
@@ -78,6 +83,20 @@ public class FindUI : MonoBehaviour
     }
     public void FindID()
     {
+#if _DEBUG_MODE_
+        if(!MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.Email, _idEmailInput.text))
+        {
+            _idEmailErrorText.SetActive(true);
+            return;
+        }
+
+        string id = MySqlSetting.GetValueByBase(
+            MySqlSetting.EAccountColumnType.Email, _idEmailInput.text,
+            MySqlSetting.EAccountColumnType.ID);
+
+        _idOutput.text = id;
+        _idEmailErrorText.SetActive(false);
+#else
         DataSet findIdDataSet;
 
         findIdDataSet = GetUserData();
@@ -93,10 +112,41 @@ public class FindUI : MonoBehaviour
             }
         }
         _idEmailErrorText.SetActive(true);
+#endif
     }
 
     public void FindPW()
     {
+#if _DEBUG_MODE_
+        if(!MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.Email, _passwordEmailInput.text))
+        {
+            _pwEmailErrorText.SetActive(true);
+            _pwIdErrorText.SetActive(false);
+            return;
+        }
+
+        if(!MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.ID, _passwordIdInput.text))
+        {
+            _pwEmailErrorText.SetActive(false);
+            _pwIdErrorText.SetActive(true);
+            return;
+        }
+
+        if(!MySqlSetting.CheckValueByBase(MySqlSetting.EAccountColumnType.Email, _passwordEmailInput.text,
+            MySqlSetting.EAccountColumnType.ID, _passwordIdInput.text))
+        {
+            _pwEmailErrorText.SetActive(true);
+            _pwIdErrorText.SetActive(true);
+            return;
+        }
+
+        _pwEmailErrorText.SetActive(false);
+        _pwIdErrorText.SetActive(false);
+
+        string password = MySqlSetting.GetValueByBase(MySqlSetting.EAccountColumnType.ID, _passwordIdInput.text, MySqlSetting.EAccountColumnType.Password);
+        _passwordOutput.text = password;
+#else
+
         DataSet findPwDataSet = GetUserData();
 
         bool emailExist = false;
@@ -127,6 +177,7 @@ public class FindUI : MonoBehaviour
 
         _pwEmailErrorText.SetActive(!emailExist);
         _pwIdErrorText.SetActive(!idExist);
+#endif
     }
 
     private void OnDisable()
