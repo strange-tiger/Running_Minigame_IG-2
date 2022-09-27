@@ -22,7 +22,7 @@ public class PlatformMovement : MonoBehaviour
 
     private GameObject[] _coins;
     private PlatformManager _platformManager;
-    
+
     private void Awake()
     {
         GetMyCoins();
@@ -32,9 +32,9 @@ public class PlatformMovement : MonoBehaviour
     private void GetMyCoins()
     {
         Coin[] coinScripts = GetComponentsInChildren<Coin>();
-        _coins = new GameObject[coinScripts.Length];   
+        _coins = new GameObject[coinScripts.Length];
 
-        for(int i = 0; i < coinScripts.Length; ++i)
+        for (int i = 0; i < coinScripts.Length; ++i)
         {
             _coins[i] = coinScripts[i].gameObject;
         }
@@ -47,7 +47,7 @@ public class PlatformMovement : MonoBehaviour
 
     private void ResetPlatform()
     {
-        foreach(var coin in _coins)
+        foreach (var coin in _coins)
         {
             coin.SetActive(true);
         }
@@ -58,7 +58,7 @@ public class PlatformMovement : MonoBehaviour
         float deltaZPosition = -MoveSpeed * Time.deltaTime;
         transform.Translate(0f, 0f, deltaZPosition);
 
-        if(transform.position.z < DeactiveZPosition)
+        if (transform.position.z < DeactiveZPosition)
         {
             gameObject.SetActive(false);
             _platformManager.ReturnPlatformToPool(gameObject);

@@ -15,7 +15,8 @@ public class PlatformManager : MonoBehaviour
 
     [Header("Platform Position")]
     [SerializeField] private Vector3 _platformPoolPosition;
-    [SerializeField] private Vector3[] _platformStartPositions = {
+    [SerializeField]
+    private Vector3[] _platformStartPositions = {
         new Vector3(0f, 0f, 80f),
         new Vector3(0f, 0f, 56f),
         new Vector3(0f, 0f, 32f),
@@ -34,7 +35,7 @@ public class PlatformManager : MonoBehaviour
         _platforms[_platforms.Count - 1].transform.position = _platformStartPositions[(int)EPositionIndex.Start];
 
         // 나머지 랜덤 설정
-        for(int i = 0; i<_platformStartPositions.Length - 1; ++i)
+        for (int i = 0; i < _platformStartPositions.Length - 1; ++i)
         {
             SelectNextPlatform(_platformStartPositions[i]);
         }
@@ -45,13 +46,13 @@ public class PlatformManager : MonoBehaviour
 
         PlatformMovement[] platformScripts = GetComponentsInChildren<PlatformMovement>();
 
-        foreach(PlatformMovement script in platformScripts)
+        foreach (PlatformMovement script in platformScripts)
         {
             GameObject platform = script.gameObject;
 
             platform.SetActive(false);
             platform.transform.position = _platformPoolPosition;
-            
+
             _platforms.Add(platform);
         }
     }
@@ -76,6 +77,6 @@ public class PlatformManager : MonoBehaviour
     {
         platform.transform.position = _platformPoolPosition;
 
-        SelectNextPlatform(_platformStartPositions[(int) EPositionIndex.Rear]);
+        SelectNextPlatform(_platformStartPositions[(int)EPositionIndex.Rear]);
     }
 }

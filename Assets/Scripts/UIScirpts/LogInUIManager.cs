@@ -20,8 +20,8 @@ public class LogInUIManager : MonoBehaviour
         int uiNumber = transform.childCount;
         Debug.Assert((int)ELogInUIIndex.Max == uiNumber, "Index 추가 잊지 말고");
         _ui = new GameObject[uiNumber];
-        
-        for(int i = 0; i < uiNumber; ++i)
+
+        for (int i = 0; i < uiNumber; ++i)
         {
             _ui[i] = transform.GetChild(i).gameObject;
         }

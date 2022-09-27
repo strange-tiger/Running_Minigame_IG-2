@@ -17,7 +17,7 @@ public class LogInUI : MonoBehaviour
     [Header("Input Field")]
     [SerializeField] private InputField _idInput;
     [SerializeField] private InputField _passwordInput;
-    
+
     private LogInUIManager _logInUIManager;
 
     private GameObject _idErrorText;
@@ -55,7 +55,7 @@ public class LogInUI : MonoBehaviour
         _idErrorText?.SetActive(false);
         _passwordErrorText?.SetActive(false);
     }
-    
+
     // 입력된 계정 정보를 계정 DB와 비교해 일치하면 ID를 PlayerPrefs에 저장하고 WaitingRoom 씬을 로드한다.
     public void LogIn()
     {
@@ -66,11 +66,11 @@ public class LogInUI : MonoBehaviour
             sqlConnection.Open();
             MySqlCommand readCommand = new MySqlCommand(_selectString, sqlConnection);
             MySqlDataReader dataReader = readCommand.ExecuteReader();
-            if(dataReader.Read())
+            if (dataReader.Read())
             {
-                  _idErrorText.SetActive(false);
-                
-                if(dataReader["Password"].ToString() == _passwordInput.text)
+                _idErrorText.SetActive(false);
+
+                if (dataReader["Password"].ToString() == _passwordInput.text)
                 {
                     _passwordErrorText.SetActive(false);
 
@@ -99,8 +99,8 @@ public class LogInUI : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public void LoadSignIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn); 
-    public void LoadFind() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find); 
+    public void LoadSignIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn);
+    public void LoadFind() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find);
     public void LoadQuit() => _logInUIManager.LoadQuit();
 
     private void OnDisable()

@@ -10,13 +10,13 @@ public class GetRanking
 
     // 최고 기록
     private int _highScore;
-    public int HighScore 
-    { 
+    public int HighScore
+    {
         get => GetHighScore();
-        private set 
-        { 
-            _highScore = value; 
-        } 
+        private set
+        {
+            _highScore = value;
+        }
     }
 
     public void Init()
@@ -26,7 +26,7 @@ public class GetRanking
 
     private string GetPlayerId()
     {
-        if(hasUserId)
+        if (hasUserId)
         {
             return _userId;
         }
@@ -87,7 +87,7 @@ public class GetRanking
 
             Debug.Assert(_readHighScore.Read() == false, "기록 없음");
 
-            if(_readHighScore.Read() != false)
+            if (_readHighScore.Read() != false)
             {
                 HighScore = int.Parse(_readHighScore["High_Record"].ToString());
             }

@@ -55,7 +55,7 @@ public class InGameUIManager : MonoBehaviour
         int highScore = GameManager.Instance.GetRanking.HighScore;
         _highScoreText.text = highScore.ToString();
 
-        if(score > highScore)
+        if (score > highScore)
         {
             _newHighScoreText.SetActive(true);
             GameManager.Instance.GetRanking.SetNewHighScore(score);

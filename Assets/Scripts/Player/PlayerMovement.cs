@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerHealth _health;
 
     private Rigidbody _rigidbody;
-    
+
     private Animator _animator;
     private AudioSource _audioSource;
 
@@ -29,26 +29,26 @@ public class PlayerMovement : MonoBehaviour
     {
         _input = GetComponent<PlayerInput>();
         _health = GetComponentInChildren<PlayerHealth>();
-        
+
         _rigidbody = GetComponent<Rigidbody>();
-        
+
         _animator = GetComponentInChildren<Animator>();
         _audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
-        if(_health.IsDead)
+        if (_health.IsDead)
         {
             return;
         }
 
-        if(!_isMoving)
+        if (!_isMoving)
         {
             Move();
         }
 
-        if(!_isJumping)
+        if (!_isJumping)
         {
             Jump();
         }
@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
     {
         int nextMovePosition = _currentXPosition + _input.MoveX;
 
-        if(_input.MoveX == 0 || nextMovePosition < 0 || nextMovePosition > 2)
+        if (_input.MoveX == 0 || nextMovePosition < 0 || nextMovePosition > 2)
         {
             return;
         }
@@ -77,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float endXPosition = _xPositions[nextPos];
 
-        while(true)
+        while (true)
         {
             float deltaXPosition = moveDirection * _moveSpeed * Time.deltaTime;
             _rigidbody.MovePosition(_rigidbody.position + new Vector3(deltaXPosition, 0f, 0f));
@@ -120,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
         // 기존의 y값인 1 더해주기
         endYPosition += 1f;
 
-        while(true)
+        while (true)
         {
             float deltaYPosition = _jumpSpeed * Time.deltaTime;
             _rigidbody.MovePosition(_rigidbody.position + new Vector3(0f, deltaYPosition, 0f));
@@ -128,14 +128,14 @@ public class PlayerMovement : MonoBehaviour
             if (Mathf.Abs(endYPosition - transform.position.y) <= 0.01f)
             {
                 transform.position = new Vector3(transform.position.x, endYPosition, transform.position.z);
-                
+
                 break;
             }
 
             yield return null;
         }
 
-        while(true)
+        while (true)
         {
             float deltaYPosition = -_jumpSpeed * Time.deltaTime;
             _rigidbody.MovePosition(_rigidbody.position + new Vector3(0f, deltaYPosition, 0f));
@@ -146,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
 
                 _isMoving = false;
                 _isJumping = false;
-                
+
                 break;
             }
 
