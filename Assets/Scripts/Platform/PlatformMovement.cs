@@ -5,18 +5,18 @@ using UnityEngine;
 public class PlatformMovement : MonoBehaviour
 {
     [Header("Platform Spec")]
-    [SerializeField] private static float _moveSpeed = 5f;
+    [SerializeField] private static float s_moveSpeed = 5f;
     public static float MoveSpeed
     {
-        get => _moveSpeed;
-        set { _moveSpeed = value; }
+        get => s_moveSpeed;
+        set { s_moveSpeed = value; }
     }
 
-    [SerializeField] private static float _deactiveZPosition = -16f;
+    [SerializeField] private static float s_deactiveZPosition = -16f;
     public static float DeactiveZPosition
     {
-        get => _deactiveZPosition;
-        private set { _deactiveZPosition = value; }
+        get => s_deactiveZPosition;
+        private set { s_deactiveZPosition = value; }
     }
 
 
@@ -51,11 +51,12 @@ public class PlatformMovement : MonoBehaviour
         {
             coin.SetActive(true);
         }
+        MoveSpeed = 5f;
     }
 
     private void Update()
     {
-        float deltaZPosition = -MoveSpeed * Time.deltaTime;
+        float deltaZPosition = - MoveSpeed * Time.deltaTime;
         transform.Translate(0f, 0f, deltaZPosition);
 
         if (transform.position.z < DeactiveZPosition)
