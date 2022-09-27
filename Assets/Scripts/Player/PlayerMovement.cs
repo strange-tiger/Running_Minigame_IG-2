@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
             float deltaXPosition = moveDirection * _moveSpeed * Time.deltaTime;
             _rigidbody.MovePosition(_rigidbody.position + new Vector3(deltaXPosition, 0f, 0f));
 
-            if (Mathf.Abs(endXPosition - _rigidbody.position.x) <= 0.01f)
+            if (moveDirection * (endXPosition - _rigidbody.position.x) <= 0.01f)
             {
                 transform.position = new Vector3(endXPosition, transform.position.y, transform.position.z);
 
@@ -125,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
             float deltaYPosition = _jumpSpeed * Time.deltaTime;
             _rigidbody.MovePosition(_rigidbody.position + new Vector3(0f, deltaYPosition, 0f));
 
-            if (Mathf.Abs(endYPosition - transform.position.y) <= 0.01f)
+            if (endYPosition - transform.position.y <= 0.01f)
             {
                 transform.position = new Vector3(transform.position.x, endYPosition, transform.position.z);
 
@@ -140,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
             float deltaYPosition = -_jumpSpeed * Time.deltaTime;
             _rigidbody.MovePosition(_rigidbody.position + new Vector3(0f, deltaYPosition, 0f));
 
-            if (Mathf.Abs(1f - transform.position.y) <= 0.01f)
+            if (1f - transform.position.y >= -0.01f)
             {
                 transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
 
@@ -152,6 +152,5 @@ public class PlayerMovement : MonoBehaviour
 
             yield return null;
         }
-
     }
 }
