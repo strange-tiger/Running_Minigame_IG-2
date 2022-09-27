@@ -54,9 +54,9 @@ public class PlatformMovement : MonoBehaviour
         MoveSpeed = 5f;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        float deltaZPosition = - MoveSpeed * Time.deltaTime;
+        float deltaZPosition = - MoveSpeed * Time.fixedDeltaTime;
         transform.Translate(0f, 0f, deltaZPosition);
 
         if (transform.position.z < DeactiveZPosition)
