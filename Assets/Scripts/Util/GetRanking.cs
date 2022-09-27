@@ -6,17 +6,17 @@ using MySql.Data.MySqlClient;
 public class GetRanking
 {
     private string _userId;
-    private bool hasUserId = false;
+    private bool _hasUserId = false;
 
     // 최고 기록
     private int _highScore;
-    public int HighScore 
-    { 
+    public int HighScore
+    {
         get => GetHighScore();
-        private set 
-        { 
-            _highScore = value; 
-        } 
+        private set
+        {
+            _highScore = value;
+        }
     }
 
     public void Init()
@@ -26,7 +26,7 @@ public class GetRanking
 
     private string GetPlayerId()
     {
-        if(hasUserId)
+        if (_hasUserId)
         {
             return _userId;
         }
@@ -36,7 +36,7 @@ public class GetRanking
         if (PlayerPrefs.HasKey("ID"))
         {
             _userId = PlayerPrefs.GetString("ID");
-            hasUserId = true;
+            _hasUserId = true;
         }
 
         return _userId;
@@ -63,7 +63,7 @@ public class GetRanking
 
     public void SetNewHighScore(int newHighScore)
     {
-        Debug.Assert(newHighScore < HighScore,
+        Debug.Assert(newHighScore > HighScore,
             $"새로운 점수 {newHighScore} 보다 기존 점수 {HighScore}가 더 높음");
 
         string updateScoreString = _updateScoreText.text + $"{newHighScore} WHERE ID = '{GetPlayerId()}'";
@@ -85,9 +85,9 @@ public class GetRanking
             MySqlCommand _selectMyHighScore = new MySqlCommand(_selectScoreString, _sqlConnection);
             MySqlDataReader _readHighScore = _selectMyHighScore.ExecuteReader();
 
-            Debug.Assert(_readHighScore.Read() == false, "기록 없음");
+            Debug.Assert(_readHighScore.Read() == true, "기록 없음");
 
-            if(_readHighScore.Read() != false)
+            if (_readHighScore.Read() != false)
             {
                 HighScore = int.Parse(_readHighScore["High_Record"].ToString());
             }

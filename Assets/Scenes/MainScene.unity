@@ -2809,7 +2809,7 @@ MonoBehaviour:
   _inGameScoreText: {fileID: 85409446}
   _menuPanel: {fileID: 285311668}
   _gameOverPanel: {fileID: 853797115}
-  _gameOverScoreText: {fileID: 969063684}
+  _gameOverScoreText: {fileID: 1951578237}
   _highScoreText: {fileID: 1241249105}
   _newHighScoreText: {fileID: 2070098427}
 --- !u!4 &1714070984

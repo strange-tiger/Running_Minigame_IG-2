@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerHealth : MonoBehaviour
 {
-    
+
     [Header("Coin & Score")]
     [SerializeField] private AudioClip _getCoinSoundClip;
     public UnityEvent<int> OnGetCoin = new UnityEvent<int>();
@@ -40,14 +40,14 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
     {
-        if(!IsDead)
+        if (!IsDead)
         {
             _audioSource.PlayOneShot(_dieSoundClip);
             _animator.SetTrigger(AnimationID.Die);
             IsDead = true;
         }
     }
-    
+
     public void GameOver()
     {
         OnGameOver.Invoke(Score);

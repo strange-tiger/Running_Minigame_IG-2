@@ -28,7 +28,7 @@ public class PlayerInput : MonoBehaviour
         {
             MoveX = 0;
         }
-        
+
         Jump = (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow));
     }
 }

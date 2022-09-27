@@ -16,11 +16,12 @@ public class LogOutUI : MonoBehaviour
         _noButton.onClick.AddListener(Close);
     }
 
+    // PlayerPrefs에 저장되어 있는 ID 키를 제거해 로그아웃하고 Login 씬을 로드한다.
     public void LogOut()
     {
         // DB 연결 해제 (로그아웃)
         PlayerPrefs.DeleteKey("ID");
-        
+
         SceneManager.LoadScene(0);
     }
     public void Close() => gameObject.SetActive(false);

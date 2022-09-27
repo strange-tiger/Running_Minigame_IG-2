@@ -21,9 +21,9 @@ public class SignInUI : MonoBehaviour
     [SerializeField] private InputField _emailInput;
 
     private LogInUIManager _logInUIManager;
-    
+
     private GameObject _idErrorText;
-    private GameObject _pwErrorText;
+    private GameObject _passwordErrorText;
     private GameObject _emailErrorText;
 
     private TextAsset _connectionText;
@@ -37,11 +37,11 @@ public class SignInUI : MonoBehaviour
 
     private bool _hasIdDoubleCheck;
     private bool _hasEmailDoubleCheck;
-    private bool _isMatchPassword;
+    private bool _isMatchingPassword;
     private void Start()
     {
         _logInUIManager = GetComponentInParent<LogInUIManager>();
-        
+
         _connectionText = Resources.Load<TextAsset>("Connection");
         _insertAccountText = Resources.Load<TextAsset>("InsertAccount");
         _insertScoreText = Resources.Load<TextAsset>("InsertRanking");
@@ -52,36 +52,37 @@ public class SignInUI : MonoBehaviour
         int signInChildIndex = _idInput.transform.childCount - 1;
 
         _idErrorText = _idInput.transform.GetChild(signInChildIndex).gameObject;
-        _pwErrorText = _passwordInput.transform.GetChild(signInChildIndex).gameObject;
+        _passwordErrorText = _passwordInput.transform.GetChild(signInChildIndex).gameObject;
         _emailErrorText = _emailInput.transform.GetChild(signInChildIndex).gameObject;
         _idErrorText.SetActive(false);
-        _pwErrorText.SetActive(false);
+        _passwordErrorText.SetActive(false);
         _emailErrorText.SetActive(false);
     }
+
     private void OnEnable()
     {
-
         _createAccountButton.onClick.AddListener(CreateAccount);
         _logInButton.onClick.AddListener(LoadLogIn);
         _findButton.onClick.AddListener(LoadFind);
         _idDoubleCheckButton.onClick.AddListener(IdDoubleCheck);
         _emailDoubleCheckButton.onClick.AddListener(EmailDoubleCheck);
 
-        _passwordInput.onValueChange.AddListener(CheckPassword);
-        _passwordCheckInput.onValueChange.AddListener(CheckPassword);
+        _passwordInput.onValueChanged.AddListener(CheckPassword);
+        _passwordCheckInput.onValueChanged.AddListener(CheckPassword);
 
         _idErrorText?.SetActive(false);
-        _pwErrorText?.SetActive(false);
+        _passwordErrorText?.SetActive(false);
         _emailErrorText?.SetActive(false);
 
         _hasIdDoubleCheck = false;
         _hasEmailDoubleCheck = false;
-        _isMatchPassword = false;
+        _isMatchingPassword = false;
     }
 
+    // 입력된 계정 정보를 바탕으로 중복체크가 완료되었다면 계정 DB에 저장한다.
     public void CreateAccount()
     {
-        if(_hasIdDoubleCheck && _hasEmailDoubleCheck && _isMatchPassword)
+        if (_hasIdDoubleCheck && _hasEmailDoubleCheck && _isMatchingPassword)
         {
             _insertAccountString = _insertAccountText.text + $"('{_idInput.text}', '{_passwordInput.text}', '{_emailInput.text}');";
             _insertScoreString = _insertScoreText.text + $"('{_idInput.text}');";
@@ -114,7 +115,7 @@ public class SignInUI : MonoBehaviour
             Debug.Log("더블첵해야함");
         }
     }
-    
+
     public void LoadLogIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.LogIn);
     public void LoadFind() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find);
 
@@ -133,22 +134,21 @@ public class SignInUI : MonoBehaviour
     }
     public void IdDoubleCheck()
     {
-        
-         DataSet dataSet;
-         dataSet = GetUserData();
-         Debug.Log(dataSet);
-         bool check = false;
+        DataSet dataSet;
+        dataSet = GetUserData();
+        Debug.Log(dataSet);
+        bool check = false;
 
-         foreach (DataRow dataRow in dataSet.Tables[0].Rows)
-         {
-             if (dataRow["ID"].ToString() == _idInput.text)
-             {
+        foreach (DataRow dataRow in dataSet.Tables[0].Rows)
+        {
+            if (dataRow["ID"].ToString() == _idInput.text)
+            {
                 check = true;
                 break;
-             }
-         }
-         
-        if(!check)
+            }
+        }
+
+        if (!check)
         {
             // Debug.Log("사용 가능");
             _hasIdDoubleCheck = true;
@@ -160,24 +160,10 @@ public class SignInUI : MonoBehaviour
             _hasIdDoubleCheck = false;
             _idErrorText.SetActive(true);
         }
-        
     }
-    public void CheckPassword(string pw)
-    {
-        if (_passwordInput.text == _passwordCheckInput.text)
-        {
-            _isMatchPassword = true;
-            _pwErrorText.SetActive(false);
-        }
-        else
-        {
-            _isMatchPassword = false;
-            _pwErrorText.SetActive(true);
-        }
-    }
+
     public void EmailDoubleCheck()
     {
-
         DataSet dataSet;
         dataSet = GetUserData();
         Debug.Log(dataSet);
@@ -204,7 +190,20 @@ public class SignInUI : MonoBehaviour
             _hasEmailDoubleCheck = false;
             _idErrorText.SetActive(true);
         }
+    }
 
+    public void CheckPassword(string pw)
+    {
+        if (_passwordInput.text == _passwordCheckInput.text)
+        {
+            _isMatchingPassword = true;
+            _passwordErrorText.SetActive(false);
+        }
+        else
+        {
+            _isMatchingPassword = false;
+            _passwordErrorText.SetActive(true);
+        }
     }
 
     private void OnDisable()
@@ -220,7 +219,7 @@ public class SignInUI : MonoBehaviour
         _idDoubleCheckButton.onClick.RemoveListener(IdDoubleCheck);
         _emailDoubleCheckButton.onClick.RemoveListener(EmailDoubleCheck);
 
-        _passwordInput.onValueChange.RemoveListener(CheckPassword);
-        _passwordCheckInput.onValueChange.RemoveListener(CheckPassword);
+        _passwordInput.onValueChanged.RemoveListener(CheckPassword);
+        _passwordCheckInput.onValueChanged.RemoveListener(CheckPassword);
     }
 }

@@ -25,7 +25,7 @@ public class RankUI : MonoBehaviour
 
         // 랭킹 보드는 위의 타이틀을 제외하고는 등수를 표시하는 오브젝트만 자식으로 가져야 한다.
         _rankNumber = transform.childCount - 1;
-        
+
         _nicknameText = new TextMeshProUGUI[_rankNumber];
         _scoreText = new TextMeshProUGUI[_rankNumber];
 
@@ -40,7 +40,7 @@ public class RankUI : MonoBehaviour
 
     public IEnumerator UpdateRank()
     {
-        while(true)
+        while (true)
         {
             UpdateRanking();
             yield return new WaitForSeconds(5);

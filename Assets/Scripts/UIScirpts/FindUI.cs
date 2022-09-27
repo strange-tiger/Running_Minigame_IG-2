@@ -19,7 +19,7 @@ public class FindUI : MonoBehaviour
     [SerializeField] private InputField _passwordEmailInput;
     [SerializeField] private InputField _passwordIdInput;
     [SerializeField] private InputField _passwordOutput;
-    
+
     private LogInUIManager _logInUIManager;
 
     private GameObject _idEmailErrorText;
@@ -34,12 +34,12 @@ public class FindUI : MonoBehaviour
     private void Start()
     {
         _logInUIManager = GetComponentInParent<LogInUIManager>();
-        
+
         _connectionText = Resources.Load<TextAsset>("Connection");
         _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("Select");
         _selectString = _selectText.text + ";";
-        
+
         int findIdChildIndex = _passwordIdInput.transform.childCount - 1;
 
         _idEmailErrorText = _idEmailInput.transform.GetChild(findIdChildIndex).gameObject;
@@ -66,7 +66,7 @@ public class FindUI : MonoBehaviour
     private DataSet GetUserData()
     {
         DataSet dataSet = new DataSet();
-        using(MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
+        using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
         {
             sqlConnection.Open();
 
@@ -82,9 +82,9 @@ public class FindUI : MonoBehaviour
 
         findIdDataSet = GetUserData();
 
-        foreach(DataRow dataRow in findIdDataSet.Tables[0].Rows)
+        foreach (DataRow dataRow in findIdDataSet.Tables[0].Rows)
         {
-            if(dataRow["Email"].ToString() == _idEmailInput.text)
+            if (dataRow["Email"].ToString() == _idEmailInput.text)
             {
                 _idOutput.text = dataRow["ID"].ToString();
                 _idEmailErrorText.SetActive(false);
@@ -116,7 +116,7 @@ public class FindUI : MonoBehaviour
                 curIdExist = true;
             }
 
-            if(curEmailExist && curIdExist)
+            if (curEmailExist && curIdExist)
             {
                 _passwordOutput.text = dataRow["Password"].ToString();
                 break;

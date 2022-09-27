@@ -12,7 +12,7 @@ public class QuitUI : MonoBehaviour
     private void OnEnable()
     {
         _yesButton.onClick.AddListener(Quit);
-        _noButton.onClick.AddListener(LoadLogIn);
+        _noButton.onClick.AddListener(Close);
     }
 
     public void Quit()
@@ -21,11 +21,11 @@ public class QuitUI : MonoBehaviour
 
         Application.Quit();
     }
-    public void LoadLogIn() => gameObject.SetActive(false);
+    public void Close() => gameObject.SetActive(false);
 
     private void OnDisable()
     {
         _yesButton.onClick.RemoveListener(Quit);
-        _noButton.onClick.RemoveListener(LoadLogIn);
+        _noButton.onClick.RemoveListener(Close);
     }
 }
