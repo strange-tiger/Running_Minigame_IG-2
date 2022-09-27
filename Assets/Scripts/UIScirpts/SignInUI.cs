@@ -23,7 +23,7 @@ public class SignInUI : MonoBehaviour
     private LogInUIManager _logInUIManager;
     
     private GameObject _idErrorText;
-    private GameObject _pwErrorText;
+    private GameObject _passwordErrorText;
     private GameObject _emailErrorText;
 
     private TextAsset _connectionText;
@@ -37,7 +37,7 @@ public class SignInUI : MonoBehaviour
 
     private bool _hasIdDoubleCheck;
     private bool _hasEmailDoubleCheck;
-    private bool _isMatchPassword;
+    private bool _isMatchingPassword;
     private void Start()
     {
         _logInUIManager = GetComponentInParent<LogInUIManager>();
@@ -52,10 +52,10 @@ public class SignInUI : MonoBehaviour
         int signInChildIndex = _idInput.transform.childCount - 1;
 
         _idErrorText = _idInput.transform.GetChild(signInChildIndex).gameObject;
-        _pwErrorText = _passwordInput.transform.GetChild(signInChildIndex).gameObject;
+        _passwordErrorText = _passwordInput.transform.GetChild(signInChildIndex).gameObject;
         _emailErrorText = _emailInput.transform.GetChild(signInChildIndex).gameObject;
         _idErrorText.SetActive(false);
-        _pwErrorText.SetActive(false);
+        _passwordErrorText.SetActive(false);
         _emailErrorText.SetActive(false);
     }
     private void OnEnable()
@@ -71,17 +71,18 @@ public class SignInUI : MonoBehaviour
         _passwordCheckInput.onValueChange.AddListener(CheckPassword);
 
         _idErrorText?.SetActive(false);
-        _pwErrorText?.SetActive(false);
+        _passwordErrorText?.SetActive(false);
         _emailErrorText?.SetActive(false);
 
         _hasIdDoubleCheck = false;
         _hasEmailDoubleCheck = false;
-        _isMatchPassword = false;
+        _isMatchingPassword = false;
     }
 
+    // 입력된 계정 정보를 바탕으로 중복체크가 완료되었다면 계정 DB에 저장한다.
     public void CreateAccount()
     {
-        if(_hasIdDoubleCheck && _hasEmailDoubleCheck && _isMatchPassword)
+        if(_hasIdDoubleCheck && _hasEmailDoubleCheck && _isMatchingPassword)
         {
             _insertAccountString = _insertAccountText.text + $"('{_idInput.text}', '{_passwordInput.text}', '{_emailInput.text}');";
             _insertScoreString = _insertScoreText.text + $"('{_idInput.text}');";
@@ -166,13 +167,13 @@ public class SignInUI : MonoBehaviour
     {
         if (_passwordInput.text == _passwordCheckInput.text)
         {
-            _isMatchPassword = true;
-            _pwErrorText.SetActive(false);
+            _isMatchingPassword = true;
+            _passwordErrorText.SetActive(false);
         }
         else
         {
-            _isMatchPassword = false;
-            _pwErrorText.SetActive(true);
+            _isMatchingPassword = false;
+            _passwordErrorText.SetActive(true);
         }
     }
     public void EmailDoubleCheck()

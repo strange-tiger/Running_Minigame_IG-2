@@ -21,7 +21,7 @@ public class LogInUI : MonoBehaviour
     private LogInUIManager _logInUIManager;
 
     private GameObject _idErrorText;
-    private GameObject _pwErrorText;
+    private GameObject _passwordErrorText;
     private TextAsset _connectionText;
     private TextAsset _selectText;
     private string _connectionString;
@@ -38,26 +38,26 @@ public class LogInUI : MonoBehaviour
         int loginChildIndex = _idInput.transform.childCount - 1;
 
         _idErrorText = _idInput.transform.GetChild(loginChildIndex).gameObject;
-        _pwErrorText = _passwordInput.transform.GetChild(loginChildIndex).gameObject;
+        _passwordErrorText = _passwordInput.transform.GetChild(loginChildIndex).gameObject;
         _idErrorText.SetActive(false);
-        _pwErrorText.SetActive(false);
+        _passwordErrorText.SetActive(false);
 
         if (PlayerPrefs.GetString("ID") != null)
             _idInput.text = PlayerPrefs.GetString("ID");
     }
     private void OnEnable()
     {
-        _logInButton.onClick.AddListener(LoadLogIn);
+        _logInButton.onClick.AddListener(LogIn);
         _signInButton.onClick.AddListener(LoadSignIn);
         _findButton.onClick.AddListener(LoadFind);
         _quitButton.onClick.AddListener(LoadQuit);
 
         _idErrorText?.SetActive(false);
-        _pwErrorText?.SetActive(false);
+        _passwordErrorText?.SetActive(false);
     }
     
-
-    public void LoadLogIn()
+    // 입력된 계정 정보를 계정 DB와 비교해 일치하면 ID를 PlayerPrefs에 저장하고 WaitingRoom 씬을 로드한다.
+    public void LogIn()
     {
         _selectString = _selectText.text + $" where binary ID= '{_idInput.text}';";
 
@@ -72,7 +72,7 @@ public class LogInUI : MonoBehaviour
                 
                 if(dataReader["Password"].ToString() == _passwordInput.text)
                 {
-                    _pwErrorText.SetActive(false);
+                    _passwordErrorText.SetActive(false);
 
                     PlayerPrefs.SetString("ID", dataReader["ID"].ToString());
 
@@ -82,7 +82,7 @@ public class LogInUI : MonoBehaviour
                 }
                 else
                 {
-                    _pwErrorText.SetActive(true);
+                    _passwordErrorText.SetActive(true);
                 }
             }
             else
@@ -107,7 +107,7 @@ public class LogInUI : MonoBehaviour
     {
         _idInput.text = "";
         _passwordInput.text = "";
-        _logInButton.onClick.RemoveListener(LoadLogIn);
+        _logInButton.onClick.RemoveListener(LogIn);
         _signInButton.onClick.RemoveListener(LoadSignIn);
         _findButton.onClick.RemoveListener(LoadFind);
         _quitButton.onClick.RemoveListener(LoadQuit);

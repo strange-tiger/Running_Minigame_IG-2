@@ -79,8 +79,8 @@ public class PlayerMovement : MonoBehaviour
 
         while(true)
         {
-            float deltaxPosition = moveDirection * _moveSpeed * Time.deltaTime;
-            _rigidbody.MovePosition(_rigidbody.position + new Vector3(deltaxPosition, 0f, 0f));
+            float deltaXPosition = moveDirection * _moveSpeed * Time.deltaTime;
+            _rigidbody.MovePosition(_rigidbody.position + new Vector3(deltaXPosition, 0f, 0f));
 
             if (Mathf.Abs(endXPosition - _rigidbody.position.x) <= 0.01f)
             {

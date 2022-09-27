@@ -36,12 +36,14 @@ public class LogInUIManager : MonoBehaviour
         }
     }
 
+    // ELogInUIIndex를 매개변수로 받아, ui 오브젝트를 모두 비활성화한 후 인덱스에 해당하는 ui 오브젝트를 Quit을 제외하고 활성화한다.
     public void LoadUI(ELogInUIIndex ui)
     {
         ShutUI();
         _ui[(int)ui].SetActive(true);
     }
 
+    // Quit ui 오브젝트를 활성화한다.
     public void LoadQuit()
     {
         _ui[(int)ELogInUIIndex.Quit].SetActive(true);
