@@ -2805,13 +2805,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383b72a66c6e7ad41be5fbb10093b324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGamePanel: {fileID: 1862260486}
-  inGameScoreText: {fileID: 85409446}
-  MenuPanel: {fileID: 285311668}
-  GameOverPanel: {fileID: 853797115}
-  gameOverScoreText: {fileID: 1951578237}
-  highScoreText: {fileID: 1241249105}
-  newHighScoreText: {fileID: 2070098427}
+  _inGamePanel: {fileID: 1862260486}
+  _inGameScoreText: {fileID: 85409446}
+  _menuPanel: {fileID: 285311668}
+  _gameOverPanel: {fileID: 853797115}
+  _gameOverScoreText: {fileID: 969063684}
+  _highScoreText: {fileID: 1241249105}
+  _newHighScoreText: {fileID: 2070098427}
 --- !u!4 &1714070984
 Transform:
   m_ObjectHideFlags: 0
