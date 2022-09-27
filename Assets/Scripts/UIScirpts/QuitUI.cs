@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class QuitUI : MonoBehaviour
 {
-    public Button YesButton;
-    public Button NoButton;
+    [Header("Button")]
+    [SerializeField] private Button _yesButton;
+    [SerializeField] private Button _noButton;
 
     private void OnEnable()
     {
-        YesButton.onClick.AddListener(Quit);
-        NoButton.onClick.AddListener(LoadLogIn);
+        _yesButton.onClick.AddListener(Quit);
+        _noButton.onClick.AddListener(LoadLogIn);
     }
 
     public void Quit()
@@ -24,7 +25,7 @@ public class QuitUI : MonoBehaviour
 
     private void OnDisable()
     {
-        YesButton.onClick.RemoveListener(Quit);
-        NoButton.onClick.RemoveListener(LoadLogIn);
+        _yesButton.onClick.RemoveListener(Quit);
+        _noButton.onClick.RemoveListener(LoadLogIn);
     }
 }

@@ -3323,8 +3323,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718bcf9ef64216c4888c7b3e3b7d42d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  YesButton: {fileID: 181480321}
-  NoButton: {fileID: 1706171793}
+  _yesButton: {fileID: 181480321}
+  _noButton: {fileID: 1706171793}
 --- !u!114 &1063351848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3896,11 +3896,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf38ff1cd3e4d104485ab6c046803119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LogOutUI: {fileID: 1393552158}
-  QuitUI: {fileID: 1063351845}
-  StartBtn: {fileID: 40938434}
-  QuitBtn: {fileID: 143520053}
-  LogOutBtn: {fileID: 433272687}
+  _logOutUI: {fileID: 1393552158}
+  _quitUI: {fileID: 1063351845}
+  _startButton: {fileID: 40938434}
+  _quitButton: {fileID: 143520053}
+  _logOutButton: {fileID: 433272687}
 --- !u!114 &1196325013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4622,8 +4622,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edef3ef0891e2834ea562213df8f7a49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  YesBtn: {fileID: 1539783566}
-  NoBtn: {fileID: 1653407199}
+  _yesButton: {fileID: 1539783566}
+  _noButton: {fileID: 1653407199}
 --- !u!114 &1393552161
 MonoBehaviour:
   m_ObjectHideFlags: 0

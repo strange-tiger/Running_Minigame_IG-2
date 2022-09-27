@@ -8,15 +8,17 @@ using MySql.Data.MySqlClient;
 
 public class LogInUI : MonoBehaviour
 {
-    public LogInUIManager LogInUIManager;
+    [Header("Button")]
+    [SerializeField] private Button _logInButton;
+    [SerializeField] private Button _signInButton;
+    [SerializeField] private Button _findButton;
+    [SerializeField] private Button _quitButton;
 
-    public Button LogInBtn;
-    public Button SignInBtn;
-    public Button FindButton;
-    public Button QuitBtn;
+    [Header("Input Field")]
+    [SerializeField] private InputField _idInput;
+    [SerializeField] private InputField _passwordInput;
     
-    public InputField IDInput;
-    public InputField PasswordInput;
+    private LogInUIManager _logInUIManager;
 
     private GameObject _idErrorText;
     private GameObject _pwErrorText;
@@ -27,26 +29,28 @@ public class LogInUI : MonoBehaviour
 
     private void Start()
     {
+        _logInUIManager = GetComponentInParent<LogInUIManager>();
+
         _connectionText = Resources.Load<TextAsset>("Connection");
         _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("Select");
 
-        int loginChildIndex = IDInput.transform.childCount - 1;
+        int loginChildIndex = _idInput.transform.childCount - 1;
 
-        _idErrorText = IDInput.transform.GetChild(loginChildIndex).gameObject;
-        _pwErrorText = PasswordInput.transform.GetChild(loginChildIndex).gameObject;
+        _idErrorText = _idInput.transform.GetChild(loginChildIndex).gameObject;
+        _pwErrorText = _passwordInput.transform.GetChild(loginChildIndex).gameObject;
         _idErrorText.SetActive(false);
         _pwErrorText.SetActive(false);
 
         if (PlayerPrefs.GetString("ID") != null)
-            IDInput.text = PlayerPrefs.GetString("ID");
+            _idInput.text = PlayerPrefs.GetString("ID");
     }
     private void OnEnable()
     {
-        LogInBtn.onClick.AddListener(LoadLogIn);
-        SignInBtn.onClick.AddListener(LoadSignIn);
-        FindButton.onClick.AddListener(LoadFind);
-        QuitBtn.onClick.AddListener(LoadQuit);
+        _logInButton.onClick.AddListener(LoadLogIn);
+        _signInButton.onClick.AddListener(LoadSignIn);
+        _findButton.onClick.AddListener(LoadFind);
+        _quitButton.onClick.AddListener(LoadQuit);
 
         _idErrorText?.SetActive(false);
         _pwErrorText?.SetActive(false);
@@ -55,7 +59,7 @@ public class LogInUI : MonoBehaviour
 
     public void LoadLogIn()
     {
-        _selectString = _selectText.text + $" where binary ID= '{IDInput.text}';";
+        _selectString = _selectText.text + $" where binary ID= '{_idInput.text}';";
 
         using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
         {
@@ -66,7 +70,7 @@ public class LogInUI : MonoBehaviour
             {
                   _idErrorText.SetActive(false);
                 
-                if(dataReader["Password"].ToString() == PasswordInput.text)
+                if(dataReader["Password"].ToString() == _passwordInput.text)
                 {
                     _pwErrorText.SetActive(false);
 
@@ -95,17 +99,17 @@ public class LogInUI : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public void LoadSignIn() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn); 
-    public void LoadFind() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find); 
-    public void LoadQuit() => LogInUIManager.LoadQuitCheck();
+    public void LoadSignIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn); 
+    public void LoadFind() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find); 
+    public void LoadQuit() => _logInUIManager.LoadQuit();
 
     private void OnDisable()
     {
-        IDInput.text = "";
-        PasswordInput.text = "";
-        LogInBtn.onClick.RemoveListener(LoadLogIn);
-        SignInBtn.onClick.RemoveListener(LoadSignIn);
-        FindButton.onClick.RemoveListener(LoadFind);
-        QuitBtn.onClick.RemoveListener(LoadQuit);
+        _idInput.text = "";
+        _passwordInput.text = "";
+        _logInButton.onClick.RemoveListener(LoadLogIn);
+        _signInButton.onClick.RemoveListener(LoadSignIn);
+        _findButton.onClick.RemoveListener(LoadFind);
+        _quitButton.onClick.RemoveListener(LoadQuit);
     }
 }
