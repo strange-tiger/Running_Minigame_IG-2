@@ -6,13 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class LogOutUI : MonoBehaviour
 {
-    public Button YesBtn;
-    public Button NoBtn;
+    [Header("Button")]
+    [SerializeField] private Button _yesButton;
+    [SerializeField] private Button _noButton;
 
     private void OnEnable()
     {
-        YesBtn.onClick.AddListener(LogOut);
-        NoBtn.onClick.AddListener(Close);
+        _yesButton.onClick.AddListener(LogOut);
+        _noButton.onClick.AddListener(Close);
     }
 
     public void LogOut()
@@ -26,7 +27,7 @@ public class LogOutUI : MonoBehaviour
 
     private void OnDisable()
     {
-        YesBtn.onClick.RemoveListener(LogOut);
-        NoBtn.onClick.RemoveListener(Close);
+        _yesButton.onClick.RemoveListener(LogOut);
+        _noButton.onClick.RemoveListener(Close);
     }
 }

@@ -7,22 +7,24 @@ using MySql.Data.MySqlClient;
 
 public class FindUI : MonoBehaviour
 {
-    public LogInUIManager LogInUIManager;
+    [Header("Button")]
+    [SerializeField] private Button _logInButton;
+    [SerializeField] private Button _signInButton;
+    [SerializeField] private Button _idEnterButton;
+    [SerializeField] private Button _passwordEnterButton;
 
-    public Button LogInBtn;
-    public Button SignInBtn;
-    public Button Id_EnterBtn;
-    public Button Pw_EnterBtn;
+    [Header("Input Field")]
+    [SerializeField] private InputField _idEmailInput;
+    [SerializeField] private InputField _idOutput;
+    [SerializeField] private InputField _passwordEmailInput;
+    [SerializeField] private InputField _passwordIdInput;
+    [SerializeField] private InputField _passwordOutput;
+    
+    private LogInUIManager _logInUIManager;
 
-    public InputField Id_EmailInput;
-    public InputField Id_Output;
-    public InputField Pw_EmailInput;
-    public InputField Pw_IDInput;
-    public InputField Pw_Output;
-
-    private GameObject _id_EmailErrorText;
-    private GameObject _pw_EmailErrorText;
-    private GameObject _pw_IDErrorText;
+    private GameObject _idEmailErrorText;
+    private GameObject _pwEmailErrorText;
+    private GameObject _pwIdErrorText;
 
     private TextAsset _connectionText;
     private TextAsset _selectText;
@@ -31,34 +33,36 @@ public class FindUI : MonoBehaviour
 
     private void Start()
     {
+        _logInUIManager = GetComponentInParent<LogInUIManager>();
+        
         _connectionText = Resources.Load<TextAsset>("Connection");
         _connectionString = _connectionText.text;
         _selectText = Resources.Load<TextAsset>("Select");
         _selectString = _selectText.text + ";";
         
-        int findIdChildIndex = Pw_IDInput.transform.childCount - 1;
+        int findIdChildIndex = _passwordIdInput.transform.childCount - 1;
 
-        _id_EmailErrorText = Id_EmailInput.transform.GetChild(findIdChildIndex).gameObject;
-        _pw_EmailErrorText = Pw_EmailInput.transform.GetChild(findIdChildIndex).gameObject;
-        _pw_IDErrorText = Pw_IDInput.transform.GetChild(findIdChildIndex).gameObject;
-        _id_EmailErrorText.SetActive(false);
-        _pw_EmailErrorText.SetActive(false);
-        _pw_IDErrorText.SetActive(false);
+        _idEmailErrorText = _idEmailInput.transform.GetChild(findIdChildIndex).gameObject;
+        _pwEmailErrorText = _passwordEmailInput.transform.GetChild(findIdChildIndex).gameObject;
+        _pwIdErrorText = _passwordIdInput.transform.GetChild(findIdChildIndex).gameObject;
+        _idEmailErrorText.SetActive(false);
+        _pwEmailErrorText.SetActive(false);
+        _pwIdErrorText.SetActive(false);
     }
     private void OnEnable()
     {
-        LogInBtn.onClick.AddListener(LoadLogIn);
-        SignInBtn.onClick.AddListener(LoadSignIn);
-        Id_EnterBtn.onClick.AddListener(FindID);
-        Pw_EnterBtn.onClick.AddListener(FindPW);
+        _logInButton.onClick.AddListener(LoadLogIn);
+        _signInButton.onClick.AddListener(LoadSignIn);
+        _idEnterButton.onClick.AddListener(FindID);
+        _passwordEnterButton.onClick.AddListener(FindPW);
 
-        _id_EmailErrorText?.SetActive(false);
-        _pw_EmailErrorText?.SetActive(false);
-        _pw_IDErrorText?.SetActive(false);
+        _idEmailErrorText?.SetActive(false);
+        _pwEmailErrorText?.SetActive(false);
+        _pwIdErrorText?.SetActive(false);
     }
 
-    public void LoadLogIn() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.LogIn);
-    public void LoadSignIn() => LogInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn);
+    public void LoadLogIn() => _logInUIManager.LoadLogIn();
+    public void LoadSignIn() => _logInUIManager.LoadSignIn();
     private DataSet GetUserData()
     {
         DataSet dataSet = new DataSet();
@@ -80,15 +84,15 @@ public class FindUI : MonoBehaviour
 
         foreach(DataRow dataRow in findIdDataSet.Tables[0].Rows)
         {
-            if(dataRow["Email"].ToString() == Id_EmailInput.text)
+            if(dataRow["Email"].ToString() == _idEmailInput.text)
             {
-                Id_Output.text = dataRow["ID"].ToString();
-                _id_EmailErrorText.SetActive(false);
+                _idOutput.text = dataRow["ID"].ToString();
+                _idEmailErrorText.SetActive(false);
 
                 return;
             }
         }
-        _id_EmailErrorText.SetActive(true);
+        _idEmailErrorText.SetActive(true);
     }
 
     public void FindPW()
@@ -101,12 +105,12 @@ public class FindUI : MonoBehaviour
         bool curIdExist = false;
         foreach (DataRow dataRow in findPwDataSet.Tables[0].Rows)
         {
-            if (dataRow["Email"].ToString() == Pw_EmailInput.text)
+            if (dataRow["Email"].ToString() == _passwordEmailInput.text)
             {
                 emailExist = true;
                 curEmailExist = true;
             }
-            if (dataRow["ID"].ToString() == Pw_IDInput.text)
+            if (dataRow["ID"].ToString() == _passwordIdInput.text)
             {
                 idExist = true;
                 curIdExist = true;
@@ -114,27 +118,27 @@ public class FindUI : MonoBehaviour
 
             if(curEmailExist && curIdExist)
             {
-                Pw_Output.text = dataRow["Password"].ToString();
+                _passwordOutput.text = dataRow["Password"].ToString();
                 break;
             }
             curEmailExist = false;
             curIdExist = false;
         }
 
-        _pw_EmailErrorText.SetActive(!emailExist);
-        _pw_IDErrorText.SetActive(!idExist);
+        _pwEmailErrorText.SetActive(!emailExist);
+        _pwIdErrorText.SetActive(!idExist);
     }
 
     private void OnDisable()
     {
-        Id_EmailInput.text = "";
-        Id_Output.text = "";
-        Pw_EmailInput.text = "";
-        Pw_IDInput.text = "";
-        Pw_Output.text = "";
-        LogInBtn.onClick.RemoveListener(LoadLogIn);
-        SignInBtn.onClick.RemoveListener(LoadSignIn);
-        Id_EnterBtn.onClick.RemoveListener(FindID);
-        Pw_EnterBtn.onClick.RemoveListener(FindPW);
+        _idEmailInput.text = "";
+        _idOutput.text = "";
+        _passwordEmailInput.text = "";
+        _passwordIdInput.text = "";
+        _passwordOutput.text = "";
+        _logInButton.onClick.RemoveListener(LoadLogIn);
+        _signInButton.onClick.RemoveListener(LoadSignIn);
+        _idEnterButton.onClick.RemoveListener(FindID);
+        _passwordEnterButton.onClick.RemoveListener(FindPW);
     }
 }

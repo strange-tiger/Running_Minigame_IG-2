@@ -6,25 +6,27 @@ using UnityEngine.SceneManagement;
 
 public class WaitingUI : MonoBehaviour
 {
-    public enum EWaitingUIIndex
-    {
-        Quit,
-        LogOut,
-        Max
-    }
+    //public enum EWaitingUIIndex
+    //{
+    //    Quit,
+    //    LogOut,
+    //    Max
+    //}
 
-    public GameObject LogOutUI;
-    public GameObject QuitUI;
+    [Header("UI Panel")]
+    [SerializeField] private GameObject _logOutUI;
+    [SerializeField] private GameObject _quitUI;
 
-    public Button StartBtn;
-    public Button QuitBtn;
-    public Button LogOutBtn;
+    [Header("Button")]
+    [SerializeField] private Button _startButton;
+    [SerializeField] private Button _quitButton;
+    [SerializeField] private Button _logOutButton;
 
     private void Awake()
     {
-        StartBtn.onClick.AddListener(StartGame);
-        QuitBtn.onClick.AddListener(LoadQuit);
-        LogOutBtn.onClick.AddListener(LoadLogOut);
+        _startButton.onClick.AddListener(StartGame);
+        _quitButton.onClick.AddListener(LoadQuit);
+        _logOutButton.onClick.AddListener(LoadLogOut);
     }
 
     public void StartGame()
@@ -32,33 +34,41 @@ public class WaitingUI : MonoBehaviour
         SceneManager.LoadScene(2);
     }
 
-    public void LoadUI(EWaitingUIIndex ui)
+    //public void LoadUI(EWaitingUIIndex ui)
+    //{
+    //    _logOutUI.SetActive(false);
+    //    _quitUI.SetActive(false);
+
+    //    switch (ui)
+    //    {
+    //        case EWaitingUIIndex.Quit:
+    //            _quitUI.SetActive(true);
+    //            Debug.Log("Quit");
+    //            break;
+    //        case EWaitingUIIndex.LogOut:
+    //            _logOutUI.SetActive(true);
+    //            break;
+    //        default:
+    //            Debug.Assert(ui >= EWaitingUIIndex.Max, "Error: No UI Exists");
+    //            break;
+    //    }
+    //}
+
+    public void LoadQuit()
     {
-        LogOutUI.SetActive(false);
-        QuitUI.SetActive(false);
-
-        switch (ui)
-        {
-            case EWaitingUIIndex.Quit:
-                QuitUI.SetActive(true);
-                Debug.Log("Quit");
-                break;
-            case EWaitingUIIndex.LogOut:
-                LogOutUI.SetActive(true);
-                break;
-            default:
-                Debug.Assert(ui >= EWaitingUIIndex.Max, "Error: No UI Exists");
-                break;
-        }
+        _logOutUI.SetActive(false);
+        _quitUI.SetActive(true);
     }
-
-    public void LoadQuit() => LoadUI(EWaitingUIIndex.Quit);
-    public void LoadLogOut() => LoadUI(EWaitingUIIndex.LogOut);
+    public void LoadLogOut()
+    {
+        _logOutUI.SetActive(true);
+        _quitUI.SetActive(false);
+    }
 
     private void OnDisable()
     {
-        StartBtn.onClick.RemoveListener(StartGame);
-        QuitBtn.onClick.RemoveListener(LoadQuit);
-        LogOutBtn.onClick.RemoveListener(LoadLogOut);
+        _startButton.onClick.RemoveListener(StartGame);
+        _quitButton.onClick.RemoveListener(LoadQuit);
+        _logOutButton.onClick.RemoveListener(LoadLogOut);
     }
 }
