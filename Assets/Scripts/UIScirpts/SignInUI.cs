@@ -115,8 +115,8 @@ public class SignInUI : MonoBehaviour
         }
     }
     
-    public void LoadLogIn() => _logInUIManager.LoadLogIn();
-    public void LoadFind() => _logInUIManager.LoadFind();
+    public void LoadLogIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.LogIn);
+    public void LoadFind() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find);
 
     public DataSet GetUserData()
     {

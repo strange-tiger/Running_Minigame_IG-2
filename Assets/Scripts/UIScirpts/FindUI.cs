@@ -61,8 +61,8 @@ public class FindUI : MonoBehaviour
         _pwIdErrorText?.SetActive(false);
     }
 
-    public void LoadLogIn() => _logInUIManager.LoadLogIn();
-    public void LoadSignIn() => _logInUIManager.LoadSignIn();
+    public void LoadLogIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.LogIn);
+    public void LoadSignIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn);
     private DataSet GetUserData()
     {
         DataSet dataSet = new DataSet();

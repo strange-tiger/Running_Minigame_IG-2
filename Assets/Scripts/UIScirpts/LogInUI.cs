@@ -99,8 +99,8 @@ public class LogInUI : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public void LoadSignIn() => _logInUIManager.LoadSignIn(); 
-    public void LoadFind() => _logInUIManager.LoadFind(); 
+    public void LoadSignIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn); 
+    public void LoadFind() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find); 
     public void LoadQuit() => _logInUIManager.LoadQuit();
 
     private void OnDisable()

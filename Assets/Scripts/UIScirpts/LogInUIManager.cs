@@ -25,32 +25,8 @@ public class LogInUIManager : MonoBehaviour
         {
             _ui[i] = transform.GetChild(i).gameObject;
         }
-        LoadLogIn();
+        LoadUI(ELogInUIIndex.LogIn);
     }
-
-    //public void LoadUI(ELogInUIIndex ui) 
-    //{
-    //    _ui[(int)ELogInUIIndex.LogIn].SetActive(false);
-    //    _ui[(int)ELogInUIIndex.SignIn].SetActive(false);
-    //    _ui[(int)ELogInUIIndex.Find].SetActive(false);
-    //    _ui[(int)ELogInUIIndex.Quit].SetActive(false);
-
-    //    switch(ui)
-    //    {
-    //        case ELogInUIIndex.LogIn:
-    //            _logInUI.SetActive(true);
-    //            break;
-    //        case ELogInUIIndex.SignIn:
-    //            _signInUI.SetActive(true);
-    //            break;
-    //        case ELogInUIIndex.Find:
-    //            _findUI.SetActive(true);
-    //            break;
-    //        default:
-    //            Debug.Assert(ui >= ELogInUIIndex.Quit, "Error: No UI Exists");
-    //            break;
-    //    }
-    //}
 
     private void ShutUI()
     {
@@ -60,22 +36,10 @@ public class LogInUIManager : MonoBehaviour
         }
     }
 
-    public void LoadLogIn()
+    public void LoadUI(ELogInUIIndex ui)
     {
         ShutUI();
-        _ui[(int)ELogInUIIndex.LogIn].SetActive(true);
-    }
-
-    public void LoadSignIn()
-    {
-        ShutUI();
-        _ui[(int)ELogInUIIndex.SignIn].SetActive(true);
-    }
-
-    public void LoadFind()
-    {
-        ShutUI();
-        _ui[(int)ELogInUIIndex.Find].SetActive(true);
+        _ui[(int)ui].SetActive(true);
     }
 
     public void LoadQuit()

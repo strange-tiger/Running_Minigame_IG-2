@@ -6,13 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class WaitingUI : MonoBehaviour
 {
-    //public enum EWaitingUIIndex
-    //{
-    //    Quit,
-    //    LogOut,
-    //    Max
-    //}
-
     [Header("UI Panel")]
     [SerializeField] private GameObject _logOutUI;
     [SerializeField] private GameObject _quitUI;
@@ -33,26 +26,6 @@ public class WaitingUI : MonoBehaviour
     {
         SceneManager.LoadScene(2);
     }
-
-    //public void LoadUI(EWaitingUIIndex ui)
-    //{
-    //    _logOutUI.SetActive(false);
-    //    _quitUI.SetActive(false);
-
-    //    switch (ui)
-    //    {
-    //        case EWaitingUIIndex.Quit:
-    //            _quitUI.SetActive(true);
-    //            Debug.Log("Quit");
-    //            break;
-    //        case EWaitingUIIndex.LogOut:
-    //            _logOutUI.SetActive(true);
-    //            break;
-    //        default:
-    //            Debug.Assert(ui >= EWaitingUIIndex.Max, "Error: No UI Exists");
-    //            break;
-    //    }
-    //}
 
     public void LoadQuit()
     {
