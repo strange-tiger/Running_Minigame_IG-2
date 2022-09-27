@@ -67,8 +67,8 @@ public class SignInUI : MonoBehaviour
         _idDoubleCheckButton.onClick.AddListener(IdDoubleCheck);
         _emailDoubleCheckButton.onClick.AddListener(EmailDoubleCheck);
 
-        _passwordInput.onValueChange.AddListener(CheckPassword);
-        _passwordCheckInput.onValueChange.AddListener(CheckPassword);
+        _passwordInput.onValueChanged.AddListener(CheckPassword);
+        _passwordCheckInput.onValueChanged.AddListener(CheckPassword);
 
         _idErrorText?.SetActive(false);
         _passwordErrorText?.SetActive(false);
@@ -219,7 +219,7 @@ public class SignInUI : MonoBehaviour
         _idDoubleCheckButton.onClick.RemoveListener(IdDoubleCheck);
         _emailDoubleCheckButton.onClick.RemoveListener(EmailDoubleCheck);
 
-        _passwordInput.onValueChange.RemoveListener(CheckPassword);
-        _passwordCheckInput.onValueChange.RemoveListener(CheckPassword);
+        _passwordInput.onValueChanged.RemoveListener(CheckPassword);
+        _passwordCheckInput.onValueChanged.RemoveListener(CheckPassword);
     }
 }
