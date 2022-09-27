@@ -38,8 +38,6 @@ public class LogInUI : MonoBehaviour
         _idErrorText.SetActive(false);
         _pwErrorText.SetActive(false);
 
-        // PlayerPrefs.DeleteAll();
-
         if (PlayerPrefs.GetString("ID") != null)
             IDInput.text = PlayerPrefs.GetString("ID");
     }

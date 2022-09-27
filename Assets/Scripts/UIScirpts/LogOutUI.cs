@@ -18,6 +18,8 @@ public class LogOutUI : MonoBehaviour
     public void LogOut()
     {
         // DB 연결 해제 (로그아웃)
+        PlayerPrefs.DeleteKey("ID");
+        
         SceneManager.LoadScene(0);
     }
     public void Close() => gameObject.SetActive(false);
