@@ -1,3 +1,4 @@
+// #define _DEV_MODE_
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -64,109 +65,111 @@ namespace Asset.MySql
             _connectionString = Resources.Load<TextAsset>("Connection").text;
             _insertStrings = Resources.Load<TextAsset>("Insert").text.Split('\n');
             _selectString = Resources.Load<TextAsset>("Select").text;
-
-            //SetEnum();
+#if _DEV_MODE_
+            SetEnum();
             Debug.Log("Enum Setting 끝");
+#endif
         }
+#if _DEV_MODE_
+        [MenuItem("Tools/GenerateEnum")]
+        private static void SetEnum()
+        {
+            string settingString = Resources.Load<TextAsset>("SetEnum").text;
+            string tableTypeString = settingString.Split('\n')[0];
+            string columnTypeString = settingString.Split('\n')[1];
 
-        //[MenuItem("Tools/GenerateEnum")]
-        //private static void SetEnum()
-        //{
-        //    string settingString = Resources.Load<TextAsset>("SetEnum").text;
-        //    string tableTypeString = settingString.Split('\n')[0];
-        //    string columnTypeString = settingString.Split('\n')[1];
+            List<string> tableNames = new List<string>();
+            Dictionary<string, List<string>> columNames = new Dictionary<string, List<string>>();
 
-        //    List<string> tableNames = new List<string>();
-        //    Dictionary<string, List<string>> columNames = new Dictionary<string, List<string>>();
+            try
+            {
+                // DB에서 태이블과 컬럼명 가져오기
+                using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
+                {
+                    _sqlConnection.Open();
 
-        //    try
-        //    {
-        //        // DB에서 태이블과 컬럼명 가져오기
-        //        using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
-        //        {
-        //            _sqlConnection.Open();
+                    // 태이블 명 가져오기
+                    MySqlCommand tableTypeCommand = new MySqlCommand(tableTypeString, _sqlConnection);
+                    MySqlDataReader tableTypeReader = tableTypeCommand.ExecuteReader();
 
-        //            // 태이블 명 가져오기
-        //            MySqlCommand tableTypeCommand = new MySqlCommand(tableTypeString, _sqlConnection);
-        //            MySqlDataReader tableTypeReader = tableTypeCommand.ExecuteReader();
+                    while(true)
+                    {
+                        if(tableTypeReader.Read() == false)
+                        {
+                            break;
+                        }
 
-        //            while(true)
-        //            {
-        //                if(tableTypeReader.Read() == false)
-        //                {
-        //                    break;
-        //                }
+                        string tableName = tableTypeReader[0].ToString();
+                        tableNames.Add(tableName);
+                        columNames.Add(tableName, new List<string>());
+                    }
 
-        //                string tableName = tableTypeReader[0].ToString();
-        //                tableNames.Add(tableName);
-        //                columNames.Add(tableName, new List<string>());
-        //            }
+                    tableTypeReader.Close();
 
-        //            tableTypeReader.Close();
-
-        //            // 태이블 명에 따라 Column 값 가져오기
-        //            foreach(string table in tableNames)
-        //            {
-        //                string columnSelectString = columnTypeString + table + ";";
+                    // 태이블 명에 따라 Column 값 가져오기
+                    foreach(string table in tableNames)
+                    {
+                        string columnSelectString = columnTypeString + table + ";";
                         
-        //                MySqlCommand columnCommand = new MySqlCommand(columnSelectString, _sqlConnection);
-        //                MySqlDataReader columnTypeReader = columnCommand.ExecuteReader();
+                        MySqlCommand columnCommand = new MySqlCommand(columnSelectString, _sqlConnection);
+                        MySqlDataReader columnTypeReader = columnCommand.ExecuteReader();
 
-        //                while(true)
-        //                {
-        //                    if(columnTypeReader.Read() == false)
-        //                    {
-        //                        break;
-        //                    }
+                        while(true)
+                        {
+                            if(columnTypeReader.Read() == false)
+                            {
+                                break;
+                            }
                             
-        //                    string columnName = columnTypeReader["Field"].ToString();
-        //                    columNames[table].Add(columnName);
-        //                }
-        //                columnTypeReader.Close();
-        //            }
+                            string columnName = columnTypeReader["Field"].ToString();
+                            columNames[table].Add(columnName);
+                        }
+                        columnTypeReader.Close();
+                    }
 
-        //            _sqlConnection.Close();
-        //        }
+                    _sqlConnection.Close();
+                }
             
-        //        // 해당 내용에 맞는 파일 생성하기
-        //        using (StreamWriter streamWriter = new StreamWriter("./Assets/Scripts/Util/MySqlEnum.cs"))
-        //        {
-        //            // 전처리
-        //            streamWriter.WriteLine("namespace Asset {");
+                // 해당 내용에 맞는 파일 생성하기
+                using (StreamWriter streamWriter = new StreamWriter("./Assets/Scripts/Util/MySqlEnum.cs"))
+                {
+                    // 전처리
+                    streamWriter.WriteLine("namespace Asset {");
 
-        //            // enum 생성하기
-        //            //  1. 태이블 타입 
-        //            streamWriter.WriteLine("\tpublic enum ETableType {");
-        //            foreach(string table in tableNames)
-        //            {
-        //                streamWriter.WriteLine($"\t\t{table},");
-        //            }
-        //            streamWriter.WriteLine("\t}");
+                    // enum 생성하기
+                    //  1. 태이블 타입 
+                    streamWriter.WriteLine("\tpublic enum ETableType {");
+                    foreach(string table in tableNames)
+                    {
+                        streamWriter.WriteLine($"\t\t{table},");
+                    }
+                    streamWriter.WriteLine("\t}");
 
-        //            //  2. 태이블의 컬럼 타입
-        //            foreach(string table in tableNames)
-        //            {
-        //                streamWriter.WriteLine($"\tpublic enum E{table}Columns {{");
+                    //  2. 태이블의 컬럼 타입
+                    foreach(string table in tableNames)
+                    {
+                        streamWriter.WriteLine($"\tpublic enum E{table}Columns {{");
 
-        //                foreach(string column in columNames[table])
-        //                {
-        //                    streamWriter.WriteLine($"\t\t{column},");
-        //                }
+                        foreach(string column in columNames[table])
+                        {
+                            streamWriter.WriteLine($"\t\t{column},");
+                        }
 
-        //                streamWriter.WriteLine("\t}");
-        //            }
+                        streamWriter.WriteLine("\t}");
+                    }
 
-        //            // 후처리
-        //            streamWriter.WriteLine("}");
-        //        }
-        //        AssetDatabase.Refresh();
-        //    }
-        //    catch (System.Exception error)
-        //    {
-        //        Debug.LogError(error.Message);
-        //        return;
-        //    }
-        //}
+                    // 후처리
+                    streamWriter.WriteLine("}");
+                }
+                AssetDatabase.Refresh();
+            }
+            catch (System.Exception error)
+            {
+                Debug.LogError(error.Message);
+                return;
+            }
+        }
+#endif 
 
         /// <summary>
         /// 계정 추가하기
