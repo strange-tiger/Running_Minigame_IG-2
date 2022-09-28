@@ -67,7 +67,7 @@ public class GetRanking
         Debug.Assert(newHighScore > HighScore,
             $"새로운 점수 {newHighScore} 보다 기존 점수 {HighScore}가 더 높음");
 
-        if(!MySqlSetting.SetValueByBase(MySqlSetting.ERankingColumType.ID, GetPlayerId(), 
+        if(!MySqlSetting.UpdateValueByBase(MySqlSetting.ERankingColumType.ID, GetPlayerId(), 
             MySqlSetting.ERankingColumType.High_Record, newHighScore))
         {
             Debug.LogError("입력 오류");

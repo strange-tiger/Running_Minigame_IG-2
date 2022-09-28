@@ -12,9 +12,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     public void Awake()
     {
         MySqlSetting.Init();
-        //MySqlSetting.AddNewAccount("abc", "123123", "bbb@gmail.com");
-
-        //Debug.Log(MySqlSetting.ShowAccountList().ToString());
     }
     public void GetCoin()
     {

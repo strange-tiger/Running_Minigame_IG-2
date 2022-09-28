@@ -162,27 +162,32 @@ namespace MySql
         }
 
         /// <summary>
-        /// TargetTable에서 base 값을 기준으로 check 값이 맞는지 확인하는 함수
-        /// ex. base (ID) 값을 기준으로 check (Password) 값이 맞는지 확인
+        /// Ranking Table에서 baseType의 baseValue를 기준으로 checkType의 checkValue가 일치하는지 확인함
         /// </summary>
-        /// <typeparam name="T">Column 종류(AccountColumn이나 RankingColumn 등)</typeparam>
-        /// <param name="targetTable">값을 검색할 table</param>
-        /// <param name="baseType">기준 Column</param>
-        /// <param name="baseValue">기준 값</param>
-        /// <param name="checkType">확인할 Column</param>
+        /// <param name="baseType">기준 데이터 Column 타입</param>
+        /// <param name="baseValue">기준 데이터 값</param>
+        /// <param name="checkType">확인할 데이터 Column 타입</param>
         /// <param name="checkValue">확인할 값</param>
-        /// <returns>값이 맞으면 true, 아니거나 오류가 있다면 false</returns>
+        /// <returns>일치하면 true를 반환, 아니거나 오류가 있을 경우 false 반환</returns>
         public static bool CheckValueByBase(ERankingColumType baseType, string baseValue,
             ERankingColumType checkType, string checkValue)
         {
             return CheckValueByBase(ETableType.Ranking, baseType, baseValue, checkType, checkValue);
         }
+        /// <summary>
+        /// Account Table에서 baseType의 baseValue를 기준으로 checkType의 checkValue가 일치하는지 확인함
+        /// ex. ID(baseType)가 aaa(baseValue)인 데이터의 Password(checkType)이 123(checkValue)인지 확인함
+        /// </summary>
+        /// <param name="baseType">기준 데이터 Column 타입</param>
+        /// <param name="baseValue">기준 데이터 값</param>
+        /// <param name="checkType">확인할 데이터 Column 타입</param>
+        /// <param name="checkValue">확인할 값</param>
+        /// <returns>일치하면 true를 반환, 아니거나 오류가 있을 경우 false 반환</returns>
         public static bool CheckValueByBase(EAccountColumnType baseType, string baseValue,
             EAccountColumnType checkType, string checkValue)
         {
             return CheckValueByBase(ETableType.Account, baseType, baseValue, checkType, checkValue);
         }
-
         private static bool CheckValueByBase<T>(ETableType targetTable, T baseType, string baseValue,
             T checkType, string checkValue) where T : System.Enum
         {
@@ -197,15 +202,28 @@ namespace MySql
             }
         }
 
+        /// <summary>
+        /// Account 테이블에서 baseType의 baseValue를 기준으로 targetType의 데이터를 가져옴
+        /// </summary>
+        /// <param name="baseType">기준이 되는 값의 Column명</param>
+        /// <param name="baseValue">기준이 되는 데이터</param>
+        /// <param name="targetType">가져오기 위한 데이터 Column명</param>
+        /// <returns>해당 데이터를 반환. 오류 시 null 반환</returns>
         public static string GetValueByBase(EAccountColumnType baseType, string baseValue, EAccountColumnType targetType)
         {
             return GetValueByBase(ETableType.Account, baseType, baseValue, targetType);
         }
+        /// <summary>
+        /// Ranking 테이블에서 baseType의 baseValue를 기준으로 targetType의 데이터를 가져옴
+        /// </summary>
+        /// <param name="baseType">기준이 되는 값의 Column명</param>
+        /// <param name="baseValue">기준이 되는 데이터</param>
+        /// <param name="targetType">가져오기 위한 데이터 Column명</param>
+        /// <returns>해당 데이터를 반환. 오류 시 null 반환</returns>
         public static string GetValueByBase(ERankingColumType baseType, string baseValue, ERankingColumType targetType)
         {
             return GetValueByBase(ETableType.Ranking, baseType, baseValue, targetType);
         }
-
         private static string GetValueByBase<T>(ETableType targetTable,
             T baseType, string baseValue,
             T targetType) where T : System.Enum
@@ -241,27 +259,35 @@ namespace MySql
 
         }
 
-        public static bool SetValueByBase(ERankingColumType baseType, string baseValue,
+        /// <summary>
+        /// Ranking Table에서 baseType의 baseValue를 기준으로 TargetType을 TargetValue로 변경함
+        /// </summary>
+        /// <param name="baseType"></param>
+        /// <param name="baseValue"></param>
+        /// <param name="targetType"></param>
+        /// <param name="targetValue"></param>
+        /// <returns></returns>
+        public static bool UpdateValueByBase(ERankingColumType baseType, string baseValue,
             ERankingColumType targetType, int targetValue)
         {
-            return SetValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
+            return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
-        public static bool SetValueByBase(ERankingColumType baseType, string baseValue,
+        public static bool UpdateValueByBase(ERankingColumType baseType, string baseValue,
             ERankingColumType targetType, string targetValue)
         {
-            return SetValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
+            return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
-        public static bool SetValueByBase(EAccountColumnType baseType, string baseValue,
+        public static bool UpdateValueByBase(EAccountColumnType baseType, string baseValue,
             EAccountColumnType targetType, int targetValue)
         {
-            return SetValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
+            return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
-        public static bool SetValueByBase(EAccountColumnType baseType, string baseValue,
+        public static bool UpdateValueByBase(EAccountColumnType baseType, string baseValue,
             EAccountColumnType targetType, string targetValue)
         {
-            return SetValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
+            return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
-        private static bool SetValueByBase<T>(ETableType targetTable,
+        private static bool UpdateValueByBase<T>(ETableType targetTable,
             T baseType, string baseValue,
             T targetType, int targetValue) where T : System.Enum
         {
@@ -287,8 +313,7 @@ namespace MySql
             }
 
         }
-
-        private static bool SetValueByBase<T>(ETableType targetTable,
+        private static bool UpdateValueByBase<T>(ETableType targetTable,
             T baseType, string baseValue,
             T targetType, string targetValue) where T : System.Enum
         {
