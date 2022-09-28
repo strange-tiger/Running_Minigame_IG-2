@@ -1,4 +1,3 @@
-// #define _DEV_MODE_
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -65,12 +64,12 @@ namespace Asset.MySql
             _connectionString = Resources.Load<TextAsset>("Connection").text;
             _insertStrings = Resources.Load<TextAsset>("Insert").text.Split('\n');
             _selectString = Resources.Load<TextAsset>("Select").text;
-#if _DEV_MODE_
+#if DEBUG
             SetEnum();
             Debug.Log("Enum Setting ³¡");
 #endif
         }
-#if _DEV_MODE_
+#if DEBUG
         [MenuItem("Tools/GenerateEnum")]
         private static void SetEnum()
         {
