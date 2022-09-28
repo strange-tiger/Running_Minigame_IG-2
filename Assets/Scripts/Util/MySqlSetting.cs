@@ -81,12 +81,12 @@ namespace Asset.MySql
 
             try
             {
-                // DB에서 태이블과 컬럼명 가져오기
+                // DB에서 테이블과 컬럼명 가져오기
                 using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
                 {
                     _sqlConnection.Open();
 
-                    // 태이블 명 가져오기
+                    // 테이블 명 가져오기
                     MySqlCommand tableTypeCommand = new MySqlCommand(tableTypeString, _sqlConnection);
                     MySqlDataReader tableTypeReader = tableTypeCommand.ExecuteReader();
 
@@ -104,7 +104,7 @@ namespace Asset.MySql
 
                     tableTypeReader.Close();
 
-                    // 태이블 명에 따라 Column 값 가져오기
+                    // 테이블 명에 따라 Column 값 가져오기
                     foreach(string table in tableNames)
                     {
                         string columnSelectString = columnTypeString + table + ";";
@@ -135,7 +135,7 @@ namespace Asset.MySql
                     streamWriter.WriteLine("namespace Asset {");
 
                     // enum 생성하기
-                    //  1. 태이블 타입 
+                    //  1. 테이블 타입 
                     streamWriter.WriteLine("\tpublic enum ETableType {");
                     foreach(string table in tableNames)
                     {
@@ -143,7 +143,7 @@ namespace Asset.MySql
                     }
                     streamWriter.WriteLine("\t}");
 
-                    //  2. 태이블의 컬럼 타입
+                    //  2. 테이블의 컬럼 타입
                     foreach(string table in tableNames)
                     {
                         streamWriter.WriteLine($"\tpublic enum E{table}Columns {{");
