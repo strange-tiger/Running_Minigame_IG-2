@@ -41,8 +41,8 @@ public class RankUI : MonoBehaviour
     private void UpdateRanking()
     {
         List<Dictionary<string, string>> ranking = MySqlSetting.GetDataByOrderLimitRowCount
-            (ERankingColumType.High_Record, _rankNumber,
-            ERankingColumType.ID, ERankingColumType.High_Record);
+            (ERankingColumns.High_Record, _rankNumber,
+            ERankingColumns.ID, ERankingColumns.High_Record);
 
         if(ranking.Count == 0)
         {

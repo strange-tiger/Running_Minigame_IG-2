@@ -56,15 +56,15 @@ public class FindUI : MonoBehaviour
     
     public void FindID()
     {
-        if(!MySqlSetting.HasValue(EAccountColumnType.Email, _idEmailInput.text))
+        if(!MySqlSetting.HasValue(EAccountColumns.Email, _idEmailInput.text))
         {
             _idEmailErrorText.SetActive(true);
             return;
         }
 
         string id = MySqlSetting.GetValueByBase(
-            EAccountColumnType.Email, _idEmailInput.text,
-            EAccountColumnType.ID);
+            EAccountColumns.Email, _idEmailInput.text,
+            EAccountColumns.ID);
 
         _idOutput.text = id;
         _idEmailErrorText.SetActive(false);
@@ -72,22 +72,22 @@ public class FindUI : MonoBehaviour
 
     public void FindPW()
     {
-        if(!MySqlSetting.HasValue(EAccountColumnType.Email, _passwordEmailInput.text))
+        if(!MySqlSetting.HasValue(EAccountColumns.Email, _passwordEmailInput.text))
         {
             _pwEmailErrorText.SetActive(true);
             _pwIdErrorText.SetActive(false);
             return;
         }
 
-        if(!MySqlSetting.HasValue(EAccountColumnType.ID, _passwordIdInput.text))
+        if(!MySqlSetting.HasValue(EAccountColumns.ID, _passwordIdInput.text))
         {
             _pwEmailErrorText.SetActive(false);
             _pwIdErrorText.SetActive(true);
             return;
         }
 
-        if(!MySqlSetting.CheckValueByBase(EAccountColumnType.Email, _passwordEmailInput.text,
-            EAccountColumnType.ID, _passwordIdInput.text))
+        if(!MySqlSetting.CheckValueByBase(EAccountColumns.Email, _passwordEmailInput.text,
+            EAccountColumns.ID, _passwordIdInput.text))
         {
             _pwEmailErrorText.SetActive(true);
             _pwIdErrorText.SetActive(true);
@@ -97,7 +97,7 @@ public class FindUI : MonoBehaviour
         _pwEmailErrorText.SetActive(false);
         _pwIdErrorText.SetActive(false);
 
-        string password = MySqlSetting.GetValueByBase(EAccountColumnType.ID, _passwordIdInput.text, EAccountColumnType.Password);
+        string password = MySqlSetting.GetValueByBase(EAccountColumns.ID, _passwordIdInput.text, EAccountColumns.Password);
         _passwordOutput.text = password;
     }
 

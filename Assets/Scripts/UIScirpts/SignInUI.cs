@@ -91,13 +91,13 @@ public class SignInUI : MonoBehaviour
 
     public void IdDoubleCheck()
     {
-        _hasIdDoubleCheck = !MySqlSetting.HasValue(EAccountColumnType.ID, _idInput.text);
+        _hasIdDoubleCheck = !MySqlSetting.HasValue(EAccountColumns.ID, _idInput.text);
         _idErrorText.SetActive(!_hasIdDoubleCheck);
     }
 
     public void EmailDoubleCheck()
     {
-        _hasEmailDoubleCheck = !MySqlSetting.HasValue(EAccountColumnType.Email, _emailInput.text);
+        _hasEmailDoubleCheck = !MySqlSetting.HasValue(EAccountColumns.Email, _emailInput.text);
         _emailErrorText.SetActive(!_hasEmailDoubleCheck);
     }
 

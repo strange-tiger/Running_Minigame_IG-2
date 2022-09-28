@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEditor;
+using System.IO;
 using MySql.Data.MySqlClient;
 
 namespace Asset.MySql
@@ -13,7 +15,7 @@ namespace Asset.MySql
         Max
     };
 
-    public enum EAccountColumnType
+    public enum EAccountColumns
     {
         ID,
         Password,
@@ -21,7 +23,7 @@ namespace Asset.MySql
         Max
     }
 
-    public enum ERankingColumType
+    public enum ERankingColumns
     {
         ID,
         High_Record,
@@ -62,6 +64,108 @@ namespace Asset.MySql
             _connectionString = Resources.Load<TextAsset>("Connection").text;
             _insertStrings = Resources.Load<TextAsset>("Insert").text.Split('\n');
             _selectString = Resources.Load<TextAsset>("Select").text;
+
+            SetEnum();
+            Debug.Log("Enum Setting 끝");
+        }
+
+        [MenuItem("Tools/GenerateEnum")]
+        private static void SetEnum()
+        {
+            string settingString = Resources.Load<TextAsset>("SetEnum").text;
+            string tableTypeString = settingString.Split('\n')[0];
+            string columnTypeString = settingString.Split('\n')[1];
+
+            List<string> tableNames = new List<string>();
+            Dictionary<string, List<string>> columNames = new Dictionary<string, List<string>>();
+
+            try
+            {
+                // DB에서 태이블과 컬럼명 가져오기
+                using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
+                {
+                    _sqlConnection.Open();
+
+                    // 태이블 명 가져오기
+                    MySqlCommand tableTypeCommand = new MySqlCommand(tableTypeString, _sqlConnection);
+                    MySqlDataReader tableTypeReader = tableTypeCommand.ExecuteReader();
+
+                    while(true)
+                    {
+                        if(tableTypeReader.Read() == false)
+                        {
+                            break;
+                        }
+
+                        string tableName = tableTypeReader[0].ToString();
+                        tableNames.Add(tableName);
+                        columNames.Add(tableName, new List<string>());
+                    }
+
+                    tableTypeReader.Close();
+
+                    // 태이블 명에 따라 Column 값 가져오기
+                    foreach(string table in tableNames)
+                    {
+                        string columnSelectString = columnTypeString + table + ";";
+                        
+                        MySqlCommand columnCommand = new MySqlCommand(columnSelectString, _sqlConnection);
+                        MySqlDataReader columnTypeReader = columnCommand.ExecuteReader();
+
+                        while(true)
+                        {
+                            if(columnTypeReader.Read() == false)
+                            {
+                                break;
+                            }
+                            
+                            string columnName = columnTypeReader["Field"].ToString();
+                            columNames[table].Add(columnName);
+                        }
+                        columnTypeReader.Close();
+                    }
+
+                    _sqlConnection.Close();
+                }
+            
+                // 해당 내용에 맞는 파일 생성하기
+                using (StreamWriter streamWriter = new StreamWriter("./Assets/Scripts/Util/MySqlEnum.cs"))
+                {
+                    // 전처리
+                    streamWriter.WriteLine("namespace Asset {");
+
+                    // enum 생성하기
+                    //  1. 태이블 타입 
+                    streamWriter.WriteLine("\tpublic enum ETableType {");
+                    foreach(string table in tableNames)
+                    {
+                        streamWriter.WriteLine($"\t\t{table},");
+                    }
+                    streamWriter.WriteLine("\t}");
+
+                    //  2. 태이블의 컬럼 타입
+                    foreach(string table in tableNames)
+                    {
+                        streamWriter.WriteLine($"\tpublic enum E{table}Columns {{");
+
+                        foreach(string column in columNames[table])
+                        {
+                            streamWriter.WriteLine($"\t\t{column},");
+                        }
+
+                        streamWriter.WriteLine("\t}");
+                    }
+
+                    // 후처리
+                    streamWriter.WriteLine("}");
+                }
+                AssetDatabase.Refresh();
+            }
+            catch (System.Exception error)
+            {
+                Debug.LogError(error.Message);
+                return;
+            }
         }
 
         /// <summary>
@@ -76,12 +180,12 @@ namespace Asset.MySql
         {
             try
             {
-                if(HasValue(EAccountColumnType.ID, ID))
+                if(HasValue(EAccountColumns.ID, ID))
                 {
                     throw new System.Exception("ID 중복됨");
                 }
 
-                if(HasValue(EAccountColumnType.Email, Email))
+                if(HasValue(EAccountColumns.Email, Email))
                 {
                     throw new System.Exception("Email 중복됨");
                 }
@@ -128,7 +232,7 @@ namespace Asset.MySql
         /// <param name="columnType">Account 태이블에서 비교하기 위한 colum 명</param>
         /// <param name="value">비교할 값</param>
         /// <returns>값이 있다면 true, 아니면 false를 반환한다.</returns>
-        public static bool HasValue(EAccountColumnType columnType, string value)
+        public static bool HasValue(EAccountColumns columnType, string value)
         {
             try
             {
@@ -166,8 +270,8 @@ namespace Asset.MySql
         /// <param name="checkType">확인할 데이터 Column 타입</param>
         /// <param name="checkValue">확인할 값</param>
         /// <returns>일치하면 true를 반환, 아니거나 오류가 있을 경우 false 반환</returns>
-        public static bool CheckValueByBase(ERankingColumType baseType, string baseValue,
-            ERankingColumType checkType, string checkValue)
+        public static bool CheckValueByBase(ERankingColumns baseType, string baseValue,
+            ERankingColumns checkType, string checkValue)
         {
             return CheckValueByBase(ETableType.Ranking, baseType, baseValue, checkType, checkValue);
         }
@@ -180,8 +284,8 @@ namespace Asset.MySql
         /// <param name="checkType">확인할 데이터 Column 타입</param>
         /// <param name="checkValue">확인할 값</param>
         /// <returns>일치하면 true를 반환, 아니거나 오류가 있을 경우 false 반환</returns>
-        public static bool CheckValueByBase(EAccountColumnType baseType, string baseValue,
-            EAccountColumnType checkType, string checkValue)
+        public static bool CheckValueByBase(EAccountColumns baseType, string baseValue,
+            EAccountColumns checkType, string checkValue)
         {
             return CheckValueByBase(ETableType.Account, baseType, baseValue, checkType, checkValue);
         }
@@ -206,7 +310,7 @@ namespace Asset.MySql
         /// <param name="baseValue">기준이 되는 데이터</param>
         /// <param name="targetType">가져오기 위한 데이터 Column명</param>
         /// <returns>해당 데이터를 반환. 오류 시 null 반환</returns>
-        public static string GetValueByBase(EAccountColumnType baseType, string baseValue, EAccountColumnType targetType)
+        public static string GetValueByBase(EAccountColumns baseType, string baseValue, EAccountColumns targetType)
         {
             return GetValueByBase(ETableType.Account, baseType, baseValue, targetType);
         }
@@ -217,7 +321,7 @@ namespace Asset.MySql
         /// <param name="baseValue">기준이 되는 데이터</param>
         /// <param name="targetType">가져오기 위한 데이터 Column명</param>
         /// <returns>해당 데이터를 반환. 오류 시 null 반환</returns>
-        public static string GetValueByBase(ERankingColumType baseType, string baseValue, ERankingColumType targetType)
+        public static string GetValueByBase(ERankingColumns baseType, string baseValue, ERankingColumns targetType)
         {
             return GetValueByBase(ETableType.Ranking, baseType, baseValue, targetType);
         }
@@ -264,8 +368,8 @@ namespace Asset.MySql
         /// <param name="targetType">변경할 값의 Column명</param>
         /// <param name="targetValue">변경할 값</param>
         /// <returns>정상적으로 변경되었다면 true, 아니면 false를 반환</returns>
-        public static bool UpdateValueByBase(ERankingColumType baseType, string baseValue,
-            ERankingColumType targetType, int targetValue)
+        public static bool UpdateValueByBase(ERankingColumns baseType, string baseValue,
+            ERankingColumns targetType, int targetValue)
         {
             return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
@@ -277,8 +381,8 @@ namespace Asset.MySql
         /// <param name="targetType">변경할 값의 Column명</param>
         /// <param name="targetValue">변경할 값</param>
         /// <returns>정상적으로 변경되었다면 true, 아니면 false를 반환</returns>
-        public static bool UpdateValueByBase(ERankingColumType baseType, string baseValue,
-            ERankingColumType targetType, string targetValue)
+        public static bool UpdateValueByBase(ERankingColumns baseType, string baseValue,
+            ERankingColumns targetType, string targetValue)
         {
             return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
@@ -290,8 +394,8 @@ namespace Asset.MySql
         /// <param name="targetType">변경할 값의 Column명</param>
         /// <param name="targetValue">변경할 값</param>
         /// <returns>정상적으로 변경되었다면 true, 아니면 false를 반환</returns>
-        public static bool UpdateValueByBase(EAccountColumnType baseType, string baseValue,
-            EAccountColumnType targetType, int targetValue)
+        public static bool UpdateValueByBase(EAccountColumns baseType, string baseValue,
+            EAccountColumns targetType, int targetValue)
         {
             return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
@@ -303,8 +407,8 @@ namespace Asset.MySql
         /// <param name="targetType">변경할 값의 Column명</param>
         /// <param name="targetValue">변경할 값</param>
         /// <returns>정상적으로 변경되었다면 true, 아니면 false를 반환</returns>
-        public static bool UpdateValueByBase(EAccountColumnType baseType, string baseValue,
-            EAccountColumnType targetType, string targetValue)
+        public static bool UpdateValueByBase(EAccountColumns baseType, string baseValue,
+            EAccountColumns targetType, string targetValue)
         {
             return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
@@ -366,8 +470,8 @@ namespace Asset.MySql
         /// <param name="limitCount">가져올 데이터(row) 갯수</param>
         /// <param name="datas">가져올 데이터 colum 타입들</param>
         /// <returns>데이터를 넘겨줌. 오류가 있다면 빈 리스트를 반환한다.</returns>
-        public static List<Dictionary<string, string>> GetDataByOrderLimitRowCount(EAccountColumnType orderbyType, 
-            int limitCount, params EAccountColumnType[] datas)
+        public static List<Dictionary<string, string>> GetDataByOrderLimitRowCount(EAccountColumns orderbyType, 
+            int limitCount, params EAccountColumns[] datas)
         {
             return GetDataByOrderLimitRowCount(ETableType.Account, orderbyType, limitCount, datas);
         }
@@ -379,8 +483,8 @@ namespace Asset.MySql
         /// <param name="limitCount">가져올 데이터(row) 갯수</param>
         /// <param name="datas">가져올 데이터 colum 타입들</param>
         /// <returns>데이터를 넘겨줌. 오류가 있다면 빈 리스트를 반환한다.</returns>
-        public static List<Dictionary<string, string>> GetDataByOrderLimitRowCount(ERankingColumType orderbyType, 
-            int limitCount, params ERankingColumType[] datas)
+        public static List<Dictionary<string, string>> GetDataByOrderLimitRowCount(ERankingColumns orderbyType, 
+            int limitCount, params ERankingColumns[] datas)
         {
             return GetDataByOrderLimitRowCount(ETableType.Ranking, orderbyType, limitCount, datas);
         }

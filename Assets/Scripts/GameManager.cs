@@ -9,7 +9,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     public PlayerHealth PlayerHealth { get; set; }
     public GetRanking GetRanking { get; private set; }
 
-    private void OnEnable()
+    private void Awake()
     {
         MySqlSetting.Init();
     }
