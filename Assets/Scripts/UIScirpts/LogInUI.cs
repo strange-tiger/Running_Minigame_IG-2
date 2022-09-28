@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Data;
-using MySql.Data.MySqlClient;
 using Asset.MySql;
 
 public class LogInUI : MonoBehaviour
@@ -23,19 +22,10 @@ public class LogInUI : MonoBehaviour
 
     private GameObject _idErrorText;
     private GameObject _passwordErrorText;
-    private TextAsset _connectionText;
-    private TextAsset _selectText;
-    private string _connectionString;
-    private string _selectString;
-
 
     private void Start()
     {
         _logInUIManager = GetComponentInParent<LogInUIManager>();
-
-        _connectionText = Resources.Load<TextAsset>("Connection");
-        _connectionString = _connectionText.text;
-        _selectText = Resources.Load<TextAsset>("Select");
 
         int loginChildIndex = _idInput.transform.childCount - 1;
 

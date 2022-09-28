@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
-using MySql.Data.MySqlClient;
 using Asset.MySql;
 
 public class SignInUI : MonoBehaviour
@@ -27,28 +26,12 @@ public class SignInUI : MonoBehaviour
     private GameObject _passwordErrorText;
     private GameObject _emailErrorText;
 
-    private TextAsset _connectionText;
-    private TextAsset _insertAccountText;
-    private TextAsset _insertScoreText;
-    private TextAsset _selectText;
-    private string _connectionString;
-    private string _insertAccountString;
-    private string _insertScoreString;
-    private string _selectString;
-
     private bool _hasIdDoubleCheck;
     private bool _hasEmailDoubleCheck;
     private bool _isMatchingPassword;
     private void Start()
     {
         _logInUIManager = GetComponentInParent<LogInUIManager>();
-
-        _connectionText = Resources.Load<TextAsset>("Connection");
-        _insertAccountText = Resources.Load<TextAsset>("InsertAccount");
-        _insertScoreText = Resources.Load<TextAsset>("InsertRanking");
-        _connectionString = _connectionText.text;
-        _selectText = Resources.Load<TextAsset>("Select");
-        _selectString = _selectText.text + ";";
 
         int signInChildIndex = _idInput.transform.childCount - 1;
 

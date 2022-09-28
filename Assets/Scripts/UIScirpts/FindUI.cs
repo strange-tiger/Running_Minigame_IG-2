@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Data;
-using MySql.Data.MySqlClient;
 using Asset.MySql;
 
 public class FindUI : MonoBehaviour
@@ -27,19 +26,9 @@ public class FindUI : MonoBehaviour
     private GameObject _pwEmailErrorText;
     private GameObject _pwIdErrorText;
 
-    private TextAsset _connectionText;
-    private TextAsset _selectText;
-    private string _connectionString;
-    private string _selectString;
-
     private void Start()
     {
         _logInUIManager = GetComponentInParent<LogInUIManager>();
-
-        _connectionText = Resources.Load<TextAsset>("Connection");
-        _connectionString = _connectionText.text;
-        _selectText = Resources.Load<TextAsset>("Select");
-        _selectString = _selectText.text + ";";
 
         int findIdChildIndex = _passwordIdInput.transform.childCount - 1;
 
@@ -64,19 +53,7 @@ public class FindUI : MonoBehaviour
 
     public void LoadLogIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.LogIn);
     public void LoadSignIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn);
-    //private DataSet GetUserData()
-    //{
-    //    DataSet dataSet = new DataSet();
-    //    using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
-    //    {
-    //        sqlConnection.Open();
-
-    //        MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(_selectString, sqlConnection);
-    //        sqlDataAdapter.Fill(dataSet);
-    //    }
-    //    return dataSet;
-
-    //}
+    
     public void FindID()
     {
         if(!MySqlSetting.HasValue(EAccountColumnType.Email, _idEmailInput.text))
@@ -128,9 +105,11 @@ public class FindUI : MonoBehaviour
     {
         _idEmailInput.text = "";
         _idOutput.text = "";
+
         _passwordEmailInput.text = "";
         _passwordIdInput.text = "";
         _passwordOutput.text = "";
+        
         _logInButton.onClick.RemoveListener(LoadLogIn);
         _signInButton.onClick.RemoveListener(LoadSignIn);
         _idEnterButton.onClick.RemoveListener(FindID);
