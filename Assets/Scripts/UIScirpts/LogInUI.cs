@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Data;
 using MySql.Data.MySqlClient;
-using MySql;
+using Asset.MySql;
 
 public class LogInUI : MonoBehaviour
 {
@@ -27,6 +27,7 @@ public class LogInUI : MonoBehaviour
     private TextAsset _selectText;
     private string _connectionString;
     private string _selectString;
+
 
     private void Start()
     {
@@ -60,7 +61,7 @@ public class LogInUI : MonoBehaviour
     // 입력된 계정 정보를 계정 DB와 비교해 일치하면 ID를 PlayerPrefs에 저장하고 WaitingRoom 씬을 로드한다.
     public void LogIn()
     {
-        if(!MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.ID, _idInput.text))
+        if(!MySqlSetting.HasValue(EAccountColumnType.ID, _idInput.text))
         {
             _idErrorText.SetActive(true);
             _passwordErrorText.SetActive(false);
@@ -68,8 +69,8 @@ public class LogInUI : MonoBehaviour
         }
 
         _idErrorText.SetActive(false);
-        if(MySqlSetting.CheckValueByBase(MySqlSetting.EAccountColumnType.ID, _idInput.text,
-            MySqlSetting.EAccountColumnType.Password, _passwordInput.text))
+        if(MySqlSetting.CheckValueByBase(EAccountColumnType.ID, _idInput.text,
+            EAccountColumnType.Password, _passwordInput.text))
         {
             _passwordErrorText.SetActive(false);
             PlayerPrefs.SetString("ID", _idInput.text);

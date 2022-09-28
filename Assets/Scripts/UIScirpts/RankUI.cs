@@ -1,5 +1,3 @@
-#define _DEBUG_MODE_
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,10 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Data;
 using MySql.Data.MySqlClient;
-
-#if _DEBUG_MODE_
-using MySql;
-#endif
+using Asset.MySql;
 
 public class RankUI : MonoBehaviour
 {
@@ -55,10 +50,9 @@ public class RankUI : MonoBehaviour
 
     private void UpdateRanking()
     {
-#if _DEBUG_MODE_
-        List<Dictionary<string, string>> ranking = MySqlSetting.GetDataByOrderLimitN
-            (MySqlSetting.ERankingColumType.High_Record, _rankNumber,
-            MySqlSetting.ERankingColumType.ID, MySqlSetting.ERankingColumType.High_Record);
+        List<Dictionary<string, string>> ranking = MySqlSetting.GetDataByOrderLimitRowCount
+            (ERankingColumType.High_Record, _rankNumber,
+            ERankingColumType.ID, ERankingColumType.High_Record);
 
         if(ranking.Count == 0)
         {
@@ -71,26 +65,24 @@ public class RankUI : MonoBehaviour
             _nicknameText[i].text = ranking[i]["ID"];
             _scoreText[i].text = ranking[i]["High_Record"];
         }
-#else
-        _selectString = _selectText.text + $" Order By High_Record DESC Limit 5;";
-
-        using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
-        {
-            _sqlConnection.Open();
-            MySqlCommand _readCommand = new MySqlCommand(_selectString, _sqlConnection);
-            MySqlDataReader _dataReader = _readCommand.ExecuteReader();
-
-            for (int i = 0; i < _rankNumber; ++i)
-            {
-                if (false == _dataReader.Read())
-                {
-                    break;
-                }
-                _nicknameText[i].text = _dataReader["ID"].ToString();
-                _scoreText[i].text = _dataReader["High_Record"].ToString();
-            }
-            _sqlConnection.Close();
-        }
-#endif
+        //_selectString = _selectText.text + $" Order By High_Record DESC Limit 5;";
+        //
+        //using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
+        //{
+        //    _sqlConnection.Open();
+        //    MySqlCommand _readCommand = new MySqlCommand(_selectString, _sqlConnection);
+        //    MySqlDataReader _dataReader = _readCommand.ExecuteReader();
+        //
+        //    for (int i = 0; i < _rankNumber; ++i)
+        //    {
+        //        if (false == _dataReader.Read())
+        //        {
+        //            break;
+        //        }
+        //        _nicknameText[i].text = _dataReader["ID"].ToString();
+        //        _scoreText[i].text = _dataReader["High_Record"].ToString();
+        //    }
+        //    _sqlConnection.Close();
+        //}
     }
 }

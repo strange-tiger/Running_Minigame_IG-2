@@ -4,7 +4,7 @@ using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using MySql.Data.MySqlClient;
-using MySql;
+using Asset.MySql;
 
 public class SignInUI : MonoBehaviour
 {
@@ -106,28 +106,15 @@ public class SignInUI : MonoBehaviour
     public void LoadLogIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.LogIn);
     public void LoadFind() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find);
 
-    //public DataSet GetUserData()
-    //{
-    //    DataSet dataSet = new DataSet();
-
-    //    using (MySqlConnection connection = new MySqlConnection(_connectionString))
-    //    {
-    //        connection.Open();
-    //        MySqlDataAdapter dataAdapter = new MySqlDataAdapter(_selectString, connection);
-
-    //        dataAdapter.Fill(dataSet);
-    //    }
-    //    return dataSet;
-    //}
     public void IdDoubleCheck()
     {
-        _hasIdDoubleCheck = !MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.ID, _idInput.text);
+        _hasIdDoubleCheck = !MySqlSetting.HasValue(EAccountColumnType.ID, _idInput.text);
         _idErrorText.SetActive(!_hasIdDoubleCheck);
     }
 
     public void EmailDoubleCheck()
     {
-        _hasEmailDoubleCheck = !MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.Email, _emailInput.text);
+        _hasEmailDoubleCheck = !MySqlSetting.HasValue(EAccountColumnType.Email, _emailInput.text);
         _emailErrorText.SetActive(!_hasEmailDoubleCheck);
     }
 

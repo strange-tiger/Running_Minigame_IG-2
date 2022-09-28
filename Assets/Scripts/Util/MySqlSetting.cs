@@ -4,32 +4,32 @@ using System.Data;
 using UnityEngine;
 using MySql.Data.MySqlClient;
 
-namespace MySql
+namespace Asset.MySql
 {
+    public enum ETableType
+    {
+        Account,
+        Ranking,
+        Max
+    };
+
+    public enum EAccountColumnType
+    {
+        ID,
+        Password,
+        Email,
+        Max
+    }
+
+    public enum ERankingColumType
+    {
+        ID,
+        High_Record,
+        Max
+    }
+
     public class MySqlSetting
     {
-        public enum ETableType
-        {
-            Account,
-            Ranking,
-            Max
-        };
-
-        public enum EAccountColumnType
-        {
-            ID,
-            Password,
-            Email,
-            Max
-        }
-
-        public enum ERankingColumType
-        {
-            ID,
-            High_Record,
-            Max
-        }
-
         private static bool hasInit = false;
 
         private static string _connectionString;
@@ -76,12 +76,12 @@ namespace MySql
         {
             try
             {
-                if(IsThereValue(EAccountColumnType.ID, ID))
+                if(HasValue(EAccountColumnType.ID, ID))
                 {
                     throw new System.Exception("ID 중복됨");
                 }
 
-                if(IsThereValue(EAccountColumnType.Email, Email))
+                if(HasValue(EAccountColumnType.Email, Email))
                 {
                     throw new System.Exception("Email 중복됨");
                 }
@@ -119,7 +119,6 @@ namespace MySql
             
             insertString = insertString.TrimEnd(',') + ");";
             
-            Debug.Log(insertString);
             return insertString;
         }
 
@@ -129,7 +128,7 @@ namespace MySql
         /// <param name="columnType">Account 태이블에서 비교하기 위한 colum 명</param>
         /// <param name="value">비교할 값</param>
         /// <returns>값이 있다면 true, 아니면 false를 반환한다.</returns>
-        public static bool IsThereValue(EAccountColumnType columnType, string value)
+        public static bool HasValue(EAccountColumnType columnType, string value)
         {
             try
             {
@@ -138,7 +137,6 @@ namespace MySql
                     bool result = false;
 
                     string selectString = _selectString + $" WHERE {columnType} = '{value}';";
-                    Debug.Log(selectString);
 
                     _sqlConnection.Open();
                     
@@ -146,7 +144,6 @@ namespace MySql
                     MySqlDataReader _selectData = _selectCommand.ExecuteReader();
                     
                     result = _selectData.Read();
-                    Debug.Log(result);
                     
                     _sqlConnection.Close();
 
@@ -243,8 +240,8 @@ namespace MySql
                     {
                         throw new System.Exception("base 값이 없음");
                     }
+                    
                     string result = resultReader[targetType.ToString()].ToString();
-                    Debug.Log(result);
 
                     _sqlConnection.Close();
 
@@ -320,7 +317,6 @@ namespace MySql
                 using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
                 {
                     string updateString = $"Update {targetTable} set {targetType} = {targetValue} where {baseType} = '{baseValue}';";
-                    Debug.Log(updateString);
                     MySqlCommand command = new MySqlCommand(updateString, _sqlConnection);
 
                     _sqlConnection.Open();
@@ -346,7 +342,6 @@ namespace MySql
                 using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
                 {
                     string updateString = $"Update {targetTable} set {targetType} = '{targetValue}' where {baseType} = '{baseValue}';";
-                    Debug.Log(updateString);
                     MySqlCommand command = new MySqlCommand(updateString, _sqlConnection);
 
                     _sqlConnection.Open();
@@ -371,10 +366,10 @@ namespace MySql
         /// <param name="limitCount">가져올 데이터(row) 갯수</param>
         /// <param name="datas">가져올 데이터 colum 타입들</param>
         /// <returns>데이터를 넘겨줌. 오류가 있다면 빈 리스트를 반환한다.</returns>
-        public static List<Dictionary<string, string>> GetDataByOrderLimitN(EAccountColumnType orderbyType, 
+        public static List<Dictionary<string, string>> GetDataByOrderLimitRowCount(EAccountColumnType orderbyType, 
             int limitCount, params EAccountColumnType[] datas)
         {
-            return GetDataByOrderLimitN(ETableType.Account, orderbyType, limitCount, datas);
+            return GetDataByOrderLimitRowCount(ETableType.Account, orderbyType, limitCount, datas);
         }
 
         /// <summary>
@@ -384,13 +379,13 @@ namespace MySql
         /// <param name="limitCount">가져올 데이터(row) 갯수</param>
         /// <param name="datas">가져올 데이터 colum 타입들</param>
         /// <returns>데이터를 넘겨줌. 오류가 있다면 빈 리스트를 반환한다.</returns>
-        public static List<Dictionary<string, string>> GetDataByOrderLimitN(ERankingColumType orderbyType, 
+        public static List<Dictionary<string, string>> GetDataByOrderLimitRowCount(ERankingColumType orderbyType, 
             int limitCount, params ERankingColumType[] datas)
         {
-            return GetDataByOrderLimitN(ETableType.Ranking, orderbyType, limitCount, datas);
+            return GetDataByOrderLimitRowCount(ETableType.Ranking, orderbyType, limitCount, datas);
         }
 
-        private static List<Dictionary<string, string>> GetDataByOrderLimitN<T>(ETableType targetTable,
+        private static List<Dictionary<string, string>> GetDataByOrderLimitRowCount<T>(ETableType targetTable,
             T orderbyType, int limitCount, params T[] datas)
         {
             try
@@ -402,7 +397,6 @@ namespace MySql
                 }
                 selectString = selectString.TrimEnd(',') +
                     $" From {targetTable} Order By {orderbyType} DESC Limit {limitCount}";
-                Debug.Log(selectString);
 
                 List<Dictionary<string, string>> result = new List<Dictionary<string, string>>();
 

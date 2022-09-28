@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MySql.Data.MySqlClient;
-using MySql;
+using Asset.MySql;
 
 public class GetRanking
 {
@@ -67,8 +67,8 @@ public class GetRanking
         Debug.Assert(newHighScore > HighScore,
             $"새로운 점수 {newHighScore} 보다 기존 점수 {HighScore}가 더 높음");
 
-        if(!MySqlSetting.UpdateValueByBase(MySqlSetting.ERankingColumType.ID, GetPlayerId(), 
-            MySqlSetting.ERankingColumType.High_Record, newHighScore))
+        if(!MySqlSetting.UpdateValueByBase(ERankingColumType.ID, GetPlayerId(), 
+            ERankingColumType.High_Record, newHighScore))
         {
             Debug.LogError("입력 오류");
             return;
@@ -77,7 +77,7 @@ public class GetRanking
 
     private int GetHighScore()
     {
-        string highScoreString = MySqlSetting.GetValueByBase(MySqlSetting.ERankingColumType.ID, GetPlayerId(), MySqlSetting.ERankingColumType.High_Record);
+        string highScoreString = MySqlSetting.GetValueByBase(ERankingColumType.ID, GetPlayerId(), ERankingColumType.High_Record);
         if (highScoreString == null)
         {
             Debug.LogError("최고 기록을 가져올 수 없음");

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Data;
 using MySql.Data.MySqlClient;
-using MySql;
+using Asset.MySql;
 
 public class FindUI : MonoBehaviour
 {
@@ -79,15 +79,15 @@ public class FindUI : MonoBehaviour
     //}
     public void FindID()
     {
-        if(!MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.Email, _idEmailInput.text))
+        if(!MySqlSetting.HasValue(EAccountColumnType.Email, _idEmailInput.text))
         {
             _idEmailErrorText.SetActive(true);
             return;
         }
 
         string id = MySqlSetting.GetValueByBase(
-            MySqlSetting.EAccountColumnType.Email, _idEmailInput.text,
-            MySqlSetting.EAccountColumnType.ID);
+            EAccountColumnType.Email, _idEmailInput.text,
+            EAccountColumnType.ID);
 
         _idOutput.text = id;
         _idEmailErrorText.SetActive(false);
@@ -95,22 +95,22 @@ public class FindUI : MonoBehaviour
 
     public void FindPW()
     {
-        if(!MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.Email, _passwordEmailInput.text))
+        if(!MySqlSetting.HasValue(EAccountColumnType.Email, _passwordEmailInput.text))
         {
             _pwEmailErrorText.SetActive(true);
             _pwIdErrorText.SetActive(false);
             return;
         }
 
-        if(!MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.ID, _passwordIdInput.text))
+        if(!MySqlSetting.HasValue(EAccountColumnType.ID, _passwordIdInput.text))
         {
             _pwEmailErrorText.SetActive(false);
             _pwIdErrorText.SetActive(true);
             return;
         }
 
-        if(!MySqlSetting.CheckValueByBase(MySqlSetting.EAccountColumnType.Email, _passwordEmailInput.text,
-            MySqlSetting.EAccountColumnType.ID, _passwordIdInput.text))
+        if(!MySqlSetting.CheckValueByBase(EAccountColumnType.Email, _passwordEmailInput.text,
+            EAccountColumnType.ID, _passwordIdInput.text))
         {
             _pwEmailErrorText.SetActive(true);
             _pwIdErrorText.SetActive(true);
@@ -120,7 +120,7 @@ public class FindUI : MonoBehaviour
         _pwEmailErrorText.SetActive(false);
         _pwIdErrorText.SetActive(false);
 
-        string password = MySqlSetting.GetValueByBase(MySqlSetting.EAccountColumnType.ID, _passwordIdInput.text, MySqlSetting.EAccountColumnType.Password);
+        string password = MySqlSetting.GetValueByBase(EAccountColumnType.ID, _passwordIdInput.text, EAccountColumnType.Password);
         _passwordOutput.text = password;
     }
 
