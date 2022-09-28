@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MySql.Data.MySqlClient;
+using Asset.MySql;
 
 public class GetRanking
 {
@@ -66,34 +66,24 @@ public class GetRanking
         Debug.Assert(newHighScore > HighScore,
             $"새로운 점수 {newHighScore} 보다 기존 점수 {HighScore}가 더 높음");
 
-        string updateScoreString = _updateScoreText.text + $"{newHighScore} WHERE ID = '{GetPlayerId()}'";
-        using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
+        if(!MySqlSetting.UpdateValueByBase(ERankingColumns.ID, GetPlayerId(), 
+            ERankingColumns.High_Record, newHighScore))
         {
-            MySqlCommand _updateScoreCommand = new MySqlCommand(updateScoreString, _sqlConnection);
-            _sqlConnection.Open();
-            _updateScoreCommand.ExecuteNonQuery();
-            _sqlConnection.Close();
+            Debug.LogError("입력 오류");
+            return;
         }
     }
 
     private int GetHighScore()
     {
-        using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
+        string highScoreString = MySqlSetting.GetValueByBase(ERankingColumns.ID, GetPlayerId(), ERankingColumns.High_Record);
+        if (highScoreString == null)
         {
-            _sqlConnection.Open();
-
-            MySqlCommand _selectMyHighScore = new MySqlCommand(_selectScoreString, _sqlConnection);
-            MySqlDataReader _readHighScore = _selectMyHighScore.ExecuteReader();
-
-            Debug.Assert(_readHighScore.Read() == true, "기록 없음");
-
-            if (_readHighScore.Read() != false)
-            {
-                HighScore = int.Parse(_readHighScore["High_Record"].ToString());
-            }
-
-            _sqlConnection.Close();
+            Debug.LogError("최고 기록을 가져올 수 없음");
+            return -1;
         }
+
+        _highScore = int.Parse(highScoreString);
 
         return _highScore;
     }

@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Data;
-using MySql.Data.MySqlClient;
+using Asset.MySql;
 
 public class FindUI : MonoBehaviour
 {
@@ -26,19 +26,9 @@ public class FindUI : MonoBehaviour
     private GameObject _pwEmailErrorText;
     private GameObject _pwIdErrorText;
 
-    private TextAsset _connectionText;
-    private TextAsset _selectText;
-    private string _connectionString;
-    private string _selectString;
-
     private void Start()
     {
         _logInUIManager = GetComponentInParent<LogInUIManager>();
-
-        _connectionText = Resources.Load<TextAsset>("Connection");
-        _connectionString = _connectionText.text;
-        _selectText = Resources.Load<TextAsset>("Select");
-        _selectString = _selectText.text + ";";
 
         int findIdChildIndex = _passwordIdInput.transform.childCount - 1;
 
@@ -63,79 +53,63 @@ public class FindUI : MonoBehaviour
 
     public void LoadLogIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.LogIn);
     public void LoadSignIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn);
-    private DataSet GetUserData()
-    {
-        DataSet dataSet = new DataSet();
-        using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
-        {
-            sqlConnection.Open();
-
-            MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(_selectString, sqlConnection);
-            sqlDataAdapter.Fill(dataSet);
-        }
-        return dataSet;
-
-    }
+    
     public void FindID()
     {
-        DataSet findIdDataSet;
-
-        findIdDataSet = GetUserData();
-
-        foreach (DataRow dataRow in findIdDataSet.Tables[0].Rows)
+        if(!MySqlSetting.HasValue(EAccountColumns.Email, _idEmailInput.text))
         {
-            if (dataRow["Email"].ToString() == _idEmailInput.text)
-            {
-                _idOutput.text = dataRow["ID"].ToString();
-                _idEmailErrorText.SetActive(false);
-
-                return;
-            }
+            _idEmailErrorText.SetActive(true);
+            return;
         }
-        _idEmailErrorText.SetActive(true);
+
+        string id = MySqlSetting.GetValueByBase(
+            EAccountColumns.Email, _idEmailInput.text,
+            EAccountColumns.ID);
+
+        _idOutput.text = id;
+        _idEmailErrorText.SetActive(false);
     }
 
     public void FindPW()
     {
-        DataSet findPwDataSet = GetUserData();
-
-        bool emailExist = false;
-        bool idExist = false;
-        bool curEmailExist = false;
-        bool curIdExist = false;
-        foreach (DataRow dataRow in findPwDataSet.Tables[0].Rows)
+        if(!MySqlSetting.HasValue(EAccountColumns.Email, _passwordEmailInput.text))
         {
-            if (dataRow["Email"].ToString() == _passwordEmailInput.text)
-            {
-                emailExist = true;
-                curEmailExist = true;
-            }
-            if (dataRow["ID"].ToString() == _passwordIdInput.text)
-            {
-                idExist = true;
-                curIdExist = true;
-            }
-
-            if (curEmailExist && curIdExist)
-            {
-                _passwordOutput.text = dataRow["Password"].ToString();
-                break;
-            }
-            curEmailExist = false;
-            curIdExist = false;
+            _pwEmailErrorText.SetActive(true);
+            _pwIdErrorText.SetActive(false);
+            return;
         }
 
-        _pwEmailErrorText.SetActive(!emailExist);
-        _pwIdErrorText.SetActive(!idExist);
+        if(!MySqlSetting.HasValue(EAccountColumns.ID, _passwordIdInput.text))
+        {
+            _pwEmailErrorText.SetActive(false);
+            _pwIdErrorText.SetActive(true);
+            return;
+        }
+
+        if(!MySqlSetting.CheckValueByBase(EAccountColumns.Email, _passwordEmailInput.text,
+            EAccountColumns.ID, _passwordIdInput.text))
+        {
+            _pwEmailErrorText.SetActive(true);
+            _pwIdErrorText.SetActive(true);
+            return;
+        }
+
+        _pwEmailErrorText.SetActive(false);
+        _pwIdErrorText.SetActive(false);
+
+        string password = MySqlSetting.GetValueByBase(EAccountColumns.ID, _passwordIdInput.text, EAccountColumns.Password);
+        _passwordOutput.text = password;
     }
 
     private void OnDisable()
     {
         _idEmailInput.text = "";
         _idOutput.text = "";
+
         _passwordEmailInput.text = "";
         _passwordIdInput.text = "";
         _passwordOutput.text = "";
+        
         _logInButton.onClick.RemoveListener(LoadLogIn);
         _signInButton.onClick.RemoveListener(LoadSignIn);
         _idEnterButton.onClick.RemoveListener(FindID);

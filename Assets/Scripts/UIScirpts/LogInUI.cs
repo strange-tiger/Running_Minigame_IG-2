@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Data;
-using MySql.Data.MySqlClient;
+using Asset.MySql;
 
 public class LogInUI : MonoBehaviour
 {
@@ -22,18 +22,10 @@ public class LogInUI : MonoBehaviour
 
     private GameObject _idErrorText;
     private GameObject _passwordErrorText;
-    private TextAsset _connectionText;
-    private TextAsset _selectText;
-    private string _connectionString;
-    private string _selectString;
 
     private void Start()
     {
         _logInUIManager = GetComponentInParent<LogInUIManager>();
-
-        _connectionText = Resources.Load<TextAsset>("Connection");
-        _connectionString = _connectionText.text;
-        _selectText = Resources.Load<TextAsset>("Select");
 
         int loginChildIndex = _idInput.transform.childCount - 1;
 
@@ -59,37 +51,24 @@ public class LogInUI : MonoBehaviour
     // 입력된 계정 정보를 계정 DB와 비교해 일치하면 ID를 PlayerPrefs에 저장하고 WaitingRoom 씬을 로드한다.
     public void LogIn()
     {
-        _selectString = _selectText.text + $" where binary ID= '{_idInput.text}';";
-
-        using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
+        if(!MySqlSetting.HasValue(EAccountColumns.ID, _idInput.text))
         {
-            sqlConnection.Open();
-            MySqlCommand readCommand = new MySqlCommand(_selectString, sqlConnection);
-            MySqlDataReader dataReader = readCommand.ExecuteReader();
-            if (dataReader.Read())
-            {
-                _idErrorText.SetActive(false);
+            _idErrorText.SetActive(true);
+            _passwordErrorText.SetActive(false);
+            return;
+        }
 
-                if (dataReader["Password"].ToString() == _passwordInput.text)
-                {
-                    _passwordErrorText.SetActive(false);
-
-                    PlayerPrefs.SetString("ID", dataReader["ID"].ToString());
-
-                    sqlConnection.Close();
-                    LoadWaitingRoom();
-                    return;
-                }
-                else
-                {
-                    _passwordErrorText.SetActive(true);
-                }
-            }
-            else
-            {
-                _idErrorText.SetActive(true);
-            }
-            sqlConnection.Close();
+        _idErrorText.SetActive(false);
+        if(MySqlSetting.CheckValueByBase(EAccountColumns.ID, _idInput.text,
+            EAccountColumns.Password, _passwordInput.text))
+        {
+            _passwordErrorText.SetActive(false);
+            PlayerPrefs.SetString("ID", _idInput.text);
+            LoadWaitingRoom();
+        }
+        else
+        {
+            _passwordErrorText.SetActive(true);
         }
     }
 

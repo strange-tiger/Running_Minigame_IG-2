@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
-using MySql.Data.MySqlClient;
+using Asset.MySql;
 
 public class SignInUI : MonoBehaviour
 {
@@ -26,28 +26,12 @@ public class SignInUI : MonoBehaviour
     private GameObject _passwordErrorText;
     private GameObject _emailErrorText;
 
-    private TextAsset _connectionText;
-    private TextAsset _insertAccountText;
-    private TextAsset _insertScoreText;
-    private TextAsset _selectText;
-    private string _connectionString;
-    private string _insertAccountString;
-    private string _insertScoreString;
-    private string _selectString;
-
     private bool _hasIdDoubleCheck;
     private bool _hasEmailDoubleCheck;
     private bool _isMatchingPassword;
     private void Start()
     {
         _logInUIManager = GetComponentInParent<LogInUIManager>();
-
-        _connectionText = Resources.Load<TextAsset>("Connection");
-        _insertAccountText = Resources.Load<TextAsset>("InsertAccount");
-        _insertScoreText = Resources.Load<TextAsset>("InsertRanking");
-        _connectionString = _connectionText.text;
-        _selectText = Resources.Load<TextAsset>("Select");
-        _selectString = _selectText.text + ";";
 
         int signInChildIndex = _idInput.transform.childCount - 1;
 
@@ -84,31 +68,17 @@ public class SignInUI : MonoBehaviour
     {
         if (_hasIdDoubleCheck && _hasEmailDoubleCheck && _isMatchingPassword)
         {
-            _insertAccountString = _insertAccountText.text + $"('{_idInput.text}', '{_passwordInput.text}', '{_emailInput.text}');";
-            _insertScoreString = _insertScoreText.text + $"('{_idInput.text}');";
-            Debug.Log(_insertAccountString);
-            Debug.Log(_insertScoreString);
-            using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
+            if(MySqlSetting.AddNewAccount(_idInput.text, _passwordInput.text, _emailInput.text))
             {
-                MySqlCommand insertAccountCommand = new MySqlCommand(_insertAccountString, sqlConnection);
-                sqlConnection.Open();
-                insertAccountCommand.ExecuteNonQuery();
-                sqlConnection.Close();
-            }
-            using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
+                _idInput.text = "";
+                _passwordInput.text = "";
+                _passwordCheckInput.text = "";
+                _emailInput.text = "";
+            } 
+            else
             {
-                MySqlCommand insertScoreCommand = new MySqlCommand(_insertScoreString, sqlConnection);
-                sqlConnection.Open();
-                insertScoreCommand.ExecuteNonQuery();
-                sqlConnection.Close();
+                Debug.LogError("계정 추가 오류");
             }
-            _hasIdDoubleCheck = false;
-            _hasEmailDoubleCheck = false;
-
-            _idInput.text = "";
-            _passwordInput.text = "";
-            _passwordCheckInput.text = "";
-            _emailInput.text = "";
         }
         else
         {
@@ -119,77 +89,16 @@ public class SignInUI : MonoBehaviour
     public void LoadLogIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.LogIn);
     public void LoadFind() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.Find);
 
-    public DataSet GetUserData()
-    {
-        DataSet dataSet = new DataSet();
-
-        using (MySqlConnection connection = new MySqlConnection(_connectionString))
-        {
-            connection.Open();
-            MySqlDataAdapter dataAdapter = new MySqlDataAdapter(_selectString, connection);
-
-            dataAdapter.Fill(dataSet);
-        }
-        return dataSet;
-    }
     public void IdDoubleCheck()
     {
-        DataSet dataSet;
-        dataSet = GetUserData();
-        Debug.Log(dataSet);
-        bool check = false;
-
-        foreach (DataRow dataRow in dataSet.Tables[0].Rows)
-        {
-            if (dataRow["ID"].ToString() == _idInput.text)
-            {
-                check = true;
-                break;
-            }
-        }
-
-        if (!check)
-        {
-            // Debug.Log("사용 가능");
-            _hasIdDoubleCheck = true;
-            _idErrorText.SetActive(false);
-        }
-        else
-        {
-            // Debug.Log("사용 불가능");
-            _hasIdDoubleCheck = false;
-            _idErrorText.SetActive(true);
-        }
+        _hasIdDoubleCheck = !MySqlSetting.HasValue(EAccountColumns.ID, _idInput.text);
+        _idErrorText.SetActive(!_hasIdDoubleCheck);
     }
 
     public void EmailDoubleCheck()
     {
-        DataSet dataSet;
-        dataSet = GetUserData();
-        Debug.Log(dataSet);
-        bool check = false;
-
-        foreach (DataRow dataRow in dataSet.Tables[0].Rows)
-        {
-            if (dataRow["Email"].ToString() == _idInput.text)
-            {
-                check = true;
-                break;
-            }
-        }
-
-        if (!check)
-        {
-            // Debug.Log("사용 가능");
-            _hasEmailDoubleCheck = true;
-            _idErrorText.SetActive(false);
-        }
-        else
-        {
-            // Debug.Log("사용 불가능");
-            _hasEmailDoubleCheck = false;
-            _idErrorText.SetActive(true);
-        }
+        _hasEmailDoubleCheck = !MySqlSetting.HasValue(EAccountColumns.Email, _emailInput.text);
+        _emailErrorText.SetActive(!_hasEmailDoubleCheck);
     }
 
     public void CheckPassword(string pw)

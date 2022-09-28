@@ -1,0 +1,2 @@
+Insert Into Account (ID,Password,Email) values 
+Insert Into Ranking (ID) values 
