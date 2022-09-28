@@ -64,11 +64,12 @@ namespace Asset.MySql
             _connectionString = Resources.Load<TextAsset>("Connection").text;
             _insertStrings = Resources.Load<TextAsset>("Insert").text.Split('\n');
             _selectString = Resources.Load<TextAsset>("Select").text;
-
+#if DEBUG
             SetEnum();
             Debug.Log("Enum Setting 끝");
+#endif
         }
-
+#if DEBUG
         [MenuItem("Tools/GenerateEnum")]
         private static void SetEnum()
         {
@@ -167,6 +168,7 @@ namespace Asset.MySql
                 return;
             }
         }
+#endif 
 
         /// <summary>
         /// 계정 추가하기

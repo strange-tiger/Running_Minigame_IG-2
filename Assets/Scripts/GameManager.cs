@@ -9,8 +9,9 @@ public class GameManager : SingletonBehaviour<GameManager>
     public PlayerHealth PlayerHealth { get; set; }
     public GetRanking GetRanking { get; private set; }
 
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         MySqlSetting.Init();
     }
     public void GetCoin()
