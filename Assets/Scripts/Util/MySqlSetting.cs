@@ -314,5 +314,84 @@ namespace MySql
             }
 
         }
+
+        /// <summary>
+        /// Account Table에서 orderByType 기준 내림차순으로 limitCount만큼의 데이터를 가져와주는 함수
+        /// </summary>
+        /// <param name="orderbyType">순서의 기준</param>
+        /// <param name="limitCount">가져올 데이터(row) 갯수</param>
+        /// <param name="datas">가져올 데이터 colum 타입들</param>
+        /// <returns>데이터를 넘겨줌. 오류가 있다면 빈 리스트를 반환한다.</returns>
+        public static List<Dictionary<string, string>> GetDataByOrderLimitN(EAccountColumnType orderbyType, 
+            int limitCount, params EAccountColumnType[] datas)
+        {
+            return GetDataByOrderLimitN(ETableType.Account, orderbyType, limitCount, datas);
+        }
+
+        /// <summary>
+        /// Ranking Table에서 orderByType 기준 내림차순으로 limitCount만큼의 데이터를 가져와주는 함수
+        /// </summary>
+        /// <param name="orderbyType">순서의 기준</param>
+        /// <param name="limitCount">가져올 데이터(row) 갯수</param>
+        /// <param name="datas">가져올 데이터 colum 타입들</param>
+        /// <returns>데이터를 넘겨줌. 오류가 있다면 빈 리스트를 반환한다.</returns>
+        public static List<Dictionary<string, string>> GetDataByOrderLimitN(ERankingColumType orderbyType, 
+            int limitCount, params ERankingColumType[] datas)
+        {
+            return GetDataByOrderLimitN(ETableType.Ranking, orderbyType, limitCount, datas);
+        }
+
+        private static List<Dictionary<string, string>> GetDataByOrderLimitN<T>(ETableType targetTable,
+            T orderbyType, int limitCount, params T[] datas)
+        {
+            try
+            {
+                string selectString = "Select ";
+                foreach(T data in datas)
+                {
+                    selectString += $"{data},";
+                }
+                selectString = selectString.TrimEnd(',') +
+                    $" From {targetTable} Order By {orderbyType} DESC Limit {limitCount}";
+                Debug.Log(selectString);
+
+                List<Dictionary<string, string>> result = new List<Dictionary<string, string>>();
+
+                using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
+                {
+                    _sqlConnection.Open();
+                    MySqlCommand command = new MySqlCommand(selectString, _sqlConnection);
+                    MySqlDataReader dataReader = command.ExecuteReader();
+
+                    for(int i = 0; i < limitCount; ++i)
+                    {
+                        result.Add(new Dictionary<string, string>());
+                        if(dataReader.Read())
+                        {
+                            foreach(T data in datas)
+                            {
+                                result[i][data.ToString()] = dataReader[data.ToString()].ToString();
+                            }
+                        }
+                        else
+                        {
+                            foreach (T data in datas)
+                            {
+                                result[i][data.ToString()] = "";
+                            }
+                        }
+                    }
+
+                    _sqlConnection.Close();
+                }
+
+                return result;
+            }
+            catch(System.Exception error)
+            {
+                Debug.LogError(error.Message);
+                return new List<Dictionary<string, string>>();
+            }
+        }
     }
 }

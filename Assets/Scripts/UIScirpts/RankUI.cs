@@ -1,3 +1,5 @@
+#define _DEBUG_MODE_
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +7,10 @@ using UnityEngine.UI;
 using TMPro;
 using System.Data;
 using MySql.Data.MySqlClient;
+
+#if _DEBUG_MODE_
+using MySql;
+#endif
 
 public class RankUI : MonoBehaviour
 {
@@ -49,6 +55,23 @@ public class RankUI : MonoBehaviour
 
     private void UpdateRanking()
     {
+#if _DEBUG_MODE_
+        List<Dictionary<string, string>> ranking = MySqlSetting.GetDataByOrderLimitN
+            (MySqlSetting.ERankingColumType.High_Record, _rankNumber,
+            MySqlSetting.ERankingColumType.ID, MySqlSetting.ERankingColumType.High_Record);
+
+        if(ranking.Count == 0)
+        {
+            Debug.LogError("랭킹 가져오는 것에 오류 있음");
+            return;
+        }
+
+        for(int i = 0; i<_rankNumber; ++i)
+        {
+            _nicknameText[i].text = ranking[i]["ID"];
+            _scoreText[i].text = ranking[i]["High_Record"];
+        }
+#else
         _selectString = _selectText.text + $" Order By High_Record DESC Limit 5;";
 
         using (MySqlConnection _sqlConnection = new MySqlConnection(_connectionString))
@@ -68,5 +91,6 @@ public class RankUI : MonoBehaviour
             }
             _sqlConnection.Close();
         }
+#endif
     }
 }
