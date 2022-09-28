@@ -1,14 +1,10 @@
-#define _DEBUG_MODE_
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Data;
 using MySql.Data.MySqlClient;
-#if _DEBUG_MODE_
 using MySql;
-#endif
 
 public class FindUI : MonoBehaviour
 {
@@ -68,22 +64,21 @@ public class FindUI : MonoBehaviour
 
     public void LoadLogIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.LogIn);
     public void LoadSignIn() => _logInUIManager.LoadUI(LogInUIManager.ELogInUIIndex.SignIn);
-    private DataSet GetUserData()
-    {
-        DataSet dataSet = new DataSet();
-        using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
-        {
-            sqlConnection.Open();
+    //private DataSet GetUserData()
+    //{
+    //    DataSet dataSet = new DataSet();
+    //    using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
+    //    {
+    //        sqlConnection.Open();
 
-            MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(_selectString, sqlConnection);
-            sqlDataAdapter.Fill(dataSet);
-        }
-        return dataSet;
+    //        MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(_selectString, sqlConnection);
+    //        sqlDataAdapter.Fill(dataSet);
+    //    }
+    //    return dataSet;
 
-    }
+    //}
     public void FindID()
     {
-#if _DEBUG_MODE_
         if(!MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.Email, _idEmailInput.text))
         {
             _idEmailErrorText.SetActive(true);
@@ -96,28 +91,10 @@ public class FindUI : MonoBehaviour
 
         _idOutput.text = id;
         _idEmailErrorText.SetActive(false);
-#else
-        DataSet findIdDataSet;
-
-        findIdDataSet = GetUserData();
-
-        foreach (DataRow dataRow in findIdDataSet.Tables[0].Rows)
-        {
-            if (dataRow["Email"].ToString() == _idEmailInput.text)
-            {
-                _idOutput.text = dataRow["ID"].ToString();
-                _idEmailErrorText.SetActive(false);
-
-                return;
-            }
-        }
-        _idEmailErrorText.SetActive(true);
-#endif
     }
 
     public void FindPW()
     {
-#if _DEBUG_MODE_
         if(!MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.Email, _passwordEmailInput.text))
         {
             _pwEmailErrorText.SetActive(true);
@@ -145,39 +122,6 @@ public class FindUI : MonoBehaviour
 
         string password = MySqlSetting.GetValueByBase(MySqlSetting.EAccountColumnType.ID, _passwordIdInput.text, MySqlSetting.EAccountColumnType.Password);
         _passwordOutput.text = password;
-#else
-
-        DataSet findPwDataSet = GetUserData();
-
-        bool emailExist = false;
-        bool idExist = false;
-        bool curEmailExist = false;
-        bool curIdExist = false;
-        foreach (DataRow dataRow in findPwDataSet.Tables[0].Rows)
-        {
-            if (dataRow["Email"].ToString() == _passwordEmailInput.text)
-            {
-                emailExist = true;
-                curEmailExist = true;
-            }
-            if (dataRow["ID"].ToString() == _passwordIdInput.text)
-            {
-                idExist = true;
-                curIdExist = true;
-            }
-
-            if (curEmailExist && curIdExist)
-            {
-                _passwordOutput.text = dataRow["Password"].ToString();
-                break;
-            }
-            curEmailExist = false;
-            curIdExist = false;
-        }
-
-        _pwEmailErrorText.SetActive(!emailExist);
-        _pwIdErrorText.SetActive(!idExist);
-#endif
     }
 
     private void OnDisable()

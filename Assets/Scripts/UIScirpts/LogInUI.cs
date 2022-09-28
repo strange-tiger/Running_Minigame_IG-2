@@ -1,4 +1,3 @@
-#define _DEBUG_MODE_
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Data;
 using MySql.Data.MySqlClient;
-
-#if _DEBUG_MODE_
 using MySql;
-#endif
 
 public class LogInUI : MonoBehaviour
 {
@@ -64,8 +60,6 @@ public class LogInUI : MonoBehaviour
     // 입력된 계정 정보를 계정 DB와 비교해 일치하면 ID를 PlayerPrefs에 저장하고 WaitingRoom 씬을 로드한다.
     public void LogIn()
     {
-#if _DEBUG_MODE_
-        
         if(!MySqlSetting.IsThereValue(MySqlSetting.EAccountColumnType.ID, _idInput.text))
         {
             _idErrorText.SetActive(true);
@@ -85,40 +79,6 @@ public class LogInUI : MonoBehaviour
         {
             _passwordErrorText.SetActive(true);
         }
-#else
-        _selectString = _selectText.text + $" where binary ID= '{_idInput.text}';";
-
-        using (MySqlConnection sqlConnection = new MySqlConnection(_connectionString))
-        {
-            sqlConnection.Open();
-            MySqlCommand readCommand = new MySqlCommand(_selectString, sqlConnection);
-            MySqlDataReader dataReader = readCommand.ExecuteReader();
-            if (dataReader.Read())
-            {
-                _idErrorText.SetActive(false);
-
-                if (dataReader["Password"].ToString() == _passwordInput.text)
-                {
-                    _passwordErrorText.SetActive(false);
-
-                    PlayerPrefs.SetString("ID", dataReader["ID"].ToString());
-
-                    sqlConnection.Close();
-                    LoadWaitingRoom();
-                    return;
-                }
-                else
-                {
-                    _passwordErrorText.SetActive(true);
-                }
-            }
-            else
-            {
-                _idErrorText.SetActive(true);
-            }
-            sqlConnection.Close();
-        }
-#endif
     }
 
     private void LoadWaitingRoom()
