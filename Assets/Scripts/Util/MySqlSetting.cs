@@ -262,26 +262,50 @@ namespace MySql
         /// <summary>
         /// Ranking Table에서 baseType의 baseValue를 기준으로 TargetType을 TargetValue로 변경함
         /// </summary>
-        /// <param name="baseType"></param>
-        /// <param name="baseValue"></param>
-        /// <param name="targetType"></param>
-        /// <param name="targetValue"></param>
-        /// <returns></returns>
+        /// <param name="baseType">기준 값의 Column명</param>
+        /// <param name="baseValue">기준 값의 데이터</param>
+        /// <param name="targetType">변경할 값의 Column명</param>
+        /// <param name="targetValue">변경할 값</param>
+        /// <returns>정상적으로 변경되었다면 true, 아니면 false를 반환</returns>
         public static bool UpdateValueByBase(ERankingColumType baseType, string baseValue,
             ERankingColumType targetType, int targetValue)
         {
             return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
+        /// <summary>
+        /// Ranking Table에서 baseType의 baseValue를 기준으로 TargetType을 TargetValue로 변경함
+        /// </summary>
+        /// <param name="baseType">기준 값의 Column명</param>
+        /// <param name="baseValue">기준 값의 데이터</param>
+        /// <param name="targetType">변경할 값의 Column명</param>
+        /// <param name="targetValue">변경할 값</param>
+        /// <returns>정상적으로 변경되었다면 true, 아니면 false를 반환</returns>
         public static bool UpdateValueByBase(ERankingColumType baseType, string baseValue,
             ERankingColumType targetType, string targetValue)
         {
             return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
+        /// <summary>
+        /// Account Table에서 baseType의 baseValue를 기준으로 TargetType을 TargetValue로 변경함
+        /// </summary>
+        /// <param name="baseType">기준 값의 Column명</param>
+        /// <param name="baseValue">기준 값의 데이터</param>
+        /// <param name="targetType">변경할 값의 Column명</param>
+        /// <param name="targetValue">변경할 값</param>
+        /// <returns>정상적으로 변경되었다면 true, 아니면 false를 반환</returns>
         public static bool UpdateValueByBase(EAccountColumnType baseType, string baseValue,
             EAccountColumnType targetType, int targetValue)
         {
             return UpdateValueByBase(ETableType.Ranking, baseType, baseValue, targetType, targetValue);
         }
+        /// <summary>
+        /// Ranking Table에서 baseType의 baseValue를 기준으로 TargetType을 TargetValue로 변경함
+        /// </summary>
+        /// <param name="baseType">기준 값의 Column명</param>
+        /// <param name="baseValue">기준 값의 데이터</param>
+        /// <param name="targetType">변경할 값의 Column명</param>
+        /// <param name="targetValue">변경할 값</param>
+        /// <returns>정상적으로 변경되었다면 true, 아니면 false를 반환</returns>
         public static bool UpdateValueByBase(EAccountColumnType baseType, string baseValue,
             EAccountColumnType targetType, string targetValue)
         {
