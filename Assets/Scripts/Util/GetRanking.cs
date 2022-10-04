@@ -13,10 +13,7 @@ public class GetRanking
     public int HighScore
     {
         get => GetHighScore();
-        private set
-        {
-            _highScore = value;
-        }
+        private set => _highScore = value;
     }
 
     public void Init()
